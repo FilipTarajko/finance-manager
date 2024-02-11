@@ -10,6 +10,11 @@ const router = createRouter({
       component: TransactionsView
     },
     {
+      path: '/transactions/:transactionId',
+      name: 'transactions/',
+      component: () => import('../views/TransactionDetailsView.vue')
+    },
+    {
       path: '/categories',
       name: 'categories',
       component: () => import('../views/CategoriesView.vue')
