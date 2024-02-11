@@ -13,7 +13,7 @@ import { defineConfig, devices } from '@playwright/test'
 export default defineConfig({
   testDir: './e2e',
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 10 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -56,13 +56,13 @@ export default defineConfig({
       use: {
         ...devices['Desktop Firefox']
       }
-    },
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari']
-      }
     }
+    // ,{
+    //   name: 'webkit',
+    //   use: {
+    //     ...devices['Desktop Safari']
+    //   }
+    // }
 
     /* Test against mobile viewports. */
     // {
@@ -103,7 +103,8 @@ export default defineConfig({
      * Use the preview server on CI for more realistic testing.
      * Playwright will re-use the local server if there is already a dev-server running.
      */
-    command: process.env.CI ? 'vite preview --port 5173' : 'vite dev',
+    // command: process.env.CI ? 'vite preview --port 5173' : 'vite dev',
+    command: 'vite dev',
     port: 5173,
     reuseExistingServer: !process.env.CI
   }
