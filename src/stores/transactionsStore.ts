@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { type Category, type Transaction } from '../types/types'
 import { useCategoriesStore } from '../stores/categoriesStore'
 
-export const useTransactionStore = defineStore('transactionStore', () => {
+export const useTransactionsStore = defineStore('transactionsStore', () => {
   const categoriesStore = useCategoriesStore()
   const transactions: Ref<Transaction[]> = ref([
     {

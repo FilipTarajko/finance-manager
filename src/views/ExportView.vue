@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useTransactionStore } from '@/stores/transactionStore'
-const transactionsStore = useTransactionStore()
+import { useTransactionsStore } from '@/stores/transactionsStore'
+const transactionsStore = useTransactionsStore()
 
 const filename = ref('testFileName.txt')
 

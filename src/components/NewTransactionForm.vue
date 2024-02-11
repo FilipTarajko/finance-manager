@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
-import { useTransactionStore } from '../stores/transactionStore'
-const transactionsStore = useTransactionStore()
+import { useTransactionsStore } from '../stores/transactionsStore'
+const transactionsStore = useTransactionsStore()
 import { useCategoriesStore } from '../stores/categoriesStore'
 import type { Category } from '@/types/types'
 const categoriesStore = useCategoriesStore()

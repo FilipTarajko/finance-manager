@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NewTransactionForm from '@/components/NewTransactionForm.vue'
-import { useTransactionStore } from '../stores/transactionStore'
-const transactionsStore = useTransactionStore()
+import { useTransactionsStore } from '../stores/transactionsStore'
+const transactionsStore = useTransactionsStore()
 </script>
 
 <template>
