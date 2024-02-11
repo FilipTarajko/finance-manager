@@ -1,26 +1,13 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-
-  let transactions = ref([{
-    id: 1,
-    name: "Dinner",
-    amount: -20
-  }, {
-    id: 2,
-    name: "Scholarship",
-    amount: 1000
-  }, {
-    id: 3,
-    name: "Groceries",
-    amount: 60.53
-  }]);
+  import {useTransactionStore} from "../stores/transactionStore";
+  const transactionsStore = useTransactionStore();
 </script>
 
 <template>
   <main>
   <h1>Transactions</h1>
   <ul>
-    <li v-for="transaction of transactions" :key="transaction.id">
+    <li v-for="transaction of transactionsStore.transactions" :key="transaction.id">
       {{ transaction.id }} - {{ transaction.name }}: {{ transaction.amount }}
     </li>
   </ul>  
