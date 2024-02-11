@@ -2,10 +2,11 @@ import { ref, computed, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { type Category, type Transaction } from '../types/types'
 import { useCategoriesStore } from '../stores/categoriesStore'
+import { useStorage } from '@vueuse/core'
 
 export const useTransactionsStore = defineStore('transactionsStore', () => {
   const categoriesStore = useCategoriesStore()
-  const transactions: Ref<Transaction[]> = ref([
+  const transactions: Ref<Transaction[]> = useStorage("transactions", [
     {
       id: 1,
       name: 'Dinner',
