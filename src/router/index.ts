@@ -28,6 +28,11 @@ const router = createRouter({
       path: '/export',
       name: 'export',
       component: () => import('../views/ExportView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      redirect: "/"
     }
   ]
 })
