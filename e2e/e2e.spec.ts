@@ -17,7 +17,6 @@ test('E2E test', async ({ page }) => {
   await page.getByRole('link', { name: 'Categories' }).click();
   await page.locator('input[type="text"]').click();
   await page.locator('input[type="text"]').fill('qwerrtty');
-  await page.locator('input[type="color"]').click();
   await page.locator('input[type="color"]').fill('#aa0909');
   await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('qwerrtty')).toBeVisible();
