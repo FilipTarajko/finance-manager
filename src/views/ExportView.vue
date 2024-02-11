@@ -27,5 +27,6 @@ function exportData() {
 </script>
 
 <template>
+    <h1>Export</h1>
     <button @click="exportData">export data</button>
 </template>
