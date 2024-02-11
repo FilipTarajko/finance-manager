@@ -11,7 +11,7 @@ const categoriesStore = useCategoriesStore()
     <h2>categories list</h2>
     <ul>
       <li v-for="category of categoriesStore.categories" :key="category.id" :style="{ color: category.color }">
-        {{ category.id }} - {{ category.name }}
+        {{ category.id }} - {{ category.name }} <v-icon :icon="category.icon" :color="category.color" />
       </li>
     </ul>
   </main>

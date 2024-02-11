@@ -9,19 +9,19 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
       id: 1,
       name: 'Food',
       color: '#abffcc',
-      icon: 'food'
+      icon: 'mdi-silverware-variant'
     },
     {
       id: 2,
       name: 'Education',
       color: '#ddddaa',
-      icon: 'school'
+      icon: 'mdi-school'
     },
     {
       id: 3,
       name: 'Groceries',
       color: '#ffaabb',
-      icon: 'shopping'
+      icon: 'mdi-shopping'
     }
   ])
 
