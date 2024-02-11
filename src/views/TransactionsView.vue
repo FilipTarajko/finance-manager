@@ -11,7 +11,9 @@ const transactionsStore = useTransactionStore()
     <h2>transaction history</h2>
     <ul>
       <li v-for="transaction of transactionsStore.transactions" :key="transaction.id">
-        {{ transaction.id }} - {{ transaction.name }}: {{ transaction.amount }}
+        {{ transaction.id }} - {{ transaction.name }}: {{ transaction.amount }} ({{
+          transaction.category.name
+        }})
       </li>
     </ul>
   </main>
