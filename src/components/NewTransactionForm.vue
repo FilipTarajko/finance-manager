@@ -1,24 +1,12 @@
 <script setup lang="ts">
-import { reactive, ref, type Ref } from 'vue'
-import { useTransactionsStore } from '../stores/transactionsStore'
-const transactionsStore = useTransactionsStore()
-import { useCategoriesStore } from '../stores/categoriesStore'
-import type { Category } from '@/types/types'
-const categoriesStore = useCategoriesStore()
+import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { required, maxLength, numeric } from '@vuelidate/validators'
 
-// const name = ref('')
-// const amount = ref(0)
-// const category: Ref<null | Category> = ref(null)
-
-function addTransaction() {
-  if (!state?.category) {
-    return
-  } else {
-    transactionsStore.addTransaction(state.name, state.amount, state.category)
-  }
-}
+import { useTransactionsStore } from '../stores/transactionsStore'
+import { useCategoriesStore } from '../stores/categoriesStore'
+const transactionsStore = useTransactionsStore()
+const categoriesStore = useCategoriesStore()
 
 const initialState = {
   name: '',
@@ -33,10 +21,19 @@ const state = reactive({
 })
 
 const rules = {
-  name: { required },
+  name: { required, maxLength: maxLength(20) },
   amount: { required },
   category: { required },
 }
+
+const categoryOptions = computed(() => {
+  return categoriesStore.categories.map((elem) => {
+    return {
+      title: elem.name,
+      value: elem
+    }
+  })
+})
 
 const v$ = useVuelidate(rules, state)
 
@@ -48,43 +45,37 @@ function clear() {
     state[key] = value
   }
 }
+
+function addTransaction() {
+  v$.value.$validate()
+  if (v$.value.$error || !state.category) {
+    return;
+  }
+  console.log(state.category)
+  transactionsStore.addTransaction(state.name, state.amount, state.category)
+}
 </script>
 
 
 <template>
-  <form>
-    <!-- :error-messages="v$.name.$errors.map(e => e.$message)" -->
-    <v-text-field v-model="state.name" :counter="10" label="Name" required @input="v$.name.$touch"
-      @blur="v$.name.$touch"></v-text-field>
+  <form style="width: 24rem;">
+    <v-text-field v-model="state.name" label="Name" required @input="v$.name.$touch" @blur="v$.name.$touch"
+      :error-messages="(v$.name.$errors.map(e => e.$message) as string[])" class="mb-1">
+    </v-text-field>
 
-    <!-- :error-messages="v$.amount.$errors.map(e => e.$message)"  -->
-    <v-text-field v-model="state.amount" label="Amount" required @input="v$.amount.$touch"
-      @blur="v$.amount.$touch"></v-text-field>
+    <v-text-field type="number" v-model.number="state.amount" label="Amount" required @input="v$.amount.$touch"
+      @blur="v$.amount.$touch" :error-messages="(v$.amount.$errors.map(e => e.$message) as string[])"
+      class="mb-1"></v-text-field>
 
-    <!-- :error-messages="v$.category.$errors.map(e => e.$message)" -->
-    <v-select v-model="state.category" :items="categoriesStore.categories" label="Item" required
-      @change="v$.category.$touch" @blur="v$.category.$touch" item-title="name">
+    <v-select v-model="state.category" :items="categoryOptions" label="Item" required @change="v$.category.$touch"
+      @blur="v$.category.$touch" :error-messages="(v$.category.$errors.map(e => e.$message) as string[])" class="mb-2">
     </v-select>
 
-    <v-btn class="me-4" @click="v$.$validate">
+    <v-btn class="me-4" @click="addTransaction" color="success">
       submit
     </v-btn>
-    <v-btn @click="clear">
+    <v-btn @click="clear" color="error">
       clear
     </v-btn>
   </form>
-  <!-- <div :class="{ error: v$.name.$errors.length }">
-    <input v-model="state.name">
-    <div class="input-errors" v-for="error of v$.firstName.$errors" :key="error.$uid">
-      <div class="error-msg">{{ error.$message }}</div>
-    </div>
-  </div> -->
 </template>
-
-<style lang="scss">
-.form {
-  display: flex;
-  flex-direction: column;
-  width: 10rem;
-}
-</style>

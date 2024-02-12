@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <nav>
+  <nav class="mb-4">
     <RouterLink to="/">Transactions</RouterLink>
     <RouterLink to="/categories">Categories</RouterLink>
     <RouterLink to="/statistics">Statistics</RouterLink>
