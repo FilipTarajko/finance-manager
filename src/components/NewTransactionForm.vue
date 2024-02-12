@@ -63,7 +63,8 @@ function clear() {
 
     <!-- :error-messages="v$.category.$errors.map(e => e.$message)" -->
     <v-select v-model="state.category" :items="categoriesStore.categories" label="Item" required
-      @change="v$.category.$touch" @blur="v$.category.$touch"></v-select>
+      @change="v$.category.$touch" @blur="v$.category.$touch" item-title="name">
+    </v-select>
 
     <v-btn class="me-4" @click="v$.$validate">
       submit
