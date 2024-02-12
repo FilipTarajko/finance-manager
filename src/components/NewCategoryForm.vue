@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required, maxLength } from '@vuelidate/validators'
+import { required, maxLength, helpers } from '@vuelidate/validators'
 
 import { useCategoriesStore } from '../stores/categoriesStore'
+import { helper } from 'echarts';
 const categoriesStore = useCategoriesStore()
 
 const icons = [
@@ -32,8 +33,19 @@ const state = reactive({
   iconIndex: initialState.iconIndex
 })
 
+const mustBeUniqueCategoryName = (value: string) =>
+  !categoriesStore.categories.map(elem => elem.name).includes(value)
+
+
 const rules = {
-  name: { required, maxLength: maxLength(20) },
+  name: {
+    required,
+    maxLength: maxLength(14),
+    mustBeUniqueCategoryName: helpers.withMessage(
+      'Must be unique',
+      mustBeUniqueCategoryName
+    )
+  },
   color: { required },
   iconIndex: { required },
 }
@@ -65,13 +77,13 @@ function addCategory() {
       :error-messages="(v$.name.$errors.map(e => e.$message) as string[])" class="mb-1">
     </v-text-field>
 
-    <v-label for="colorPicker">Color</v-label>
-    <v-color-picker id="colorPicker" mode="hex" hide-inputs v-model="state.color" label="Color" required
-      @input="v$.color.$touch" @blur="v$.color.$touch"
-      :error-messages="(v$.color.$errors.map(e => e.$message) as string[])" class="mb-4"></v-color-picker>
+    <v-label>Color</v-label>
+    <v-color-picker mode="hex" hide-inputs v-model="state.color" label="Color" required @input="v$.color.$touch"
+      @blur="v$.color.$touch" :error-messages="(v$.color.$errors.map(e => e.$message) as string[])"
+      class="mb-4"></v-color-picker>
 
-    <v-label for="iconToggle">Icon</v-label>
-    <v-btn-toggle id="iconToggle" v-model="state.iconIndex" class="mb-2" shaped mandatory>
+    <v-label>Icon</v-label>
+    <v-btn-toggle v-model="state.iconIndex" class="mb-2" shaped mandatory>
       <v-btn size="35" v-for="icon in icons"
         :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#888;' : '#444')">
         <v-icon size="25" :color="state.color">{{ icon }}</v-icon>

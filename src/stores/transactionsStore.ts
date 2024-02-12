@@ -24,8 +24,85 @@ export const useTransactionsStore = defineStore('transactionsStore', () => {
     {
       id: 3,
       name: 'Groceries',
-      amount: 60.53,
+      amount: -61.53,
       category: categoriesStore.categories[2],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 4,
+      name: 'Pizza',
+      amount: -19.99,
+      category: categoriesStore.categories[0],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 5,
+      name: 'Gift from grandma',
+      amount: 200,
+      category: categoriesStore.categories[3],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 6,
+      name: 'Gas',
+      amount: -250,
+      category: categoriesStore.categories[4],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 7,
+      name: 'Bus ticket',
+      amount: -10,
+      category: categoriesStore.categories[4],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 7,
+      name: 'Test',
+      amount: -15,
+      category: categoriesStore.categories[5],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 8,
+      name: 'Test',
+      amount: -15,
+      category: categoriesStore.categories[6],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 9,
+      name: 'Test',
+      amount: -15,
+      category: categoriesStore.categories[7],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 10,
+      name: 'Test',
+      amount: -15,
+      category: categoriesStore.categories[8],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 11,
+      name: 'Test',
+      amount: -15,
+      category: categoriesStore.categories[9],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 12,
+      name: 'Test',
+      amount: -35,
+      category: categoriesStore.categories[10],
+      timestamp: new Date().getTime()
+    },
+    {
+      id: 13,
+      name: 'TestAgain',
+      amount: -35,
+      category: categoriesStore.categories[11],
       timestamp: new Date().getTime()
     }
   ])

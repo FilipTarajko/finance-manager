@@ -7,21 +7,75 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
   const categories: Ref<Category[]> = useStorage('categories', [
     {
       id: 1,
-      name: 'Food',
-      color: '#abffcc',
+      name: 'Eating out',
+      color: '#d16900',
       icon: 'mdi-silverware-variant'
     },
     {
       id: 2,
       name: 'Education',
-      color: '#ddddaa',
+      color: '#ffff22',
       icon: 'mdi-school'
     },
     {
       id: 3,
       name: 'Groceries',
-      color: '#ffaabb',
+      color: '#00ff77',
       icon: 'mdi-shopping'
+    },
+    {
+      id: 4,
+      name: 'Gifts',
+      color: '#00aaff',
+      icon: 'mdi-gift'
+    },
+    {
+      id: 5,
+      name: 'Transportation',
+      color: '#ff0088',
+      icon: 'mdi-train-car'
+    },
+    {
+      id: 6,
+      name: 'WWWWWWWWWWWWWW',
+      color: '#ff3000',
+      icon: 'mdi-help'
+    },
+    {
+      id: 7,
+      name: 'WWWWWWWWWWWWW2',
+      color: '#ff0300',
+      icon: 'mdi-help'
+    },
+    {
+      id: 8,
+      name: 'WWWWWWWWWWWWW3',
+      color: '#af0000',
+      icon: 'mdi-help'
+    },
+    {
+      id: 9,
+      name: 'WWWWWWWWWWWWW4',
+      color: '#fff000',
+      icon: 'mdi-help'
+    },
+    {
+      id: 10,
+      name: 'WWWWWWWWWWWWW5',
+      color: '#ff00dd',
+      icon: 'mdi-help'
+    },
+    {
+      id: 11,
+      name: 'test category6',
+      color: '#accdda',
+      icon: 'mdi-help'
+    },
+    {
+      id: 12,
+      name: 'test category7',
+      color: '#accdda',
+      icon: 'mdi-help'
     }
   ])
 
