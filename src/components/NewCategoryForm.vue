@@ -1,30 +1,88 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { reactive } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { required, maxLength } from '@vuelidate/validators'
+
 import { useCategoriesStore } from '../stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
 
-const name = ref('')
-const color = ref('')
-const icon = ref('')
+const icons = [
+  "mdi-help",
+  "mdi-silverware-variant",
+  "mdi-school",
+  "mdi-shopping",
+  "mdi-train-car",
+  "mdi-beach",
+  "mdi-gift",
+  "mdi-leaf",
+  "mdi-movie",
+  "mdi-fuel",
+  "mdi-home",
+
+]
+
+const initialState = {
+  name: '',
+  color: '#ff6600',
+  iconIndex: 0
+}
+const state = reactive({
+  name: initialState.name,
+  color: initialState.color,
+  iconIndex: initialState.iconIndex
+})
+
+const rules = {
+  name: { required, maxLength: maxLength(20) },
+  color: { required },
+  iconIndex: { required },
+}
+
+const v$ = useVuelidate(rules, state)
+
+function clear() {
+  v$.value.$reset()
+
+  for (const [key, value] of Object.entries(initialState)) {
+    // @ts-ignore
+    state[key] = value
+  }
+}
 
 function addCategory() {
-  categoriesStore.addCategory(name.value, color.value, icon.value)
+  v$.value.$validate()
+  if (v$.value.$error) {
+    return;
+  }
+  categoriesStore.addCategory(state.name, state.color, icons[state.iconIndex])
 }
 </script>
 
 <template>
   <h2>new category</h2>
-  <form class="form" @submit.prevent="addCategory">
-    <input type="text" v-model="name" />
-    <input type="color" v-model="color" />
-    <button>add</button>
+  <form class="mb-4" style="width: 24rem;">
+    <v-text-field v-model="state.name" label="Name" required @input="v$.name.$touch" @blur="v$.name.$touch"
+      :error-messages="(v$.name.$errors.map(e => e.$message) as string[])" class="mb-1">
+    </v-text-field>
+
+    <v-label for="colorPicker">Color</v-label>
+    <v-color-picker id="colorPicker" mode="hex" hide-inputs v-model="state.color" label="Color" required
+      @input="v$.color.$touch" @blur="v$.color.$touch"
+      :error-messages="(v$.color.$errors.map(e => e.$message) as string[])" class="mb-4"></v-color-picker>
+
+    <v-label for="iconToggle">Icon</v-label>
+    <v-btn-toggle id="iconToggle" v-model="state.iconIndex" class="mb-2" shaped mandatory>
+      <v-btn size="35" v-for="icon in icons"
+        :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#888;' : '#444')">
+        <v-icon size="25" :color="state.color">{{ icon }}</v-icon>
+      </v-btn>
+    </v-btn-toggle>
+    <br>
+    <v-btn class="me-4" @click="addCategory" color="success">
+      submit
+    </v-btn>
+    <v-btn @click="clear" color="error">
+      clear
+    </v-btn>
   </form>
 </template>
-
-<style lang="scss">
-.form {
-  display: flex;
-  flex-direction: column;
-  width: 10rem;
-}
-</style>

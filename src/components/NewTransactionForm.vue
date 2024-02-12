@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required, maxLength, numeric } from '@vuelidate/validators'
+import { required, maxLength } from '@vuelidate/validators'
 
 import { useTransactionsStore } from '../stores/transactionsStore'
 import { useCategoriesStore } from '../stores/categoriesStore'
@@ -15,9 +15,9 @@ const initialState = {
 }
 
 const state = reactive({
-  name: '',
-  amount: 0,
-  category: null
+  name: initialState.name,
+  amount: initialState.amount,
+  category: initialState.category
 })
 
 const rules = {
@@ -51,14 +51,14 @@ function addTransaction() {
   if (v$.value.$error || !state.category) {
     return;
   }
-  console.log(state.category)
   transactionsStore.addTransaction(state.name, state.amount, state.category)
 }
 </script>
 
 
 <template>
-  <form style="width: 24rem;">
+  <h2>new transaction</h2>
+  <form class="mb-4" style="width: 24rem;">
     <v-text-field v-model="state.name" label="Name" required @input="v$.name.$touch" @blur="v$.name.$touch"
       :error-messages="(v$.name.$errors.map(e => e.$message) as string[])" class="mb-1">
     </v-text-field>
