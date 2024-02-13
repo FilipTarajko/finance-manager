@@ -11,7 +11,7 @@ function getLocale() {
 
 function exportData() {
   let text = JSON.stringify(transactionsStore.transactions)
-  let filename = 'exported data ' + new Date().toLocaleString(getLocale()) + '.txt'
+  let filename = 'exported data ' + new Date().toLocaleString(getLocale()) + '.json'
 
   const element = document.createElement('a')
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
