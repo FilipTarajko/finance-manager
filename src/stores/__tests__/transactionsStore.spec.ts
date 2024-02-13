@@ -15,12 +15,21 @@ describe('transactionStore', () => {
     setActivePinia(createPinia())
   })
 
-  it('adds new transactions', () => {
+  it('creates new transaction', () => {
     const transactionsStore = useTransactionsStore()
     transactionsStore.addTransaction('test transaction', -12.34, testCategory)
-    const lastElement = transactionsStore.transactions[transactionsStore.transactions.length - 1]
-    expect(lastElement.name).toEqual('test transaction')
-    expect(lastElement.amount).toEqual(-12.34)
-    expect(lastElement.category.name).toEqual('testCategoryName')
+    const testElement = transactionsStore.transactions[transactionsStore.transactions.length - 1]
+    expect(testElement.name).toEqual('test transaction')
+    expect(testElement.amount).toEqual(-12.34)
+    expect(testElement.category.name).toEqual('testCategoryName')
+  })
+
+  it('deletes existing transaction', () => {
+    const transactionsStore = useTransactionsStore()
+    const testElement = transactionsStore.transactions[transactionsStore.transactions.length - 1]
+    const lengthBeforeRemoving = transactionsStore.transactions.length
+    transactionsStore.deleteTransaction(testElement)
+    expect(transactionsStore.transactions.length).toStrictEqual(lengthBeforeRemoving - 1)
+    expect(transactionsStore.transactions).not.toContain(testElement)
   })
 })
