@@ -78,7 +78,7 @@ const transactionLossesByCategory = computed(() => {
   return objectToPieGraphInput(object)
 })
 
-const transactionsChronologically = computed(() => {
+const transactionsChronologicallyForBarChart = computed(() => {
   let array: any = []
   transactionsStore.transactions.forEach((elem) => {
     array.push({
@@ -88,8 +88,10 @@ const transactionsChronologically = computed(() => {
         color: elem.category.color
       }
     })
+    // @ts-ignore
     array.sort((a, b) => b.timestamp - a.timestamp)
   })
+  console.log(array.length)
   return array
 })
 </script>
@@ -103,7 +105,8 @@ const transactionsChronologically = computed(() => {
   <PieChart class="chart" name="transactions by category" :input="transactionInstancesByCategory" />
   <PieChart class="chart" name="gains by category" :input="transactionGainsByCategory" />
   <PieChart class="chart" name="losses by category" :input="transactionLossesByCategory" />
-  <BarChart class="chart--tall" name="transactions history" :input="transactionsChronologically" />
+  <BarChart class="chart--tall" name="transaction history" subtitle="with zoom"
+    :input="transactionsChronologicallyForBarChart" />
 </template>
 
 <style lang="scss">
@@ -113,7 +116,7 @@ const transactionsChronologically = computed(() => {
 
   &--tall {
     margin-top: 20px;
-    height: 800px;
+    height: 560px;
   }
 }
 </style>

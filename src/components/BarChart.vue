@@ -12,29 +12,35 @@ import type {
 } from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { provide, ref } from 'vue'
+import { DataZoomComponent } from 'echarts/components';
 
 const props = defineProps({
   name: {
     type: String,
     required: true
   },
+  subtitle: {
+    type: String,
+    required: false
+  },
   input: {
     required: true
   }
 })
 
-use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer])
-type EChartsOption = ComposeOption<
-  TitleComponentOption | TooltipComponentOption | GridComponentOption | BarSeriesOption
->
+use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer, DataZoomComponent])
+
+// @ts-ignore
 let dataAxis = props.input.map((e) => e.name)
+// @ts-ignore
 let data = props.input.map((e) => e)
 
 provide(THEME_KEY, 'dark')
 const option = ref({
   title: {
     text: props.name,
-    left: 'center'
+    left: 'center',
+    subtext: props?.subtitle ?? ""
   },
   tooltip: {
     trigger: 'axis',
@@ -43,11 +49,11 @@ const option = ref({
       type: 'shadow'
     }
   },
-  // dataZoom: [
-  //   {
-  //     type: 'inside'
-  //   }
-  // ],
+  dataZoom: [
+    {
+      type: 'inside'
+    }
+  ],
   grid: {
     top: 80,
     bottom: 30
