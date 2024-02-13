@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useTransactionsStore } from '@/stores/transactionsStore'
 const transactionsStore = useTransactionsStore()
-
-const filename = ref('testFileName.txt')
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -27,6 +24,6 @@ function exportData() {
 </script>
 
 <template>
-  <h1>Export</h1>
-  <button @click="exportData">export data</button>
+  <h1 class="mb-4">Export</h1>
+  <v-btn @click="exportData" theme="dark" variant="outlined"> export data </v-btn>
 </template>

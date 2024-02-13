@@ -81,8 +81,9 @@ function addCategory() {
 
     <v-label>Color</v-label>
     <v-color-picker
-      mode="hex"
       hide-inputs
+      theme="dark"
+      mode="hex"
       v-model="state.color"
       label="Color"
       required
@@ -97,7 +98,7 @@ function addCategory() {
       <v-btn
         size="35"
         v-for="icon in icons"
-        :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#888;' : '#444')"
+        :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#444;' : '#212121')"
       >
         <v-icon size="25" :color="state.color">{{ icon }}</v-icon>
       </v-btn>

@@ -3,16 +3,9 @@ import { use } from 'echarts/core'
 import { BarChart } from 'echarts/charts'
 import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
-import type { ComposeOption } from 'echarts/core'
-import type { BarSeriesOption } from 'echarts/charts'
-import type {
-  TitleComponentOption,
-  TooltipComponentOption,
-  GridComponentOption
-} from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { provide, ref } from 'vue'
-import { DataZoomComponent } from 'echarts/components';
+import { DataZoomComponent } from 'echarts/components'
 
 const props = defineProps({
   name: {
@@ -40,7 +33,7 @@ const option = ref({
   title: {
     text: props.name,
     left: 'center',
-    subtext: props?.subtitle ?? ""
+    subtext: props?.subtitle ?? ''
   },
   tooltip: {
     trigger: 'axis',

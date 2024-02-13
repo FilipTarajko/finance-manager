@@ -98,15 +98,41 @@ const transactionsChronologicallyForBarChart = computed(() => {
 
 <template>
   <h1>Statistics</h1>
-  positive transactions: {{ positiveTransactionsInstances }} <br />total gains:
-  {{ positiveTransactionsGain }} <br />negative transactions: {{ negativeTransactionsInstances }}
-  <br />total losses: {{ negativeTransactionsLosses }} <br />total transactions:
-  {{ totalTransactionsInstances }} <br />total difference: {{ totalTransactionsSum }}
+  <v-table theme="dark">
+    <thead>
+      <tr>
+        <th class="text-left">type of transaction</th>
+        <th class="text-left">number of transactions</th>
+        <th class="text-left">money gained</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>positive</td>
+        <td>{{ positiveTransactionsInstances }}</td>
+        <td>{{ positiveTransactionsGain }}</td>
+      </tr>
+      <tr>
+        <td>negative</td>
+        <td>{{ negativeTransactionsInstances }}</td>
+        <td>{{ negativeTransactionsLosses }}</td>
+      </tr>
+      <tr>
+        <td>total</td>
+        <td>{{ totalTransactionsInstances }}</td>
+        <td>{{ totalTransactionsSum }}</td>
+      </tr>
+    </tbody>
+  </v-table>
   <PieChart class="chart" name="transactions by category" :input="transactionInstancesByCategory" />
   <PieChart class="chart" name="gains by category" :input="transactionGainsByCategory" />
   <PieChart class="chart" name="losses by category" :input="transactionLossesByCategory" />
-  <BarChart class="chart--tall" name="transaction history" subtitle="with zoom"
-    :input="transactionsChronologicallyForBarChart" />
+  <BarChart
+    class="chart--tall"
+    name="transaction history"
+    subtitle="with zoom"
+    :input="transactionsChronologicallyForBarChart"
+  />
 </template>
 
 <style lang="scss">
