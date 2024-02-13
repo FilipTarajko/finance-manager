@@ -1,0 +1,92 @@
+<script setup lang="ts">
+import { use } from 'echarts/core'
+import { BarChart } from 'echarts/charts'
+import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+import type { ComposeOption } from 'echarts/core'
+import type { BarSeriesOption } from 'echarts/charts'
+import type {
+  TitleComponentOption,
+  TooltipComponentOption,
+  GridComponentOption
+} from 'echarts/components'
+import VChart, { THEME_KEY } from 'vue-echarts'
+import { provide, ref } from 'vue'
+
+const props = defineProps({
+  name: {
+    type: String,
+    required: true
+  },
+  input: {
+    required: true
+  }
+})
+
+use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer])
+type EChartsOption = ComposeOption<
+  TitleComponentOption | TooltipComponentOption | GridComponentOption | BarSeriesOption
+>
+let dataAxis = props.input.map((e) => e.name)
+let data = props.input.map((e) => e)
+
+provide(THEME_KEY, 'dark')
+const option = ref({
+  title: {
+    text: props.name,
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis',
+    formatter: '{b}: {c}',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  // dataZoom: [
+  //   {
+  //     type: 'inside'
+  //   }
+  // ],
+  grid: {
+    top: 80,
+    bottom: 30
+  },
+  yAxis: {
+    type: 'value',
+    position: 'top',
+    splitLine: {
+      lineStyle: {
+        type: 'dashed'
+      }
+    }
+  },
+  xAxis: {
+    type: 'category',
+    axisLine: { show: false },
+    axisLabel: { show: false },
+    axisTick: { show: false },
+    splitLine: { show: false },
+    data: dataAxis //props.input //.map(e => e.name)
+  },
+  series: [
+    {
+      name: 'Cost',
+      type: 'bar',
+      stack: 'Total',
+      label: {
+        show: true,
+        formatter: '{b}',
+        position: 'top',
+        rotate: 15,
+        color: '#ffffff'
+      },
+      data: data
+    }
+  ]
+})
+</script>
+
+<template>
+  <v-chart id="barChart" class="chart" :option="option" autoresize />
+</template>

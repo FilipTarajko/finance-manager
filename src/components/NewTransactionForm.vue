@@ -23,7 +23,7 @@ const state = reactive({
 const rules = {
   name: { required, maxLength: maxLength(20) },
   amount: { required },
-  category: { required },
+  category: { required }
 }
 
 const categoryOptions = computed(() => {
@@ -49,33 +49,50 @@ function clear() {
 function addTransaction() {
   v$.value.$validate()
   if (v$.value.$error || !state.category) {
-    return;
+    return
   }
   transactionsStore.addTransaction(state.name, state.amount, state.category)
 }
 </script>
 
-
 <template>
   <h2>new transaction</h2>
-  <form class="mb-4" style="width: 24rem;">
-    <v-text-field v-model="state.name" label="Name" required @input="v$.name.$touch" @blur="v$.name.$touch"
-      :error-messages="(v$.name.$errors.map(e => e.$message) as string[])" class="mb-1">
+  <form class="mb-4" style="width: 24rem">
+    <v-text-field
+      v-model="state.name"
+      label="Name"
+      required
+      @input="v$.name.$touch"
+      @blur="v$.name.$touch"
+      :error-messages="v$.name.$errors.map((e) => e.$message) as string[]"
+      class="mb-1"
+    >
     </v-text-field>
 
-    <v-text-field type="number" v-model.number="state.amount" label="Amount" required @input="v$.amount.$touch"
-      @blur="v$.amount.$touch" :error-messages="(v$.amount.$errors.map(e => e.$message) as string[])"
-      class="mb-1"></v-text-field>
+    <v-text-field
+      type="number"
+      v-model.number="state.amount"
+      label="Amount"
+      required
+      @input="v$.amount.$touch"
+      @blur="v$.amount.$touch"
+      :error-messages="v$.amount.$errors.map((e) => e.$message) as string[]"
+      class="mb-1"
+    ></v-text-field>
 
-    <v-select v-model="state.category" :items="categoryOptions" label="Item" required @change="v$.category.$touch"
-      @blur="v$.category.$touch" :error-messages="(v$.category.$errors.map(e => e.$message) as string[])" class="mb-2">
+    <v-select
+      v-model="state.category"
+      :items="categoryOptions"
+      label="Item"
+      required
+      @change="v$.category.$touch"
+      @blur="v$.category.$touch"
+      :error-messages="v$.category.$errors.map((e) => e.$message) as string[]"
+      class="mb-2"
+    >
     </v-select>
 
-    <v-btn class="me-4" @click="addTransaction" color="success">
-      submit
-    </v-btn>
-    <v-btn @click="clear" color="error">
-      clear
-    </v-btn>
+    <v-btn class="me-4" @click="addTransaction" color="success"> submit </v-btn>
+    <v-btn @click="clear" color="error"> clear </v-btn>
   </form>
 </template>

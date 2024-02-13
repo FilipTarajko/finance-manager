@@ -6,7 +6,7 @@ import { useStorage } from '@vueuse/core'
 
 export const useTransactionsStore = defineStore('transactionsStore', () => {
   const categoriesStore = useCategoriesStore()
-  const transactions: Ref<Transaction[]> = useStorage("transactions", [
+  const transactions: Ref<Transaction[]> = useStorage('transactions', [
     {
       id: 1,
       name: 'Dinner',

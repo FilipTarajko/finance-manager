@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import newCategoryForm from "@/components/NewCategoryForm.vue"
+import newCategoryForm from '@/components/NewCategoryForm.vue'
 import { useCategoriesStore } from '@/stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
 </script>
@@ -10,8 +10,13 @@ const categoriesStore = useCategoriesStore()
     <newCategoryForm></newCategoryForm>
     <h2>categories list</h2>
     <ul>
-      <li v-for="category of categoriesStore.categories" :key="category.id" :style="{ color: category.color }">
-        {{ category.id }} - {{ category.name }} <v-icon :icon="category.icon" :color="category.color" />
+      <li
+        v-for="category of categoriesStore.categories"
+        :key="category.id"
+        :style="{ color: category.color }"
+      >
+        {{ category.id }} - {{ category.name }}
+        <v-icon :icon="category.icon" :color="category.color" />
       </li>
     </ul>
   </main>

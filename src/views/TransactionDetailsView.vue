@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import NewTransactionForm from '@/components/NewTransactionForm.vue'
 import { useTransactionsStore } from '../stores/transactionsStore'
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 const transactionsStore = useTransactionsStore()
-const route = useRoute();
+const route = useRoute()
 
 const transaction = computed(() => {
-  return transactionsStore.transactions.filter((e) => e.id == route.params.transactionId as any)[0];
+  return transactionsStore.transactions.filter(
+    (e) => e.id == (route.params.transactionId as any)
+  )[0]
 })
 </script>
 
@@ -19,8 +21,6 @@ const transaction = computed(() => {
         transaction.category.name
       }})
     </template>
-    <template v-else>
-      Transaction not found
-    </template>
+    <template v-else> Transaction not found </template>
   </main>
 </template>
