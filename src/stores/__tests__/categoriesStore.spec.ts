@@ -10,7 +10,7 @@ describe('categoriesStore', () => {
   it('adds new category', () => {
     const categoriesStore = useCategoriesStore()
     categoriesStore.addCategory('test category name', '#afb034', 'testIconName')
-    let lastElement = categoriesStore.categories[categoriesStore.categories.length - 1]
+    const lastElement = categoriesStore.categories[categoriesStore.categories.length - 1]
     expect(lastElement.name).toEqual('test category name')
     expect(lastElement.color).toEqual('#afb034')
     expect(lastElement.icon).toEqual('testIconName')

@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue'
+import { type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { type Category } from '../types/types'
 import { useStorage } from '@vueuse/core'

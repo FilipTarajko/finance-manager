@@ -4,7 +4,6 @@ import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, helpers } from '@vuelidate/validators'
 
 import { useCategoriesStore } from '../stores/categoriesStore'
-import { helper } from 'echarts'
 const categoriesStore = useCategoriesStore()
 
 const icons = [
@@ -98,6 +97,7 @@ function addCategory() {
       <v-btn
         size="35"
         v-for="icon in icons"
+        :key="icon"
         :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#444;' : '#212121')"
       >
         <v-icon size="25" :color="state.color">{{ icon }}</v-icon>

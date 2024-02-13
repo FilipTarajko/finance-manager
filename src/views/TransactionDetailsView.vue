@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import NewTransactionForm from '@/components/NewTransactionForm.vue'
 import { useTransactionsStore } from '../stores/transactionsStore'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
