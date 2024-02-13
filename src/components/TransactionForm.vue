@@ -8,10 +8,16 @@ import { useCategoriesStore } from '../stores/categoriesStore'
 const transactionsStore = useTransactionsStore()
 const categoriesStore = useCategoriesStore()
 
+const props = defineProps(['transaction', 'hideDialog'])
+
+const isEditing = computed(() => {
+  return !!props?.transaction?.name
+})
+
 const initialState = {
-  name: '',
-  amount: 0,
-  category: null
+  name: props?.transaction?.name ?? '',
+  amount: props?.transaction?.amount ?? 0,
+  category: props?.transaction?.category ?? null
 }
 
 const state = reactive({
@@ -46,17 +52,22 @@ function clear() {
   }
 }
 
-function addTransaction() {
+function editOrCreateAndAddTransaction() {
   v$.value.$validate()
   if (v$.value.$error || !state.category) {
     return
   }
-  transactionsStore.addTransaction(state.name, state.amount, state.category)
+  if (isEditing.value) {
+    transactionsStore.editExistingTransaction(props.transaction, state)
+    props.hideDialog()
+  } else {
+    transactionsStore.createAndAddTransaction(state.name, state.amount, state.category)
+  }
 }
 </script>
 
 <template>
-  <h2>new transaction</h2>
+  <h2>{{ isEditing ? 'edit transaction: ' + props.transaction.name : 'new transaction' }}</h2>
   <form class="mb-4" style="width: 24rem">
     <v-text-field
       v-model="state.name"
@@ -92,7 +103,10 @@ function addTransaction() {
     >
     </v-select>
 
-    <v-btn class="me-4" @click="addTransaction" color="success"> submit </v-btn>
-    <v-btn @click="clear" color="error"> clear </v-btn>
+    <v-btn class="me-4" @click="editOrCreateAndAddTransaction" color="success">
+      {{ isEditing ? 'update' : 'add' }}
+    </v-btn>
+    <v-btn class="me-4" @click="clear" color="error"> reset </v-btn>
+    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
   </form>
 </template>

@@ -111,7 +111,7 @@ export const useTransactionsStore = defineStore('transactionsStore', () => {
 
   const negativeTransactions = computed(() => transactions.value.filter((elem) => elem.amount < 0))
 
-  function addTransaction(name: string, amount: number, category: Category) {
+  function createAndAddTransaction(name: string, amount: number, category: Category) {
     let nextId = 0
     for (const elem of transactions.value) {
       if (nextId <= elem.id) {
@@ -127,6 +127,12 @@ export const useTransactionsStore = defineStore('transactionsStore', () => {
     })
   }
 
+  function editExistingTransaction(transaction: Transaction, newState: any) {
+    transaction.amount = newState.amount
+    transaction.category = newState.category
+    transaction.name = newState.name
+  }
+
   function deleteTransaction(transaction: Transaction) {
     transactions.value = transactions.value.filter((elem) => elem != transaction)
   }
@@ -135,7 +141,8 @@ export const useTransactionsStore = defineStore('transactionsStore', () => {
     transactions,
     positiveTransactions,
     negativeTransactions,
-    addTransaction,
+    createAndAddTransaction,
+    editExistingTransaction,
     deleteTransaction
   }
 })

@@ -11,11 +11,11 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('Amount').fill('345.67');
   await page.getByRole('combobox').locator('div').filter({ hasText: 'ItemItem' }).locator('div').click();
   await page.getByRole('option', { name: 'Eating out' }).click();
-  await page.getByRole('button', { name: 'submit' }).click();
+  await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('testname : 345.67')).toBeVisible();
 
   // Transactions - delete
-  await page.locator('li').filter({ hasText: 'testname : 345.67' }).getByRole('button').click();
+  await page.locator('li').filter({ hasText: 'testname : 345.67' }).getByRole('button').nth(1).click();
   await expect(page.getByText('testname : 345.67')).toBeHidden();
 
   // Category - create

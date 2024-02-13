@@ -17,7 +17,7 @@ describe('transactionStore', () => {
 
   it('creates new transaction', () => {
     const transactionsStore = useTransactionsStore()
-    transactionsStore.addTransaction('test transaction', -12.34, testCategory)
+    transactionsStore.createAndAddTransaction('test transaction', -12.34, testCategory)
     const testElement = transactionsStore.transactions[transactionsStore.transactions.length - 1]
     expect(testElement.name).toEqual('test transaction')
     expect(testElement.amount).toEqual(-12.34)
