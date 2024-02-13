@@ -13,8 +13,8 @@ const transactionsStore = useTransactionsStore()
       <li v-for="transaction of transactionsStore.transactions" :key="transaction.id">
         {{ transaction.id }} - {{ transaction.name }}: {{ transaction.amount }} (
         <span :style="{ color: transaction.category.color }">
-          <v-icon :icon="transaction.category.icon" />{{ transaction.category.name }} </span
-        >)
+          <v-icon :icon="transaction.category.icon" />{{ transaction.category.name }} </span>)
+        <v-icon icon="mdi-delete" style="color: red" @click="transactionsStore.deleteTransaction(transaction)"></v-icon>
       </li>
     </ul>
   </main>

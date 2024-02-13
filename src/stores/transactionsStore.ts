@@ -127,5 +127,9 @@ export const useTransactionsStore = defineStore('transactionsStore', () => {
     })
   }
 
-  return { transactions, positiveTransactions, negativeTransactions, addTransaction }
+  function deleteTransaction(transaction: Transaction) {
+    transactions.value = transactions.value.filter((elem) => elem != transaction);
+  }
+
+  return { transactions, positiveTransactions, negativeTransactions, addTransaction, deleteTransaction }
 })
