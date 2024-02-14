@@ -79,7 +79,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     }
   ])
 
-  function addCategory(name: string, color: string, icon: string) {
+  function createAndAddCategory(name: string, color: string, icon: string) {
     let nextId = 0
     for (const elem of categories.value) {
       if (nextId <= elem.id) {
@@ -94,5 +94,12 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     })
   }
 
-  return { categories, addCategory }
+  function editExistingCategory(category: Category, newState: any) {
+    console.log(newState)
+    category.name = newState.name;
+    category.color = newState.color;
+    category.icon = newState.icon;
+  }
+
+  return { categories, createAndAddCategory, editExistingCategory }
 })
