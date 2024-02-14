@@ -73,13 +73,13 @@ const option = ref({
       name: 'Cost',
       type: 'bar',
       stack: 'Total',
-      label: {
-        show: true,
-        formatter: '{b}',
-        position: 'top',
-        rotate: 15,
-        color: '#ffffff'
-      },
+      // label: {
+      //   show: false,
+      //   formatter: '{b}',
+      //   position: 'bottom',
+      //   rotate: 15,
+      //   color: '#ffffff'
+      // },
       data: data
     }
   ]

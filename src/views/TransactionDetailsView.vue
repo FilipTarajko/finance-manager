@@ -6,8 +6,7 @@ const categoriesStore = useCategoriesStore()
 const route = useRoute()
 
 const transaction = computed(() => {
-  // TODO - replace with find?
-  return categoriesStore.transactions.filter((e) => e.id == (route.params.transactionId as any))[0]
+  return categoriesStore.transactions.find((e) => e.id == (route.params.transactionId as any))
 })
 </script>
 

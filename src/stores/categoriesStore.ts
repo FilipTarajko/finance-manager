@@ -7,9 +7,10 @@ import {
 } from '../types/types'
 import { useStorage } from '@vueuse/core'
 
-import defaultData from './defaultData.json'
+import defaultData from './fakerData.json'
 
 export const useCategoriesStore = defineStore('categoriesStore', () => {
+  // @ts-ignore
   const categories: Ref<Category[]> = useStorage('categories', defaultData)
 
   function createAndAddCategory(name: string, color: string, icon: string) {
@@ -37,23 +38,24 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
 
   const transactions = computed(() => {
     let result: TransactionWithCategoryData[] = []
-    categories.value.forEach((category) => {
-      category.transactions.forEach((transactionWithoutCategoryData) => {
+    console.time("x")
+    for (let i = 0; i < categories.value.length; i++) {
+      let category = categories.value[i];
+      for (let j = 0; j < category.transactions.length; j++) {
         result.push({
-          ...transactionWithoutCategoryData,
+          ...category.transactions[j],
           categoryData: {
             name: category.name,
             color: category.color,
             icon: category.icon
           }
         })
-      })
-    })
+      }
+    }
+    console.timeEnd("x")
+    console.time("sort")
     result.sort((a, b) => a.timestamp - b.timestamp)
-    // TODO
-    result = [...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result]
-    result = [...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result]
-    result = [...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result]
+    console.timeEnd("sort")
     return result
   })
 

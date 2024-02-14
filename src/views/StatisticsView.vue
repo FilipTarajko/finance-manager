@@ -24,14 +24,8 @@ const totalTransactionsSum = computed(() => {
   return negativeTransactionsLosses.value + positiveTransactionsGains.value
 })
 
-function preparePieGraphInput(array1: []) {
-  array1.sort((a: any, b: any) => b.value - a.value)
-  // TODO
-  let array = array1
-  array = [...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array]
-  array = [...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array]
-  array = [...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array]
-  return array
+function preparePieGraphInput(array: []) {
+  return array.sort((a: any, b: any) => b.value - a.value)
 }
 
 const transactionInstancesByCategory = computed(() => {
@@ -46,7 +40,7 @@ const transactionInstancesByCategory = computed(() => {
 const transactionGainsByCategory = computed(() => {
   let array: any = []
   categoriesStore.categories.forEach((category) => {
-    let value = category.transactions.filter((e) => e.amount > 0).length;
+    let value = category.transactions.filter((e) => e.amount > 0).reduce((sum, elem) => sum + elem.amount, 0);
     value && array.push({ name: category.name, value, color: category.color });
   })
   return preparePieGraphInput(array)
@@ -55,7 +49,7 @@ const transactionGainsByCategory = computed(() => {
 const transactionLossesByCategory = computed(() => {
   let array: any = []
   categoriesStore.categories.forEach((category) => {
-    let value = category.transactions.filter((e) => e.amount < 0).length;
+    let value = category.transactions.filter((e) => e.amount < 0).reduce((sum, elem) => sum - elem.amount, 0);
     value && array.push({ name: category.name, value, color: category.color });
   })
   return preparePieGraphInput(array)
