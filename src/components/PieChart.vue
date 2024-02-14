@@ -20,7 +20,7 @@ use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent
 
 provide(THEME_KEY, 'dark')
 const option = ref({
-  backgroundColor: "#212121",
+  backgroundColor: '#212121',
   title: {
     text: props.name,
     top: 12,

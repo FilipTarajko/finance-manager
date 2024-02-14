@@ -32,10 +32,20 @@ function hideDialog() {
           </RouterLink>
           : {{ item.amount }} (
           <span :style="{ color: item.categoryData.color }">
-            <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span>)
-          <v-icon @click="showDialog(item)" class="edit-button" icon="mdi-pencil" style="color: yellow" />
-          <v-icon icon="mdi-delete" class="remove-button" style="color: red"
-            @click="categoriesStore.deleteTransaction(item)"></v-icon>
+            <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span
+          >)
+          <v-icon
+            @click="showDialog(item)"
+            class="edit-button"
+            icon="mdi-pencil"
+            style="color: yellow"
+          />
+          <v-icon
+            icon="mdi-delete"
+            class="remove-button"
+            style="color: red"
+            @click="categoriesStore.deleteTransaction(item)"
+          ></v-icon>
         </template>
       </v-virtual-scroll>
     </v-card>

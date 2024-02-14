@@ -30,7 +30,7 @@ let data = props.input.map((e) => e)
 
 provide(THEME_KEY, 'dark')
 const option = ref({
-  backgroundColor: "#212121",
+  backgroundColor: '#212121',
   title: {
     text: props.name,
     left: 'center',

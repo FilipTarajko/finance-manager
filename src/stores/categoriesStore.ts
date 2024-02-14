@@ -7,7 +7,7 @@ import {
 } from '../types/types'
 import { useStorage } from '@vueuse/core'
 
-import defaultData from './fakerData.json'
+import defaultData from './smallData.json'
 
 export const useCategoriesStore = defineStore('categoriesStore', () => {
   // @ts-ignore
@@ -30,17 +30,15 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
   }
 
   function editExistingCategory(category: Category, newState: any) {
-    console.log(newState)
     category.name = newState.name
     category.color = newState.color
     category.icon = newState.icon
   }
 
   const transactions = computed(() => {
-    let result: TransactionWithCategoryData[] = []
-    console.time("x")
+    const result: TransactionWithCategoryData[] = []
     for (let i = 0; i < categories.value.length; i++) {
-      let category = categories.value[i];
+      const category = categories.value[i]
       for (let j = 0; j < category.transactions.length; j++) {
         result.push({
           ...category.transactions[j],
@@ -52,10 +50,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
         })
       }
     }
-    console.timeEnd("x")
-    console.time("sort")
     result.sort((a, b) => a.timestamp - b.timestamp)
-    console.timeEnd("sort")
     return result
   })
 
@@ -83,8 +78,8 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
   }
 
   function editExistingTransaction(transaction: TransactionWithoutCategoryData, newState: any) {
-    let category = getCategoryByTransaction(transaction);
-    let index = category.transactions.findIndex(e => e.id == transaction.id)
+    const category = getCategoryByTransaction(transaction)
+    const index = category.transactions.findIndex((e) => e.id == transaction.id)
     category.transactions[index].amount = newState.amount
     category.transactions[index].name = newState.name
   }
@@ -92,12 +87,11 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
   // @ts-ignore
   function getCategoryByTransaction(transaction: TransactionWithoutCategoryData): Category {
     for (let i = 0; i < categories.value.length; i++) {
-      let category = categories.value[i];
-      if (category.transactions.map(e => e.id).includes(transaction.id)) {
+      const category = categories.value[i]
+      if (category.transactions.map((e) => e.id).includes(transaction.id)) {
         return category
       }
     }
-    console.log("nope")
   }
 
   function deleteTransaction(transaction: TransactionWithoutCategoryData) {
