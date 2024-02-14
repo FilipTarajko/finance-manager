@@ -41,6 +41,7 @@ const transactionGainsByCategory = computed(() => {
   let array: any = []
   categoriesStore.categories.forEach((category) => {
     let value = category.transactions.filter((e) => e.amount > 0).reduce((sum, elem) => sum + elem.amount, 0);
+    value = Math.round(value * 100) / 100
     value && array.push({ name: category.name, value, color: category.color });
   })
   return preparePieGraphInput(array)
@@ -50,6 +51,7 @@ const transactionLossesByCategory = computed(() => {
   let array: any = []
   categoriesStore.categories.forEach((category) => {
     let value = category.transactions.filter((e) => e.amount < 0).reduce((sum, elem) => sum - elem.amount, 0);
+    value = Math.round(value * 100) / 100
     value && array.push({ name: category.name, value, color: category.color });
   })
   return preparePieGraphInput(array)
@@ -87,17 +89,17 @@ const transactionsChronologicallyForBarChart = computed(() => {
       <tr>
         <td>positive</td>
         <td>{{ positiveTransactionsInstances }}</td>
-        <td>{{ positiveTransactionsGains }}</td>
+        <td>{{ positiveTransactionsGains.toFixed(2) }}</td>
       </tr>
       <tr>
         <td>negative</td>
         <td>{{ negativeTransactionsInstances }}</td>
-        <td>{{ negativeTransactionsLosses }}</td>
+        <td>{{ negativeTransactionsLosses.toFixed(2) }}</td>
       </tr>
       <tr>
         <td>total</td>
         <td>{{ totalTransactionsInstances }}</td>
-        <td>{{ totalTransactionsSum }}</td>
+        <td>{{ totalTransactionsSum.toFixed(2) }}</td>
       </tr>
     </tbody>
   </v-table>

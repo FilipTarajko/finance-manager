@@ -20,8 +20,10 @@ use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent
 
 provide(THEME_KEY, 'dark')
 const option = ref({
+  backgroundColor: "#212121",
   title: {
     text: props.name,
+    top: 12,
     left: 'center'
   },
   tooltip: {
@@ -40,7 +42,7 @@ const option = ref({
       name: props.name,
       type: 'pie',
       radius: '60%',
-      center: ['50%', '50%'],
+      center: ['50%', '55%'],
       data: props.input,
       // @ts-ignore
       color: props.input.map((elem: { color: any }) => elem.color),
