@@ -15,7 +15,7 @@ test('E2E test', async ({ page }) => {
   await expect(page.getByText('testname : 345.67')).toBeVisible();
 
   // Transactions - delete
-  await page.locator('li').filter({ hasText: 'testname : 345.67' }).getByRole('button').nth(1).click();
+  await page.getByText('testname : 345.67').getByRole('button').nth(1).click();
   await expect(page.getByText('testname : 345.67')).toBeHidden();
 
   // Category - create
@@ -24,6 +24,6 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('Name').fill('qwertyuiop');
   await page.locator('.v-slider-track__background').click();
   await page.locator('button:nth-child(7)').first().click();
-  await page.getByRole('button', { name: 'submit' }).click();
+  await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('qwertyuiop')).toBeVisible();
 });

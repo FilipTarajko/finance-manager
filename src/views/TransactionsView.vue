@@ -23,8 +23,14 @@ function hideDialog() {
     <h1>Transactions</h1>
     <TransactionForm />
     <h2>transaction history</h2>
-    <v-card theme="dark" width="500">
-      <v-virtual-scroll :height="300" :items="categoriesStore.transactions">
+    <v-card
+      theme="dark"
+      width="500"
+    >
+      <v-virtual-scroll
+        :height="300"
+        :items="categoriesStore.transactions"
+      >
         <template v-slot:default="{ item }">
           <!-- {{ item.id }} - -->
           <RouterLink :to="'/transactions/' + item.id">
@@ -32,8 +38,7 @@ function hideDialog() {
           </RouterLink>
           : {{ item.amount }} (
           <span :style="{ color: item.categoryData.color }">
-            <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span
-          >)
+            <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span>)
           <v-icon
             @click="showDialog(item)"
             class="edit-button"
@@ -49,10 +54,16 @@ function hideDialog() {
         </template>
       </v-virtual-scroll>
     </v-card>
-    <v-dialog width="auto" v-model="isDialogShown">
+    <v-dialog
+      width="auto"
+      v-model="isDialogShown"
+    >
       <v-card>
         <v-card-text>
-          <TransactionForm :transaction="dialogTransaction" :hideDialog="hideDialog">
+          <TransactionForm
+            :transaction="dialogTransaction"
+            :hideDialog="hideDialog"
+          >
           </TransactionForm>
         </v-card-text>
       </v-card>
