@@ -3,9 +3,7 @@ import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength } from '@vuelidate/validators'
 
-import { useTransactionsStore } from '../stores/transactionsStore'
 import { useCategoriesStore } from '../stores/categoriesStore'
-const transactionsStore = useTransactionsStore()
 const categoriesStore = useCategoriesStore()
 
 const props = defineProps(['transaction', 'hideDialog'])
@@ -58,10 +56,10 @@ function editOrCreateAndAddTransaction() {
     return
   }
   if (isEditing.value) {
-    transactionsStore.editExistingTransaction(props.transaction, state)
+    categoriesStore.editExistingTransaction(props.transaction, state)
     props.hideDialog()
   } else {
-    transactionsStore.createAndAddTransaction(state.name, state.amount, state.category)
+    categoriesStore.createAndAddTransaction(state.name, state.amount, state.category)
   }
 }
 </script>

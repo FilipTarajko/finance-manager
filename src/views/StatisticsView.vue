@@ -1,91 +1,74 @@
 <script setup lang="ts">
-import { useTransactionsStore } from '../stores/transactionsStore'
 import { useCategoriesStore } from '../stores/categoriesStore'
 import PieChart from '../components/PieChart.vue'
 import BarChart from '../components/BarChart.vue'
 import { computed } from 'vue'
-const transactionsStore = useTransactionsStore()
 const categoriesStore = useCategoriesStore()
 
 const positiveTransactionsInstances = computed(() => {
-  return transactionsStore.positiveTransactions.length
+  return categoriesStore.positiveTransactions.length
 })
-const positiveTransactionsGain = computed(() => {
-  return transactionsStore.positiveTransactions.reduce((sum, elem) => sum + elem.amount, 0)
+const positiveTransactionsGains = computed(() => {
+  return categoriesStore.positiveTransactions.reduce((sum, elem) => sum + elem.amount, 0)
 })
 const negativeTransactionsInstances = computed(() => {
-  return transactionsStore.negativeTransactions.length
+  return categoriesStore.negativeTransactions.length
 })
 const negativeTransactionsLosses = computed(() => {
-  return transactionsStore.negativeTransactions.reduce((sum, elem) => sum + elem.amount, 0)
+  return categoriesStore.negativeTransactions.reduce((sum, elem) => sum + elem.amount, 0)
 })
 const totalTransactionsInstances = computed(() => {
-  return transactionsStore.transactions.length
+  return negativeTransactionsInstances.value + positiveTransactionsInstances.value
 })
 const totalTransactionsSum = computed(() => {
-  return transactionsStore.transactions.reduce((sum, elem) => sum + elem.amount, 0)
+  return negativeTransactionsLosses.value + positiveTransactionsGains.value
 })
 
-function objectToPieGraphInput(object: {}) {
-  let array: any = []
-  for (const [name, value] of Object.entries(object)) {
-    array.push({ name, value })
-  }
-  array.sort((a: any, b: any) => b.value - a.value)
-  categoriesStore.categories.forEach((category) => {
-    array.forEach((arrayElem: any) => {
-      if (category.name == arrayElem.name) {
-        arrayElem.color = category.color
-      }
-    })
-  })
+function preparePieGraphInput(array1: []) {
+  array1.sort((a: any, b: any) => b.value - a.value)
+  // TODO
+  let array = array1
+  array = [...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array]
+  array = [...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array]
+  array = [...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array, ...array]
   return array
 }
 
 const transactionInstancesByCategory = computed(() => {
-  let object: any = {}
-  transactionsStore.transactions.forEach((elem) => {
-    if (elem.category.name in object) {
-      object[elem.category.name] += 1
-    } else {
-      object[elem.category.name] = 1
-    }
+  let array: any = []
+  categoriesStore.categories.forEach((category) => {
+    let value = category.transactions.length;
+    category.transactions.length && array.push({ name: category.name, value, color: category.color });
   })
-  return objectToPieGraphInput(object)
+  return preparePieGraphInput(array)
 })
 
 const transactionGainsByCategory = computed(() => {
-  let object: any = {}
-  transactionsStore.positiveTransactions.forEach((elem) => {
-    if (elem.category.name in object) {
-      object[elem.category.name] += elem.amount
-    } else {
-      object[elem.category.name] = elem.amount
-    }
+  let array: any = []
+  categoriesStore.categories.forEach((category) => {
+    let value = category.transactions.filter((e) => e.amount > 0).length;
+    value && array.push({ name: category.name, value, color: category.color });
   })
-  return objectToPieGraphInput(object)
+  return preparePieGraphInput(array)
 })
 
 const transactionLossesByCategory = computed(() => {
-  let object: any = {}
-  transactionsStore.negativeTransactions.forEach((elem) => {
-    if (elem.category.name in object) {
-      object[elem.category.name] -= elem.amount
-    } else {
-      object[elem.category.name] = -elem.amount
-    }
+  let array: any = []
+  categoriesStore.categories.forEach((category) => {
+    let value = category.transactions.filter((e) => e.amount < 0).length;
+    value && array.push({ name: category.name, value, color: category.color });
   })
-  return objectToPieGraphInput(object)
+  return preparePieGraphInput(array)
 })
 
 const transactionsChronologicallyForBarChart = computed(() => {
   let array: any = []
-  transactionsStore.transactions.forEach((elem) => {
+  categoriesStore.transactions.forEach((elem) => {
     array.push({
       name: elem.name,
       value: elem.amount,
       itemStyle: {
-        color: elem.category.color
+        color: elem.categoryData.color
       }
     })
     // @ts-ignore
@@ -110,7 +93,7 @@ const transactionsChronologicallyForBarChart = computed(() => {
       <tr>
         <td>positive</td>
         <td>{{ positiveTransactionsInstances }}</td>
-        <td>{{ positiveTransactionsGain }}</td>
+        <td>{{ positiveTransactionsGains }}</td>
       </tr>
       <tr>
         <td>negative</td>
@@ -127,12 +110,8 @@ const transactionsChronologicallyForBarChart = computed(() => {
   <PieChart class="chart" name="transactions by category" :input="transactionInstancesByCategory" />
   <PieChart class="chart" name="gains by category" :input="transactionGainsByCategory" />
   <PieChart class="chart" name="losses by category" :input="transactionLossesByCategory" />
-  <BarChart
-    class="chart--tall"
-    name="transaction history"
-    subtitle="with zoom"
-    :input="transactionsChronologicallyForBarChart"
-  />
+  <BarChart class="chart--tall" name="transaction history" subtitle="with zoom"
+    :input="transactionsChronologicallyForBarChart" />
 </template>
 
 <style lang="scss">

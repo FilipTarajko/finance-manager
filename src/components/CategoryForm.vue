@@ -83,24 +83,46 @@ function editOrCreateAndAddCategory() {
 <template>
   <h2>{{ isEditing ? 'edit category: ' + props.category.name : 'new category' }}</h2>
   <form class="mb-4" style="width: 24rem">
-    <v-text-field v-model="state.name" label="Name" required @input="v$.name.$touch" @blur="v$.name.$touch"
-      :error-messages="v$.name.$errors.map((e) => e.$message) as string[]" class="mb-1">
+    <v-text-field
+      v-model="state.name"
+      label="Name"
+      required
+      @input="v$.name.$touch"
+      @blur="v$.name.$touch"
+      :error-messages="v$.name.$errors.map((e) => e.$message) as string[]"
+      class="mb-1"
+    >
     </v-text-field>
 
     <v-label>Color</v-label>
-    <v-color-picker hide-inputs theme="dark" mode="hex" v-model="state.color" label="Color" required
-      @input="v$.color.$touch" @blur="v$.color.$touch"
-      :error-messages="v$.color.$errors.map((e) => e.$message) as string[]" class="mb-4"></v-color-picker>
+    <v-color-picker
+      hide-inputs
+      theme="dark"
+      mode="hex"
+      v-model="state.color"
+      label="Color"
+      required
+      @input="v$.color.$touch"
+      @blur="v$.color.$touch"
+      :error-messages="v$.color.$errors.map((e) => e.$message) as string[]"
+      class="mb-4"
+    ></v-color-picker>
 
     <v-label>Icon</v-label>
     <v-btn-toggle v-model="state.iconIndex" class="mb-2" shaped mandatory>
-      <v-btn size="35" v-for="icon in icons" :key="icon"
-        :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#444;' : '#212121')">
+      <v-btn
+        size="35"
+        v-for="icon in icons"
+        :key="icon"
+        :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#444;' : '#212121')"
+      >
         <v-icon size="25" :color="state.color">{{ icon }}</v-icon>
       </v-btn>
     </v-btn-toggle>
     <br />
-    <v-btn class="me-4" @click="editOrCreateAndAddCategory" color="success"> {{ isEditing ? 'update' : 'add' }} </v-btn>
+    <v-btn class="me-4" @click="editOrCreateAndAddCategory" color="success">
+      {{ isEditing ? 'update' : 'add' }}
+    </v-btn>
     <v-btn class="me-4" @click="clear" color="error"> clear </v-btn>
     <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
   </form>

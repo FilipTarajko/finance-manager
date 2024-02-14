@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useTransactionsStore } from '../stores/transactionsStore'
+import { useCategoriesStore } from '../stores/categoriesStore'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-const transactionsStore = useTransactionsStore()
+const categoriesStore = useCategoriesStore()
 const route = useRoute()
 
 const transaction = computed(() => {
-  return transactionsStore.transactions.filter(
-    (e) => e.id == (route.params.transactionId as any)
-  )[0]
+  // TODO - replace with find?
+  return categoriesStore.transactions.filter((e) => e.id == (route.params.transactionId as any))[0]
 })
 </script>
 
@@ -17,7 +16,7 @@ const transaction = computed(() => {
     <h1>Transaction</h1>
     <template v-if="transaction">
       {{ transaction.id }} - {{ transaction.name }}: {{ transaction.amount }} ({{
-        transaction.category.name
+        transaction.categoryData.name
       }})
     </template>
     <template v-else> Transaction not found </template>

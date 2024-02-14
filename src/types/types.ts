@@ -1,8 +1,7 @@
-export type Transaction = {
+export type TransactionWithoutCategoryData = {
   id: number
   name: string
   amount: number
-  category: Category
   timestamp: EpochTimeStamp
 }
 
@@ -11,4 +10,17 @@ export type Category = {
   name: string
   color: string
   icon: string
+  transactions: TransactionWithoutCategoryData[]
+}
+
+export type TransactionWithCategoryData = {
+  id: number
+  name: string
+  amount: number
+  timestamp: EpochTimeStamp
+  categoryData: {
+    name: string
+    color: string
+    icon: string
+  }
 }

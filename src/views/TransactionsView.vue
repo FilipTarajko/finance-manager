@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import TransactionForm from '@/components/TransactionForm.vue'
-import { useTransactionsStore } from '../stores/transactionsStore'
 import { ref, type Ref } from 'vue'
-import type { Transaction } from '@/types/types'
-const transactionsStore = useTransactionsStore()
+import type { TransactionWithCategoryData } from '@/types/types'
+import { useCategoriesStore } from '@/stores/categoriesStore'
+const categoriesStore = useCategoriesStore()
 
 let isDialogShown = ref(false)
-let dialogTransaction: Ref<Transaction | null> = ref(null)
+let dialogTransaction: Ref<TransactionWithCategoryData | null> = ref(null)
 
-function showDialog(transaction: Transaction) {
+function showDialog(transaction: TransactionWithCategoryData) {
   dialogTransaction.value = transaction
   isDialogShown.value = true
 }
@@ -24,15 +24,15 @@ function hideDialog() {
     <TransactionForm />
     <h2>transaction history</h2>
     <ul>
-      <li v-for="transaction of transactionsStore.transactions" :key="transaction.id">
+      <li v-for="transaction of categoriesStore.transactions" :key="transaction.id">
         {{ transaction.id }} -
 
         <RouterLink :to="'/transactions/' + transaction.id">
           {{ transaction.name }}
         </RouterLink>
         : {{ transaction.amount }} (
-        <span :style="{ color: transaction.category.color }">
-          <v-icon :icon="transaction.category.icon" />{{ transaction.category.name }} </span
+        <span :style="{ color: transaction.categoryData.color }">
+          <v-icon :icon="transaction.categoryData.icon" />{{ transaction.categoryData.name }} </span
         >)
         <v-icon
           @click="showDialog(transaction)"
@@ -44,7 +44,7 @@ function hideDialog() {
           icon="mdi-delete"
           class="remove-button"
           style="color: red"
-          @click="transactionsStore.deleteTransaction(transaction)"
+          @click="categoriesStore.deleteTransaction(transaction)"
         ></v-icon>
       </li>
     </ul>

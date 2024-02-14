@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useTransactionsStore } from '@/stores/transactionsStore'
-const transactionsStore = useTransactionsStore()
+import { useCategoriesStore } from '@/stores/categoriesStore'
+const categoriesStore = useCategoriesStore()
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -10,7 +10,7 @@ function getLocale() {
 }
 
 function exportData() {
-  let text = JSON.stringify(transactionsStore.transactions)
+  let text = JSON.stringify(categoriesStore.categories)
   let filename = 'exported data ' + new Date().toLocaleString(getLocale()) + '.json'
 
   const element = document.createElement('a')
