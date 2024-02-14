@@ -23,31 +23,22 @@ function hideDialog() {
     <h1>Transactions</h1>
     <TransactionForm />
     <h2>transaction history</h2>
-    <ul>
-      <li v-for="transaction of categoriesStore.transactions" :key="transaction.id">
-        {{ transaction.id }} -
-
-        <RouterLink :to="'/transactions/' + transaction.id">
-          {{ transaction.name }}
-        </RouterLink>
-        : {{ transaction.amount }} (
-        <span :style="{ color: transaction.categoryData.color }">
-          <v-icon :icon="transaction.categoryData.icon" />{{ transaction.categoryData.name }} </span
-        >)
-        <v-icon
-          @click="showDialog(transaction)"
-          class="edit-button"
-          icon="mdi-pencil"
-          style="color: yellow"
-        />
-        <v-icon
-          icon="mdi-delete"
-          class="remove-button"
-          style="color: red"
-          @click="categoriesStore.deleteTransaction(transaction)"
-        ></v-icon>
-      </li>
-    </ul>
+    <v-card theme="dark" width="500">
+      <v-virtual-scroll :height="300" :items="categoriesStore.transactions">
+        <template v-slot:default="{ item }">
+          <!-- {{ item.id }} - -->
+          <RouterLink :to="'/transactions/' + item.id">
+            {{ item.name }}
+          </RouterLink>
+          : {{ item.amount }} (
+          <span :style="{ color: item.categoryData.color }">
+            <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span>)
+          <v-icon @click="showDialog(item)" class="edit-button" icon="mdi-pencil" style="color: yellow" />
+          <v-icon icon="mdi-delete" class="remove-button" style="color: red"
+            @click="categoriesStore.deleteTransaction(item)"></v-icon>
+        </template>
+      </v-virtual-scroll>
+    </v-card>
     <v-dialog width="auto" v-model="isDialogShown">
       <v-card>
         <v-card-text>
