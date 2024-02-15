@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CategoryForm from '@/components/CategoryForm.vue'
+import CategoryEditDialog from '@/components/CategoryEditDialog.vue'
 import TransactionEditDialog from '@/components/TransactionEditDialog.vue'
 import TransactionList from '@/components/TransactionList.vue'
 import CategoryComponent from '@/components/CategoryComponent.vue'
@@ -49,19 +49,12 @@ const transactionsInCategory = computed(() => {
         :category="category"
         :showDialog="showCategoryDialog"
       ></CategoryComponent>
-      <v-dialog
-        width="auto"
+      <CategoryEditDialog
         v-model="isCategoryDialogShown"
+        :hideDialog="hideCategoryDialog"
+        :editedCategory="category"
       >
-        <v-card theme="dark">
-          <v-card-text>
-            <CategoryForm
-              :category="category"
-              :hideDialog="hideCategoryDialog"
-            > </CategoryForm>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+      </CategoryEditDialog>
       <h2>Transactions</h2>
       <template v-if="transactionsInCategory.length">
         <TransactionList

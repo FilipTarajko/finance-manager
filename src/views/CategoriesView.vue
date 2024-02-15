@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import categoryForm from '@/components/CategoryForm.vue'
+import CategoryForm from '@/components/CategoryForm.vue'
+import CategoryEditDialog from '@/components/CategoryEditDialog.vue'
 import CategoryComponent from '@/components/CategoryComponent.vue'
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import type { Category } from '@/types/types'
@@ -22,7 +23,7 @@ function hideDialog() {
 <template>
   <main>
     <h1>Categories</h1>
-    <categoryForm></categoryForm>
+    <CategoryForm></CategoryForm>
     <h2>categories list</h2>
     <ul>
       <li
@@ -36,18 +37,11 @@ function hideDialog() {
         ></CategoryComponent>
       </li>
     </ul>
-    <v-dialog
-      width="auto"
+    <CategoryEditDialog
       v-model="isDialogShown"
+      :hideDialog="hideDialog"
+      :editedCategory="editedCategory"
     >
-      <v-card theme="dark">
-        <v-card-text>
-          <categoryForm
-            :category="editedCategory"
-            :hideDialog="hideDialog"
-          > </categoryForm>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+    </CategoryEditDialog>
   </main>
 </template>
