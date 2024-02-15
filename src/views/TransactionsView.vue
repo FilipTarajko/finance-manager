@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TransactionForm from '@/components/TransactionForm.vue'
 import TransactionList from '@/components/TransactionList.vue'
+import TransactionEditDialog from '@/components/TransactionEditDialog.vue'
 import { ref, type Ref } from 'vue'
 import type { TransactionWithCategoryData } from '@/types/types'
 import { useCategoriesStore } from '@/stores/categoriesStore';
@@ -28,19 +29,10 @@ function hideDialog() {
       :transactions="categoriesStore.transactions"
       :showDialog="showDialog"
     ></TransactionList>
-    <v-dialog
-      width="auto"
-      v-model="isDialogShown"
-    >
-      <v-card>
-        <v-card-text>
-          <TransactionForm
-            :transaction="dialogTransaction"
-            :hideDialog="hideDialog"
-          >
-          </TransactionForm>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+    <TransactionEditDialog
+      v-model=isDialogShown
+      :hideDialog="hideDialog"
+      :transaction="dialogTransaction"
+    ></TransactionEditDialog>
   </main>
 </template>

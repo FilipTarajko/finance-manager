@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CategoryForm from '@/components/CategoryForm.vue'
-import TransactionForm from '@/components/TransactionForm.vue'
+import TransactionEditDialog from '@/components/TransactionEditDialog.vue'
 import TransactionList from '@/components/TransactionList.vue'
 import CategoryComponent from '@/components/CategoryComponent.vue'
 import { useCategoriesStore } from '../stores/categoriesStore'
@@ -68,20 +68,11 @@ const transactionsInCategory = computed(() => {
           :transactions="transactionsInCategory"
           :showDialog="showTransactionDialog"
         ></TransactionList>
-        <v-dialog
-          width="auto"
-          v-model="isTransactionDialogShown"
-        >
-          <v-card>
-            <v-card-text>
-              <TransactionForm
-                :transaction="dialogTransaction"
-                :hideDialog="hideTransactionDialog"
-              >
-              </TransactionForm>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+        <TransactionEditDialog
+          v-model=isTransactionDialogShown
+          :hideDialog="hideTransactionDialog"
+          :transaction="dialogTransaction"
+        ></TransactionEditDialog>
       </template>
       <template v-else>
         There are no transactions in this category

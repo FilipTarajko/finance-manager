@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '../stores/categoriesStore'
-import TransactionForm from '@/components/TransactionForm.vue'
+import TransactionEditDialog from '@/components/TransactionEditDialog.vue'
 import TransactionComponent from '@/components/TransactionComponent.vue'
 import type { TransactionWithCategoryData } from '@/types/types';
 import { computed, ref, type Ref } from 'vue'
@@ -33,20 +33,11 @@ const transaction = computed(() => {
         :transaction=transaction
         :showDialog=showDialog
       ></TransactionComponent>
-      <v-dialog
-        width="auto"
-        v-model="isDialogShown"
-      >
-        <v-card>
-          <v-card-text>
-            <TransactionForm
-              :transaction="transaction"
-              :hideDialog="hideDialog"
-            >
-            </TransactionForm>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+      <TransactionEditDialog
+        v-model=isDialogShown
+        :hideDialog="hideDialog"
+        :transaction="transaction"
+      ></TransactionEditDialog>
     </template>
     <template v-else> Transaction not found </template>
   </main>
