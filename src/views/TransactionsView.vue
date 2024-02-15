@@ -36,7 +36,7 @@ function hideDialog() {
           <RouterLink :to="'/transactions/' + item.id">
             {{ item.name }}
           </RouterLink>
-          : {{ item.amount }} (
+          : {{ item.amount.toFixed(2) }} (
           <span :style="{ color: item.categoryData.color }">
             <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span>)
           <v-icon

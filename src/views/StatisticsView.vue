@@ -44,7 +44,7 @@ const transactionGainsByCategory = computed(() => {
     let value = category.transactions
       .filter((e) => e.amount > 0)
       .reduce((sum, elem) => sum + elem.amount, 0)
-    value = Math.round(value * 100) / 100
+      .toFixed(2)
     value && array.push({ name: category.name, value, color: category.color })
   })
   return preparePieGraphInput(array)
@@ -56,7 +56,7 @@ const transactionLossesByCategory = computed(() => {
     let value = category.transactions
       .filter((e) => e.amount < 0)
       .reduce((sum, elem) => sum - elem.amount, 0)
-    value = Math.round(value * 100) / 100
+      .toFixed(2)
     value && array.push({ name: category.name, value, color: category.color })
   })
   return preparePieGraphInput(array)
@@ -67,7 +67,7 @@ const transactionsChronologicallyForBarChart = computed(() => {
   categoriesStore.transactions.forEach((elem) => {
     array.push({
       name: elem.name,
-      value: elem.amount,
+      value: elem.amount.toFixed(2),
       itemStyle: {
         color: elem.categoryData.color
       }
@@ -107,9 +107,21 @@ const transactionsChronologicallyForBarChart = computed(() => {
       </tr>
     </tbody>
   </v-table>
-  <PieChart class="chart" name="transactions by category" :input="transactionInstancesByCategory" />
-  <PieChart class="chart" name="gains by category" :input="transactionGainsByCategory" />
-  <PieChart class="chart" name="losses by category" :input="transactionLossesByCategory" />
+  <PieChart
+    class="chart"
+    name="transactions by category"
+    :input="transactionInstancesByCategory"
+  />
+  <PieChart
+    class="chart"
+    name="gains by category"
+    :input="transactionGainsByCategory"
+  />
+  <PieChart
+    class="chart"
+    name="losses by category"
+    :input="transactionLossesByCategory"
+  />
   <BarChart
     class="chart--tall"
     name="transaction history"
