@@ -82,7 +82,10 @@ function editOrCreateAndAddCategory() {
 
 <template>
   <h2>{{ isEditing ? 'edit category: ' + props.category.name : 'new category' }}</h2>
-  <form class="mb-4" style="width: 24rem">
+  <form
+    class="mb-4"
+    style="width: 24rem"
+  >
     <v-text-field
       v-model="state.name"
       label="Name"
@@ -109,21 +112,42 @@ function editOrCreateAndAddCategory() {
     ></v-color-picker>
 
     <v-label>Icon</v-label>
-    <v-btn-toggle v-model="state.iconIndex" class="mb-2" shaped mandatory>
+    <v-btn-toggle
+      v-model="state.iconIndex"
+      class="mb-2"
+      shaped
+      mandatory
+    >
       <v-btn
         size="35"
         v-for="icon in icons"
         :key="icon"
+        :aria-label="'select icon: ' + icon.split('mdi-')[1].replace('-', ' ')"
         :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#444;' : '#212121')"
       >
-        <v-icon size="25" :color="state.color">{{ icon }}</v-icon>
+        <v-icon
+          size="25"
+          :color="state.color"
+        >{{ icon }}</v-icon>
       </v-btn>
     </v-btn-toggle>
     <br />
-    <v-btn class="me-4" @click="editOrCreateAndAddCategory" color="success">
+    <v-btn
+      class="me-4"
+      @click="editOrCreateAndAddCategory"
+      color="success"
+    >
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
-    <v-btn class="me-4" @click="clear" color="error"> clear </v-btn>
-    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
+    <v-btn
+      class="me-4"
+      @click="clear"
+      color="error"
+    > clear </v-btn>
+    <v-btn
+      v-if="isEditing"
+      @click="hideDialog"
+      color="warning"
+    > cancel & exit </v-btn>
   </form>
 </template>

@@ -43,12 +43,14 @@ function hideDialog() {
             @click="showDialog(item)"
             class="edit-button"
             icon="mdi-pencil"
+            aria-label="edit transaction"
             style="color: yellow"
           />
           <v-icon
             icon="mdi-delete"
             class="remove-button"
             style="color: red"
+            aria-label="delete transaction"
             @click="categoriesStore.deleteTransaction(item)"
           ></v-icon>
         </template>

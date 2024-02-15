@@ -30,21 +30,30 @@ function hideDialog() {
         :style="{ color: category.color }"
       >
         {{ category.id }} - {{ category.name }}
-        <v-icon :icon="category.icon" :color="category.color" />
+        <v-icon
+          :icon="category.icon"
+          :color="category.color"
+        />
         <v-icon
           @click="showDialog(category)"
           class="edit-button"
           icon="mdi-pencil"
+          aria-label="edit category"
           style="color: yellow"
         />
       </li>
     </ul>
-    <v-dialog width="auto" v-model="isDialogShown">
+    <v-dialog
+      width="auto"
+      v-model="isDialogShown"
+    >
       <v-card>
         <v-card-text>
-          <categoryForm :category="editedCategory" :hideDialog="hideDialog"> </categoryForm>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </main>
-</template>
+          <categoryForm
+            :category="editedCategory"
+          :hideDialog="hideDialog"
+        > </categoryForm>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+</main></template>

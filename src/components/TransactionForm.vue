@@ -66,7 +66,10 @@ function editOrCreateAndAddTransaction() {
 
 <template>
   <h2>{{ isEditing ? 'edit transaction: ' + props.transaction.name : 'new transaction' }}</h2>
-  <form class="mb-4" style="width: 24rem">
+  <form
+    class="mb-4"
+    style="width: 24rem"
+  >
     <v-text-field
       v-model="state.name"
       label="Name"
@@ -85,26 +88,37 @@ function editOrCreateAndAddTransaction() {
       required
       @input="v$.amount.$touch"
       @blur="v$.amount.$touch"
-      :error-messages="v$.amount.$errors.map((e) => e.$message) as string[]"
-      class="mb-1"
-    ></v-text-field>
+    :error-messages="v$.amount.$errors.map((e) => e.$message) as string[]"
+    class="mb-1"
+  ></v-text-field>
 
-    <v-select
-      v-model="state.category"
-      :items="categoryOptions"
-      label="Item"
-      required
-      @change="v$.category.$touch"
-      @blur="v$.category.$touch"
-      :error-messages="v$.category.$errors.map((e) => e.$message) as string[]"
-      class="mb-2"
-    >
-    </v-select>
+  <v-select
+    v-model="state.category"
+    :items="categoryOptions"
+    label="Item"
+    required
+    @change="v$.category.$touch"
+    @blur="v$.category.$touch"
+    :error-messages="v$.category.$errors.map((e) => e.$message) as string[]"
+    class="mb-2"
+  >
+  </v-select>
 
-    <v-btn class="me-4" @click="editOrCreateAndAddTransaction" color="success">
-      {{ isEditing ? 'update' : 'add' }}
-    </v-btn>
-    <v-btn class="me-4" @click="clear" color="error"> reset </v-btn>
-    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
-  </form>
-</template>
+  <v-btn
+    class="me-4"
+    @click="editOrCreateAndAddTransaction"
+    color="success"
+  >
+    {{ isEditing ? 'update' : 'add' }}
+  </v-btn>
+  <v-btn
+    class="me-4"
+    @click="clear"
+    color="error"
+  > reset </v-btn>
+  <v-btn
+    v-if="isEditing"
+    @click="hideDialog"
+    color="warning"
+  > cancel & exit </v-btn>
+</form></template>
