@@ -11,13 +11,18 @@ const router = createRouter({
     },
     {
       path: '/transactions/:transactionId',
-      name: 'transactions/',
+      name: 'transaction',
       component: () => import('../views/TransactionDetailsView.vue')
     },
     {
       path: '/categories',
       name: 'categories',
       component: () => import('../views/CategoriesView.vue')
+    },
+    {
+      path: '/categories/:categoryId',
+      name: 'category',
+      component: () => import('../views/CategoryDetailsView.vue')
     },
     {
       path: '/statistics',

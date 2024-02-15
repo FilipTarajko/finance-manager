@@ -141,6 +141,7 @@ function editOrCreateAndAddCategory() {
     </v-btn>
     <v-btn
       class="me-4"
+      theme="light"
       @click="clear"
       color="error"
     > clear </v-btn>

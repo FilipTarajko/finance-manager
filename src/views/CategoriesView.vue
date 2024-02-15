@@ -27,9 +27,9 @@ function hideDialog() {
       <li
         v-for="category of categoriesStore.categories"
         :key="category.id"
-        :style="{ color: category.color }"
+        :style="{ color: category.color, 'list-style': 'none' }"
       >
-        {{ category.id }} - {{ category.name }}
+        <RouterLink :to="'/categories/' + category.id">{{ category.name }}</RouterLink>
         <v-icon
           :icon="category.icon"
           :color="category.color"
@@ -47,13 +47,14 @@ function hideDialog() {
       width="auto"
       v-model="isDialogShown"
     >
-      <v-card>
+      <v-card theme="dark">
         <v-card-text>
           <categoryForm
             :category="editedCategory"
-          :hideDialog="hideDialog"
-        > </categoryForm>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
-</main></template>
+            :hideDialog="hideDialog"
+          > </categoryForm>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </main>
+</template>
