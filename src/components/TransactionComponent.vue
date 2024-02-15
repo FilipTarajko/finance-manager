@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '@/stores/categoriesStore';
+import type { TransactionWithCategoryData } from '@/types/types'
 
-defineProps(['transaction', 'showDialog'])
+defineProps<{
+  transaction: TransactionWithCategoryData,
+  showDialog: Function
+}>()
+
 const categoriesStore = useCategoriesStore();
 
 </script>

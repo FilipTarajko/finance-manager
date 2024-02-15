@@ -1,5 +1,11 @@
 <script setup lang="ts">
-defineProps(['category', 'showDialog'])
+import type { Category } from '@/types/types'
+
+defineProps<{
+  category: Category,
+  showDialog: Function
+}>()
+
 </script>
 
 

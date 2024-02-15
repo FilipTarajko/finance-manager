@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import TransactionForm from '@/components/TransactionForm.vue'
-import TransactionComponent from '@/components/TransactionComponent.vue'
+import TransactionList from '@/components/TransactionList.vue'
 import { ref, type Ref } from 'vue'
 import type { TransactionWithCategoryData } from '@/types/types'
-import { useCategoriesStore } from '@/stores/categoriesStore'
+import { useCategoriesStore } from '@/stores/categoriesStore';
 const categoriesStore = useCategoriesStore()
 
 let isDialogShown = ref(false)
@@ -24,22 +24,10 @@ function hideDialog() {
     <h1>Transactions</h1>
     <TransactionForm />
     <h2>transaction history</h2>
-    <v-card
-      theme="dark"
-      width="500"
-    >
-      <v-virtual-scroll
-        :height="300"
-        :items="categoriesStore.transactions"
-      >
-        <template v-slot:default="{ item }">
-          <TransactionComponent
-            :transaction=item
-            :showDialog=showDialog
-          ></TransactionComponent>
-        </template>
-      </v-virtual-scroll>
-    </v-card>
+    <TransactionList
+      :transactions="categoriesStore.transactions"
+      :showDialog="showDialog"
+    ></TransactionList>
     <v-dialog
       width="auto"
       v-model="isDialogShown"
