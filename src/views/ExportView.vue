@@ -25,5 +25,7 @@ function exportData() {
 
 <template>
   <h1 class="mb-4">Export</h1>
-  <v-btn @click="exportData" theme="dark" variant="outlined"> export data </v-btn>
-</template>
+  <v-btn
+    @click="exportData"
+    variant="outlined"
+  > export data </v-btn></template>

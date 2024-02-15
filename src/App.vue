@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { useTheme } from 'vuetify'
+
+const theme = useTheme()
+theme.global.name.value = 'dark'
+
+// function toggleTheme() {
+//   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+// }
+
 </script>
 
 <template>
@@ -8,6 +17,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterLink to="/categories">Categories</RouterLink>
     <RouterLink to="/statistics">Statistics</RouterLink>
     <RouterLink to="/export">Export</RouterLink>
+    <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
   </nav>
 
   <RouterView />

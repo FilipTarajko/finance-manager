@@ -16,7 +16,7 @@ defineProps<{
     width="auto"
     v-model="isDialogShown"
   >
-    <v-card theme="dark">
+    <v-card>
       <v-card-text>
         <CategoryForm
           :category="editedCategory"

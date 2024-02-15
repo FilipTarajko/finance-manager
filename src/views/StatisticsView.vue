@@ -81,7 +81,7 @@ const transactionsChronologicallyForBarChart = computed(() => {
 
 <template>
   <h1>Statistics</h1>
-  <v-table theme="dark">
+  <v-table>
     <thead>
       <tr>
         <th class="text-left">type of transaction</th>

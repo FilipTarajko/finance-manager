@@ -100,7 +100,6 @@ function editOrCreateAndAddCategory() {
     <v-label>Color</v-label>
     <v-color-picker
       hide-inputs
-      theme="dark"
       mode="hex"
       v-model="state.color"
       label="Color"

@@ -11,10 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <v-card
-    theme="dark"
-    width="500"
-  >
+  <v-card width="500">
     <v-virtual-scroll
       :height="300"
       :items="transactions"
