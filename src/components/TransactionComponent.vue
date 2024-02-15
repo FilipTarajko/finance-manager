@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '@/stores/categoriesStore';
 
-defineProps(['item', 'showDialog'])
+defineProps(['transaction', 'showDialog'])
 const categoriesStore = useCategoriesStore();
 
 </script>
 
 
 <template>
-  <RouterLink :to="'/transactions/' + item.id">
-    {{ item.name }}
+  <RouterLink :to="'/transactions/' + transaction.id">
+    {{ transaction.name }}
   </RouterLink>
-  : {{ item.amount.toFixed(2) }} (
-  <span :style="{ color: item.categoryData.color }">
-    <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span>)
+  : {{ transaction.amount.toFixed(2) }} (
+  <span :style="{ color: transaction.categoryData.color }">
+    <v-icon :icon="transaction.categoryData.icon" />{{ transaction.categoryData.name }} </span>)
   <v-icon
-    @click="showDialog(item)"
+    @click="showDialog(transaction)"
     class="edit-button"
     icon="mdi-pencil"
     aria-label="edit transaction"
@@ -26,6 +26,6 @@ const categoriesStore = useCategoriesStore();
     class="remove-button"
     style="color: red"
     aria-label="delete transaction"
-    @click="categoriesStore.deleteTransaction(item)"
+    @click="categoriesStore.deleteTransaction(transaction)"
   ></v-icon>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TransactionForm from '@/components/TransactionForm.vue'
-import Transaction from '@/components/Transaction.vue'
+import TransactionComponent from '@/components/TransactionComponent.vue'
 import { ref, type Ref } from 'vue'
 import type { TransactionWithCategoryData } from '@/types/types'
 import { useCategoriesStore } from '@/stores/categoriesStore'
@@ -33,10 +33,10 @@ function hideDialog() {
         :items="categoriesStore.transactions"
       >
         <template v-slot:default="{ item }">
-          <Transaction
-            :item=item
+          <TransactionComponent
+            :transaction=item
             :showDialog=showDialog
-          ></Transaction>
+          ></TransactionComponent>
         </template>
       </v-virtual-scroll>
     </v-card>

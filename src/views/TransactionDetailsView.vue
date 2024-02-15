@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '../stores/categoriesStore'
 import TransactionForm from '@/components/TransactionForm.vue'
-import Transaction from '@/components/Transaction.vue'
+import TransactionComponent from '@/components/TransactionComponent.vue'
 import type { TransactionWithCategoryData } from '@/types/types';
 import { computed, ref, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -29,10 +29,10 @@ const transaction = computed(() => {
   <main>
     <h1>Transaction</h1>
     <template v-if="transaction">
-      <Transaction
-        :item=transaction
+      <TransactionComponent
+        :transaction=transaction
         :showDialog=showDialog
-      ></Transaction>
+      ></TransactionComponent>
       <v-dialog
         width="auto"
         v-model="isDialogShown"

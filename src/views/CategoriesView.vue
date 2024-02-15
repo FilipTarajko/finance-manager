@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import categoryForm from '@/components/CategoryForm.vue'
+import CategoryComponent from '@/components/CategoryComponent.vue'
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import type { Category } from '@/types/types'
 import { ref, type Ref } from 'vue'
@@ -29,18 +30,10 @@ function hideDialog() {
         :key="category.id"
         :style="{ color: category.color, 'list-style': 'none' }"
       >
-        <RouterLink :to="'/categories/' + category.id">{{ category.name }}</RouterLink>
-        <v-icon
-          :icon="category.icon"
-          :color="category.color"
-        />
-        <v-icon
-          @click="showDialog(category)"
-          class="edit-button"
-          icon="mdi-pencil"
-          aria-label="edit category"
-          style="color: yellow"
-        />
+        <CategoryComponent
+          :category="category"
+          :showDialog="showDialog"
+        ></CategoryComponent>
       </li>
     </ul>
     <v-dialog

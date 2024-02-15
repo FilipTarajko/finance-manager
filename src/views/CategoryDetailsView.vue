@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import categoryForm from '@/components/CategoryForm.vue'
+import CategoryForm from '@/components/CategoryForm.vue'
+import CategoryComponent from '@/components/CategoryComponent.vue'
 import { useCategoriesStore } from '../stores/categoriesStore'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -25,28 +26,20 @@ const category = computed(() => {
   <main>
     <h1>Category</h1>
     <template v-if="category">
-      {{ category.name }}
-      <v-icon
-        :icon="category.icon"
-        :color="category.color"
-      />
-      <v-icon
-        @click="showDialog()"
-        class="edit-button"
-        icon="mdi-pencil"
-        aria-label="edit category"
-        style="color: yellow"
-      />
+      <CategoryComponent
+        :category="category"
+        :showDialog="showDialog"
+      ></CategoryComponent>
       <v-dialog
         width="auto"
         v-model="isDialogShown"
       >
         <v-card theme="dark">
           <v-card-text>
-            <categoryForm
+            <CategoryForm
               :category="category"
               :hideDialog="hideDialog"
-            > </categoryForm>
+            > </CategoryForm>
           </v-card-text>
         </v-card>
       </v-dialog>
