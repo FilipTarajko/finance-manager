@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TransactionForm from '@/components/TransactionForm.vue'
+import Transaction from '@/components/Transaction.vue'
 import { ref, type Ref } from 'vue'
 import type { TransactionWithCategoryData } from '@/types/types'
 import { useCategoriesStore } from '@/stores/categoriesStore'
@@ -32,27 +33,10 @@ function hideDialog() {
         :items="categoriesStore.transactions"
       >
         <template v-slot:default="{ item }">
-          <!-- {{ item.id }} - -->
-          <RouterLink :to="'/transactions/' + item.id">
-            {{ item.name }}
-          </RouterLink>
-          : {{ item.amount.toFixed(2) }} (
-          <span :style="{ color: item.categoryData.color }">
-            <v-icon :icon="item.categoryData.icon" />{{ item.categoryData.name }} </span>)
-          <v-icon
-            @click="showDialog(item)"
-            class="edit-button"
-            icon="mdi-pencil"
-            aria-label="edit transaction"
-            style="color: yellow"
-          />
-          <v-icon
-            icon="mdi-delete"
-            class="remove-button"
-            style="color: red"
-            aria-label="delete transaction"
-            @click="categoriesStore.deleteTransaction(item)"
-          ></v-icon>
+          <Transaction
+            :item=item
+            :showDialog=showDialog
+          ></Transaction>
         </template>
       </v-virtual-scroll>
     </v-card>
