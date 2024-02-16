@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('E2E test', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/transactions');
 
   // Transactions - create
   await expect(page.getByRole('heading', { name: "Transactions" })).toBeVisible();
