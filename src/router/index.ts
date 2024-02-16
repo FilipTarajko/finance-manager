@@ -6,16 +6,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'transactions',
-      component: TransactionsView
-    },
-    {
-      path: '/transactions/:transactionId',
-      name: 'transaction',
-      component: () => import('../views/TransactionDetailsView.vue')
-    },
-    {
-      path: '/categories',
       name: 'categories',
       component: () => import('../views/CategoriesView.vue')
     },
@@ -23,6 +13,16 @@ const router = createRouter({
       path: '/categories/:categoryId',
       name: 'category',
       component: () => import('../views/CategoryDetailsView.vue')
+    },
+    {
+      path: '/transactions',
+      name: 'transactions',
+      component: TransactionsView
+    },
+    {
+      path: '/transactions/:transactionId',
+      name: 'transaction',
+      component: () => import('../views/TransactionDetailsView.vue')
     },
     {
       path: '/statistics',

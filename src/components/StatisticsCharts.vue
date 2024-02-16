@@ -62,27 +62,36 @@ const transactionsChronologicallyForBarChart = computed(() => {
 
 
 <template>
-  <PieChart
-    class="chart"
-    name="transactions by category"
-    :input="transactionInstancesByCategory"
-  />
-  <PieChart
-    class="chart"
-    name="gains by category"
-    :input="transactionGainsByCategory"
-  />
-  <PieChart
-    class="chart"
-    name="losses by category"
-    :input="transactionLossesByCategory"
-  />
-  <BarChart
-    class="chart--tall"
-    name="transaction history"
-    subtitle="with zoom"
-    :input="transactionsChronologicallyForBarChart"
-  />
+  <h2>Charts</h2>
+  <template v-if="categoriesStore.transactions.length">
+    <PieChart
+      class="chart"
+      name="transactions by category"
+      :input="transactionInstancesByCategory"
+    />
+    <PieChart
+      class="chart"
+      name="gains by category"
+      :input="transactionGainsByCategory"
+    />
+    <PieChart
+      class="chart"
+      name="losses by category"
+      :input="transactionLossesByCategory"
+    />
+    <BarChart
+      class="chart--tall"
+      name="transaction history"
+      subtitle="with zoom"
+      :input="transactionsChronologicallyForBarChart"
+    />
+  </template>
+  <template v-else>
+
+    There are no
+    <RouterLink :to="{ name: 'transactions' }">transactions</RouterLink>
+    , so no charts can be shown.
+  </template>
 </template>
 
 <style lang="scss">

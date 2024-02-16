@@ -56,20 +56,15 @@ const transactionsInCategory = computed(() => {
       >
       </CategoryEditDialog>
       <h2>Transactions</h2>
-      <template v-if="transactionsInCategory.length">
-        <TransactionList
-          :transactions="transactionsInCategory"
-          :showDialog="showTransactionDialog"
-        ></TransactionList>
-        <TransactionEditDialog
-          v-model=isTransactionDialogShown
-          :hideDialog="hideTransactionDialog"
-          :transaction="dialogTransaction"
-        ></TransactionEditDialog>
-      </template>
-      <template v-else>
-        There are no transactions in this category
-      </template>
+      <TransactionList
+        :transactions="transactionsInCategory"
+        :showDialog="showTransactionDialog"
+      ></TransactionList>
+      <TransactionEditDialog
+        v-model=isTransactionDialogShown
+        :hideDialog="hideTransactionDialog"
+        :transaction="dialogTransaction"
+      ></TransactionEditDialog>
     </template>
     <template v-else> Category not found </template>
   </main>

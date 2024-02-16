@@ -13,10 +13,10 @@ theme.global.name.value = 'dark'
 
 <template>
   <nav class="mb-4">
-    <RouterLink to="/">Transactions</RouterLink>
-    <RouterLink to="/categories">Categories</RouterLink>
-    <RouterLink to="/statistics">Statistics</RouterLink>
-    <RouterLink to="/export">Export/Import</RouterLink>
+    <RouterLink :to="{ name: 'categories' }">Categories</RouterLink>
+    <RouterLink :to="{ name: 'transactions' }">Transactions</RouterLink>
+    <RouterLink :to="{ name: 'statistics' }">Statistics</RouterLink>
+    <RouterLink :to="{ name: 'export' }">Export/Import</RouterLink>
     <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
   </nav>
 

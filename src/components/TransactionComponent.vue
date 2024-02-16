@@ -13,7 +13,7 @@ const categoriesStore = useCategoriesStore();
 
 
 <template>
-  <RouterLink :to="'/transactions/' + transaction.id">
+  <RouterLink :to="{ name: 'transaction', params: { transactionId: transaction.id } }">
     {{ transaction.name }}
   </RouterLink>
   : {{ transaction.amount.toFixed(2) }} (

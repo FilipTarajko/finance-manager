@@ -72,6 +72,7 @@ function editOrCreateAndAddTransaction() {
 <template>
   <h2>{{ isEditing ? 'edit transaction: ' + props.transaction.name : 'new transaction' }}</h2>
   <form
+    v-if="categoriesStore.categories.length"
     class="mb-4"
     style="width: 24rem"
   >
@@ -128,4 +129,9 @@ function editOrCreateAndAddTransaction() {
       color="warning"
     > cancel & exit </v-btn>
   </form>
+  <template v-else>
+    There are no
+    <RouterLink :to="{ name: 'categories' }">categories</RouterLink>
+    , so transactions can't be created.
+  </template>
 </template>
