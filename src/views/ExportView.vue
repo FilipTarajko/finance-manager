@@ -5,6 +5,7 @@ import { ref } from 'vue';
 const categoriesStore = useCategoriesStore()
 
 const textFieldData = ref("")
+let fileData = ref([])
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -77,12 +78,25 @@ function tryImportData(stringToImport: string) {
   const result = tryParseTextIntoCategories(stringToImport)
   if ("data" in result) {
     categoriesStore.categories = result.data;
-    console.log("IMPORTED")
+    console.log(`imported data with ${result.data.length} categories`)
   } else {
     console.error(result?.errorMessage || "unknown error")
   }
   console.timeEnd("tryImportData")
 }
+
+function tryImportFromFile() {
+  const file = fileData.value[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const data = (e?.target?.result);
+    if (data as string) {
+      tryImportData(data as string);
+    }
+  };
+  reader.readAsText(file);
+}
+
 </script>
 
 <template>
@@ -92,16 +106,27 @@ function tryImportData(stringToImport: string) {
     @click="exportData"
     variant="outlined"
   > export data </v-btn>
-  <!-- <br>
+  <br>
+  <br>
+  <br>
+  <v-file-input
+    v-model="fileData"
+    label="File input"
+  ></v-file-input>
   <v-btn
     class="mb-4"
-    @click="tryImportData('[]')"
+    :disabled="!fileData.length"
+    @click="tryImportFromFile()"
     variant="outlined"
-  > import data from file </v-btn> -->
+  > import data from file </v-btn>
+  <br>
+  <br>
+  <br>
   <v-textarea v-model="textFieldData">
   </v-textarea>
   <v-btn
     class="mb-4"
+    :disabled="!textFieldData"
     @click="tryImportData(textFieldData)"
     variant="outlined"
   > import data from text </v-btn>
