@@ -84,6 +84,10 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     category.transactions[index].name = newState.name
   }
 
+  function tryGetCategoryByName(searchedName: String): Category | undefined {
+    return categories.value.find(category => category.name == searchedName)
+  }
+
   // @ts-ignore
   function getCategoryByTransaction(transaction: TransactionWithoutCategoryData): Category {
     for (let i = 0; i < categories.value.length; i++) {
@@ -110,6 +114,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     negativeTransactions,
     deleteTransaction,
     editExistingTransaction,
+    tryGetCategoryByName,
     transactions
   }
 })

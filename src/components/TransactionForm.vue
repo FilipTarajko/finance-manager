@@ -15,7 +15,7 @@ const isEditing = computed(() => {
 const initialState = {
   name: props?.transaction?.name ?? '',
   amount: props?.transaction?.amount ?? 0,
-  category: props?.transaction?.category ?? null
+  category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name) ?? null
 }
 
 const state = reactive({
