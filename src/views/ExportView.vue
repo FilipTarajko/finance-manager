@@ -6,6 +6,7 @@ const categoriesStore = useCategoriesStore()
 
 const textFieldData = ref("")
 let fileData = ref([])
+let showJsonOnly = ref(true)
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -100,34 +101,48 @@ function tryImportFromFile() {
 </script>
 
 <template>
-  <h1 class="mb-4">Export</h1>
-  <v-btn
-    class="mb-4"
-    @click="exportData"
-    variant="outlined"
-  > export data </v-btn>
-  <br>
-  <br>
-  <br>
-  <v-file-input
-    v-model="fileData"
-    label="File input"
-  ></v-file-input>
-  <v-btn
-    class="mb-4"
-    :disabled="!fileData.length"
-    @click="tryImportFromFile()"
-    variant="outlined"
-  > import data from file </v-btn>
-  <br>
-  <br>
-  <br>
-  <v-textarea v-model="textFieldData">
-  </v-textarea>
-  <v-btn
-    class="mb-4"
-    :disabled="!textFieldData"
-    @click="tryImportData(textFieldData)"
-    variant="outlined"
-  > import data from text </v-btn>
+  <h1 class="mb-4">Export or import data</h1>
+  <v-card class="pa-4 mb-12">
+    <h2>Export to file</h2>
+    <v-btn
+      class="mb-4 mt-4"
+      @click="exportData"
+      variant="outlined"
+    > export data </v-btn>
+  </v-card>
+  <v-card class="pa-4 mb-12">
+    <h2>Import from file</h2>
+    <v-switch
+      v-model="showJsonOnly"
+      class="mt-2"
+      inset
+      label="Only show .json files"
+    >
+    </v-switch>
+    <v-file-input
+      v-model="fileData"
+      :accept="showJsonOnly ? 'application/json' : ''"
+      label="File input"
+    ></v-file-input>
+    <v-btn
+      class="mb-4"
+      :disabled="!fileData.length"
+      @click="tryImportFromFile()"
+      variant="outlined"
+    > import from file</v-btn>
+  </v-card>
+  <v-card class="pa-4">
+    <h2>Import from text</h2>
+    <v-textarea
+      class="mt-4"
+      v-model="textFieldData"
+    >
+    </v-textarea>
+    <v-btn
+      class="mb-4"
+      :disabled="!textFieldData"
+      @click="tryImportData(textFieldData)"
+      variant="outlined"
+    > import from text </v-btn>
+  </v-card>
 </template>

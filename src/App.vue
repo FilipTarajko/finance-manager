@@ -16,7 +16,7 @@ theme.global.name.value = 'dark'
     <RouterLink to="/">Transactions</RouterLink>
     <RouterLink to="/categories">Categories</RouterLink>
     <RouterLink to="/statistics">Statistics</RouterLink>
-    <RouterLink to="/export">Export</RouterLink>
+    <RouterLink to="/export">Export/Import</RouterLink>
     <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
   </nav>
 
