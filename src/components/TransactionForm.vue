@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required, maxLength } from '@vuelidate/validators'
+import { required, maxLength, helpers } from '@vuelidate/validators'
 
 import { useCategoriesStore } from '../stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
@@ -24,9 +24,14 @@ const state = reactive({
   category: initialState.category
 })
 
+const mustHaveAtMost2DecimalDigits = (value: number) => { return value == Math.round(value * 100) / 100 }
+
 const rules = {
   name: { required, maxLength: maxLength(20) },
-  amount: { required },
+  amount: {
+    required,
+    mustBeUniqueCategoryName: helpers.withMessage('Must have at most 2 decimal digits', mustHaveAtMost2DecimalDigits)
+  },
   category: { required }
 }
 
