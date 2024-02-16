@@ -82,6 +82,10 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     const index = category.transactions.findIndex((e) => e.id == transaction.id)
     category.transactions[index].amount = newState.amount
     category.transactions[index].name = newState.name
+    if (newState.category != category) {
+      let movedTransaction = category.transactions.splice(index, 1)[0];
+      newState.category.transactions.push(movedTransaction);
+    }
   }
 
   function tryGetCategoryByName(searchedName: String): Category | undefined {
