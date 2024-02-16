@@ -14,7 +14,7 @@ const isEditing = computed(() => {
 
 const initialState = {
   name: props?.transaction?.name ?? '',
-  amount: props?.transaction?.amount ?? 0,
+  amount: props?.transaction?.amount ?? null,
   category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name) ?? null
 }
 
@@ -25,11 +25,13 @@ const state = reactive({
 })
 
 const mustHaveAtMost2DecimalDigits = (value: number) => { return value == Math.round(value * 100) / 100 }
+const mustNotBeEqualToZero = (value: number) => { return value != 0 }
 
 const rules = {
   name: { required, maxLength: maxLength(20) },
   amount: {
     required,
+    mustNotBeEqualToZero: helpers.withMessage("Must not be equal to 0", mustNotBeEqualToZero),
     mustBeUniqueCategoryName: helpers.withMessage('Must have at most 2 decimal digits', mustHaveAtMost2DecimalDigits)
   },
   category: { required }
