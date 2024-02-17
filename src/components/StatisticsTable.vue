@@ -3,17 +3,34 @@ import { useCategoriesStore } from '../stores/categoriesStore'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
 
+const props = defineProps<{
+  minTimestamp: number,
+  maxTimestamp: number
+}>();
+
 const positiveTransactionsInstances = computed(() => {
-  return categoriesStore.positiveTransactions.length
+  return categoriesStore.positiveTransactions
+    .filter(transaction => transaction.timestamp <= props.maxTimestamp)
+    .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .length
 })
 const positiveTransactionsGains = computed(() => {
-  return categoriesStore.positiveTransactions.reduce((sum, elem) => sum + elem.amount, 0)
+  return categoriesStore.positiveTransactions
+    .filter(transaction => transaction.timestamp <= props.maxTimestamp)
+    .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .reduce((sum, elem) => sum + elem.amount, 0)
 })
 const negativeTransactionsInstances = computed(() => {
-  return categoriesStore.negativeTransactions.length
+  return categoriesStore.negativeTransactions
+    .filter(transaction => transaction.timestamp <= props.maxTimestamp)
+    .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .length
 })
 const negativeTransactionsLosses = computed(() => {
-  return categoriesStore.negativeTransactions.reduce((sum, elem) => sum + elem.amount, 0)
+  return categoriesStore.negativeTransactions
+    .filter(transaction => transaction.timestamp <= props.maxTimestamp)
+    .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .reduce((sum, elem) => sum + elem.amount, 0)
 })
 const totalTransactionsInstances = computed(() => {
   return negativeTransactionsInstances.value + positiveTransactionsInstances.value

@@ -5,6 +5,11 @@ import BarChart from '@/components/BarChart.vue'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
 
+// const props = defineProps<{
+//   minTimestamp: number,
+//   maxTimestamp: number
+// }>();
+
 function preparePieGraphInput(array: []) {
   return array.sort((a: any, b: any) => b.value - a.value)
 }
@@ -13,7 +18,10 @@ const transactionInstancesByCategory = computed(() => {
   let array: any = []
   categoriesStore.categories.forEach((category) => {
     let value = category.transactions.length
-    category.transactions.length &&
+    category.transactions
+      // .filter(transaction => transaction.timestamp <= props.maxTimestamp)
+      // .filter(transaction => transaction.timestamp >= props.minTimestamp)
+      .length &&
       array.push({ name: category.name, value, color: category.color })
   })
   return preparePieGraphInput(array)
@@ -24,6 +32,8 @@ const transactionGainsByCategory = computed(() => {
   categoriesStore.categories.forEach((category) => {
     let value = category.transactions
       .filter((e) => e.amount > 0)
+      // .filter(transaction => transaction.timestamp <= props.maxTimestamp)
+      // .filter(transaction => transaction.timestamp >= props.minTimestamp)
       .reduce((sum, elem) => sum + elem.amount, 0)
       .toFixed(2)
     value != "0.00" && array.push({ name: category.name, value, color: category.color })
@@ -36,6 +46,8 @@ const transactionLossesByCategory = computed(() => {
   categoriesStore.categories.forEach((category) => {
     let value = category.transactions
       .filter((e) => e.amount < 0)
+      // .filter(transaction => transaction.timestamp <= props.maxTimestamp)
+      // .filter(transaction => transaction.timestamp >= props.minTimestamp)
       .reduce((sum, elem) => sum - elem.amount, 0)
       .toFixed(2)
     value != "0.00" && array.push({ name: category.name, value, color: category.color })
