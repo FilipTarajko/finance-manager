@@ -15,8 +15,8 @@ const categoriesStore = useCategoriesStore();
 <template>
   <RouterLink :to="{ name: 'transaction', params: { transactionId: transaction.id } }">
     {{ transaction.name }}
-  </RouterLink>
-  : {{ transaction.amount.toFixed(2) }} (
+  </RouterLink>:
+  {{ transaction.amount.toFixed(2) }} (
   <span :style="{ color: transaction.categoryData.color }">
     <v-icon :icon="transaction.categoryData.icon" />{{ transaction.categoryData.name }} </span>)
   <v-icon

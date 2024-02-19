@@ -13,12 +13,23 @@ theme.global.name.value = 'dark'
 
 <template>
   <nav class="mb-4">
-    <RouterLink :to="{ name: 'categories' }">Categories</RouterLink>
-    <RouterLink :to="{ name: 'transactions' }">Transactions</RouterLink>
-    <RouterLink :to="{ name: 'statistics' }">Statistics</RouterLink>
-    <RouterLink :to="{ name: 'export' }">Export/Import</RouterLink>
+    <RouterLink class="routerLink routerLink--left" :to="{ name: 'categories' }">Categories</RouterLink>
+    <RouterLink class="routerLink" :to="{ name: 'transactions' }">Transactions</RouterLink>
+    <RouterLink class="routerLink" :to="{ name: 'statistics' }">Statistics</RouterLink>
+    <RouterLink class="routerLink" :to="{ name: 'export' }">Export/Import</RouterLink>
     <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
   </nav>
 
   <RouterView />
 </template>
+
+<style scoped lang="scss">
+.routerLink {
+  $padding-size: 1rem;
+  padding: $padding-size;
+
+  &--left {
+    margin-left: -$padding-size
+  }
+}
+</style>

@@ -133,7 +133,7 @@ function editOrCreateAndAddTransaction() {
   </form>
   <template v-else>
     There are no
-    <RouterLink :to="{ name: 'categories' }">categories</RouterLink>
-    , so transactions can't be created.
+    <RouterLink :to="{ name: 'categories' }">categories</RouterLink>,
+    so transactions can't be created.
   </template>
 </template>
