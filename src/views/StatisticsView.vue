@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import StatisticsTable from '@/components/StatisticsTable.vue'
-import StatisticsCharts from '@/components/StatisticsCharts.vue'
+import StatisticsTable from '@/components/Statistics/StatisticsTable.vue'
+import StatisticsCharts from '@/components/Statistics/StatisticsCharts.vue'
 import { ref } from 'vue';
 
 let minTimestamp = ref(0)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useCategoriesStore } from '../stores/categoriesStore'
-import PieChart from '@/components/PieChart.vue'
-import BarChart from '@/components/BarChart.vue'
+import { useCategoriesStore } from '@/stores/categoriesStore'
+import PieChart from '@/components/Statistics/PieChart.vue'
+import BarChart from '@/components/Statistics/BarChart.vue'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
 

@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import CategoryForm from '@/components/CategoryForm.vue'
-import type { Category } from '@/types/types';
-import type { Ref } from 'vue';
+import type { TransactionWithCategoryData } from '@/types/types';
+import TransactionForm from '@/components/Transactions/TransactionForm.vue'
+import { type Ref } from 'vue';
 
 const isDialogShown: Ref<boolean | undefined> = defineModel()
 
 defineProps<{
   hideDialog: Function,
-  editedCategory: Category | null
+  transaction: TransactionWithCategoryData | null
 }>()
+
+
 </script>
 
 <template>
@@ -18,10 +20,11 @@ defineProps<{
   >
     <v-card>
       <v-card-text>
-        <CategoryForm
-          :category="editedCategory"
+        <TransactionForm
+          :transaction="transaction"
           :hideDialog="hideDialog"
-        > </CategoryForm>
+        >
+        </TransactionForm>
       </v-card-text>
     </v-card>
   </v-dialog>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CategoryForm from '@/components/CategoryForm.vue'
-import CategoryEditDialog from '@/components/CategoryEditDialog.vue'
-import CategoryComponent from '@/components/CategoryComponent.vue'
+import CategoryForm from '@/components/Categories/CategoryForm.vue'
+import CategoryEditDialog from '@/components/Categories/CategoryEditDialog.vue'
+import CategoryComponent from '@/components/Categories/CategoryComponent.vue'
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import type { Category } from '@/types/types'
 import { ref, type Ref } from 'vue'

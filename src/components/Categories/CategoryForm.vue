@@ -3,7 +3,7 @@ import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, helpers } from '@vuelidate/validators'
 
-import { useCategoriesStore } from '../stores/categoriesStore'
+import { useCategoriesStore } from '@/stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
 
 const props = defineProps(['category', 'hideDialog'])

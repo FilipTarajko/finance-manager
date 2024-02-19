@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TransactionComponent from '@/components/TransactionComponent.vue'
+import TransactionComponent from '@/components/Transactions/TransactionComponent.vue'
 import type { TransactionWithCategoryData } from '@/types/types';
 
 defineProps<{

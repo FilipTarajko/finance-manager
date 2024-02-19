@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import CategoryEditDialog from '@/components/CategoryEditDialog.vue'
-import TransactionEditDialog from '@/components/TransactionEditDialog.vue'
-import TransactionList from '@/components/TransactionList.vue'
-import CategoryComponent from '@/components/CategoryComponent.vue'
+import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
+import TransactionList from '@/components/Transactions/TransactionList.vue'
+import CategoryComponent from '@/components/Categories/CategoryComponent.vue'
 import { useCategoriesStore } from '../stores/categoriesStore'
 import { computed, ref, type Ref } from 'vue'
 import { useRoute } from 'vue-router'

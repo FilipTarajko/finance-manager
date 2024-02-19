@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import TransactionForm from '@/components/TransactionForm.vue'
-import TransactionList from '@/components/TransactionList.vue'
-import TransactionEditDialog from '@/components/TransactionEditDialog.vue'
+import TransactionForm from '@/components/Transactions/TransactionForm.vue'
+import TransactionList from '@/components/Transactions/TransactionList.vue'
+import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
 import { ref, type Ref } from 'vue'
 import type { TransactionWithCategoryData } from '@/types/types'
 import { useCategoriesStore } from '@/stores/categoriesStore';
