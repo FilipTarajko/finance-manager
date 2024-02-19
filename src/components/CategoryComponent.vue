@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Category } from '@/types/types'
+import { useCategoriesStore } from "@/stores/categoriesStore"
+const categoriesStore = useCategoriesStore();
 
 defineProps<{
   category: Category,
@@ -21,5 +23,11 @@ defineProps<{
     icon="mdi-pencil"
     aria-label="edit category"
     style="color: yellow"
+  />
+  <v-icon
+    @click="categoriesStore.deleteCategory(category)"
+    icon="mdi-delete"
+    aria-label="delete category"
+    style="color: red"
   />
 </template>

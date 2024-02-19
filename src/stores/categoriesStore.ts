@@ -109,6 +109,10 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     )
   }
 
+  function deleteCategory(category: Category) {
+    categories.value = categories.value.filter(elem => elem != category)
+  }
+
   return {
     categories,
     createAndAddCategory,
@@ -119,6 +123,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     deleteTransaction,
     editExistingTransaction,
     tryGetCategoryByName,
-    transactions
+    transactions,
+    deleteCategory
   }
 })

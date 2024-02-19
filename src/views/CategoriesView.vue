@@ -25,7 +25,7 @@ function hideDialog() {
     <h1>Categories</h1>
     <CategoryForm></CategoryForm>
     <h2>categories list</h2>
-    <ul>
+    <ul v-if="categoriesStore.categories.length > 0">
       <li
         v-for="category of categoriesStore.categories"
         :key="category.id"
@@ -37,6 +37,9 @@ function hideDialog() {
         ></CategoryComponent>
       </li>
     </ul>
+    <div v-else>
+      There are no categories
+    </div>
     <CategoryEditDialog
       v-model="isDialogShown"
       :hideDialog="hideDialog"
