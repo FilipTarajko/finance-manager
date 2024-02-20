@@ -42,6 +42,7 @@ const totalTransactionsSum = computed(() => {
 </script>
 
 <template>
+  <h2>statistics summary</h2>
   <v-table>
     <thead>
       <tr>

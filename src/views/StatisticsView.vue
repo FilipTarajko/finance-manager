@@ -9,15 +9,15 @@ let maxTimestamp = ref(new Date().getTime())
 
 <template>
   <h1>Statistics</h1>
-  <h2>Timestamp range (only for table)</h2>
+  <h2>timestamp range</h2>
   <v-text-field
-    v-model="minTimestamp"
+    v-model.number="minTimestamp"
     type="number"
     label="minTimestamp"
   >
   </v-text-field>
   <v-text-field
-    v-model="maxTimestamp"
+    v-model.number="maxTimestamp"
     type="number"
     label="maxTimestamp"
   >
@@ -26,5 +26,8 @@ let maxTimestamp = ref(new Date().getTime())
     :minTimestamp="minTimestamp"
     :maxTimestamp="maxTimestamp"
   ></StatisticsTable>
-  <StatisticsCharts></StatisticsCharts>
+  <StatisticsCharts
+    :minTimestamp="minTimestamp"
+    :maxTimestamp="maxTimestamp"
+  ></StatisticsCharts>
 </template>
