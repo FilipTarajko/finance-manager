@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CategoryEditDialog from '@/components/CategoryEditDialog.vue'
+import CategoryEditDialog from '@/components/Categories/CategoryEditDialog.vue'
 import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
 import TransactionList from '@/components/Transactions/TransactionList.vue'
 import CategoryComponent from '@/components/Categories/CategoryComponent.vue'

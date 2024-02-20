@@ -30,9 +30,9 @@ const router = createRouter({
       component: () => import('../views/StatisticsView.vue')
     },
     {
-      path: '/export',
-      name: 'export',
-      component: () => import('../views/ExportView.vue')
+      path: '/importexport',
+      name: 'importexport',
+      component: () => import('../views/ImportExportView.vue')
     },
     {
       path: '/:pathMatch(.*)*',

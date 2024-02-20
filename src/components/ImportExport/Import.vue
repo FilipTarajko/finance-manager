@@ -1,34 +1,39 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import type { Category } from '@/types/types';
-import { ref } from 'vue';
 const categoriesStore = useCategoriesStore()
-
-const textFieldData = ref("")
 let fileData = ref([])
 let showJsonOnly = ref(true)
+const textFieldData = ref("")
 
-function getLocale() {
-  if (navigator.languages != undefined) {
-    return navigator.languages[0]
+function tryImportFromFile() {
+  const file = fileData.value[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const data = (e?.target?.result);
+    if (data as string) {
+      tryImportData(data as string);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function tryImportData(stringToImport: string) {
+  console.time("tryImportData")
+  const result = tryParseTextIntoCategories(stringToImport)
+  if ("data" in result) {
+    categoriesStore.categories = result.data;
+    console.log(`imported data with ${result.data.length} categories`)
+  } else {
+    console.error(result?.errorMessage || "unknown error")
   }
-  return navigator.language
+  console.timeEnd("tryImportData")
 }
+</script>
 
-function exportData() {
-  let text = JSON.stringify(categoriesStore.categories)
-  let filename = 'exported data ' + new Date().toLocaleString(getLocale()) + '.json'
-
-  const element = document.createElement('a')
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
-  element.setAttribute('download', filename)
-  element.style.display = 'none'
-  document.body.appendChild(element)
-  element.click()
-  document.body.removeChild(element)
-}
-
-function isCategory(obj: unknown): obj is Category {
+<script lang="ts">
+export function isCategory(obj: unknown): obj is Category {
   return (
     (obj || false) &&
     typeof obj === 'object' &&
@@ -57,7 +62,7 @@ function isCategory(obj: unknown): obj is Category {
   );
 }
 
-function tryParseTextIntoCategories(stringToImport: string): { errorMessage: string } | { data: Category[] } {
+export function tryParseTextIntoCategories(stringToImport: string): { errorMessage: string } | { data: Category[] } {
   try {
     let parsedData = JSON.parse(stringToImport)
     if (!Array.isArray(parsedData)) {
@@ -73,43 +78,9 @@ function tryParseTextIntoCategories(stringToImport: string): { errorMessage: str
     return { errorMessage: "not a json" };
   }
 }
-
-function tryImportData(stringToImport: string) {
-  console.time("tryImportData")
-  const result = tryParseTextIntoCategories(stringToImport)
-  if ("data" in result) {
-    categoriesStore.categories = result.data;
-    console.log(`imported data with ${result.data.length} categories`)
-  } else {
-    console.error(result?.errorMessage || "unknown error")
-  }
-  console.timeEnd("tryImportData")
-}
-
-function tryImportFromFile() {
-  const file = fileData.value[0];
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const data = (e?.target?.result);
-    if (data as string) {
-      tryImportData(data as string);
-    }
-  };
-  reader.readAsText(file);
-}
-
 </script>
 
 <template>
-  <h1 class="mb-4">Export or import data</h1>
-  <v-card class="pa-4 mb-12">
-    <h2>Export to file</h2>
-    <v-btn
-      class="mb-4 mt-4"
-      @click="exportData"
-      variant="outlined"
-    > export data </v-btn>
-  </v-card>
   <v-card class="pa-4 mb-12">
     <h2>Import from file</h2>
     <v-switch
