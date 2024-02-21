@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isCategory, tryParseTextIntoCategories } from '../Import.vue';
+import { isCategory, tryParseTextIntoCategories } from '../DataImportComponent.vue';
 
 describe('Import helper: isCategory', () => {
   it('Gives true when given a primitive', () => {

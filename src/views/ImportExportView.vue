@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Export from "@/components/ImportExport/Export.vue"
-import Import from "@/components/ImportExport/Import.vue"
+import Export from "@/components/ImportExport/DataExportComponent.vue"
+import Import from "@/components/ImportExport/DataImportComponent.vue"
 </script>
 
 <template>

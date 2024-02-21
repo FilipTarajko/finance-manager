@@ -4,7 +4,7 @@ import { BarChart } from 'echarts/charts'
 import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart, { THEME_KEY } from 'vue-echarts'
-import { provide, ref } from 'vue'
+import { computed, provide } from 'vue'
 import { DataZoomComponent } from 'echarts/components'
 
 const props = defineProps({
@@ -23,71 +23,75 @@ const props = defineProps({
 
 use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer, DataZoomComponent])
 
-// @ts-ignore
-let dataAxis = props.input.map((e) => e.name)
-// @ts-ignore
-let data = props.input.map((e) => e)
-
 provide(THEME_KEY, 'dark')
-const option = ref({
-  backgroundColor: '#212121',
-  title: {
-    text: props.name,
-    left: 'center',
-    top: 12,
-    subtext: props?.subtitle ?? ''
-  },
-  tooltip: {
-    trigger: 'axis',
-    formatter: '{b}: {c}',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  dataZoom: [
-    {
-      type: 'inside'
-    }
-  ],
-  grid: {
-    top: 80,
-    bottom: 30
-  },
-  yAxis: {
-    type: 'value',
-    position: 'top',
-    splitLine: {
-      lineStyle: {
-        type: 'dashed'
+const option = computed(() => {
+  return {
+    backgroundColor: '#212121',
+    title: {
+      text: props.name,
+      left: 'center',
+      top: 12,
+      subtext: props?.subtitle ?? ''
+    },
+    tooltip: {
+      trigger: 'axis',
+      formatter: '{b}: {c}',
+      axisPointer: {
+        type: 'shadow'
       }
-    }
-  },
-  xAxis: {
-    type: 'category',
-    axisLine: { show: false },
-    axisLabel: { show: false },
-    axisTick: { show: false },
-    splitLine: { show: false },
-    data: dataAxis //props.input //.map(e => e.name)
-  },
-  series: [
-    {
-      name: 'Cost',
-      type: 'bar',
-      stack: 'Total',
-      // label: {
-      //   show: false,
-      //   formatter: '{b}',
-      //   position: 'bottom',
-      //   rotate: 15,
-      //   color: '#ffffff'
-      // },
-      data: data
-    }
-  ]
+    },
+    dataZoom: [
+      {
+        type: 'inside'
+      }
+    ],
+    grid: {
+      top: 80,
+      bottom: 30
+    },
+    yAxis: {
+      type: 'value',
+      position: 'top',
+      splitLine: {
+        lineStyle: {
+          type: 'dashed'
+        }
+      }
+    },
+    xAxis: {
+      type: 'category',
+      axisLine: { show: false },
+      axisLabel: { show: false },
+      axisTick: { show: false },
+      splitLine: { show: false },
+      // @ts-ignore
+      data: props.input.map((e) => e.name)
+    },
+    series: [
+      {
+        name: 'Cost',
+        type: 'bar',
+        stack: 'Total',
+        // label: {
+        //   show: false,
+        //   formatter: '{b}',
+        //   position: 'bottom',
+        //   rotate: 15,
+        //   color: '#ffffff'
+        // },
+        // @ts-ignore
+        data: props.input.map((e) => e)
+      }
+    ]
+  }
 })
 </script>
 
 <template>
-  <v-chart id="barChart" class="chart" :option="option" autoresize />
+  <v-chart
+    id="barChart"
+    class="chart"
+    :option="option"
+    autoresize
+  />
 </template>

@@ -14,13 +14,6 @@ function preparePieGraphInput(array: []) {
   return array.sort((a: any, b: any) => b.value - a.value)
 }
 
-const numberOfTransactionsInTimestampRange = computed(() => {
-  return categoriesStore.transactions
-    .filter(transaction => transaction.timestamp <= props.maxTimestamp)
-    .filter(transaction => transaction.timestamp >= props.minTimestamp)
-    .length
-})
-
 const transactionInstancesByCategory = computed(() => {
   let array: any = []
   categoriesStore.categories.forEach((category) => {
@@ -87,25 +80,21 @@ const transactionsChronologicallyForBarChart = computed(() => {
   <h2>charts</h2>
   <template v-if="categoriesStore.transactions.length">
     <PieChart
-      :key="numberOfTransactionsInTimestampRange"
       class="chart"
       name="transactions by category"
       :input="transactionInstancesByCategory"
     />
     <PieChart
-      :key="numberOfTransactionsInTimestampRange"
       class="chart"
       name="gains by category"
       :input="transactionGainsByCategory"
     />
     <PieChart
-      :key="numberOfTransactionsInTimestampRange"
       class="chart"
       name="losses by category"
       :input="transactionLossesByCategory"
     />
     <BarChart
-      :key="numberOfTransactionsInTimestampRange"
       class="chart chart--tall chart--last"
       name="transaction history"
       subtitle="with zoom"

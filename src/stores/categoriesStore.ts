@@ -83,7 +83,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     category.transactions[index].amount = newState.amount
     category.transactions[index].name = newState.name
     if (newState.category != category) {
-      let movedTransaction = category.transactions.splice(index, 1)[0];
+      const movedTransaction = category.transactions.splice(index, 1)[0];
       newState.category.transactions.push(movedTransaction);
     }
   }
