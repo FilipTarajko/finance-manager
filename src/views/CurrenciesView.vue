@@ -35,7 +35,10 @@ function getAccountNamesByCurrency(currency: Currency) {
 <template>
   <h1>Accounts</h1>
   <ul>
-    <li v-for="currency in  currenciesStore.currencies ">
+    <li
+      v-for="currency in  currenciesStore.currencies"
+      :key="currency.id"
+    >
       {{ currency }}, accounts: {{ getAccountNamesByCurrency(currency).join(", ") }}
       <TransactionList
         :showDialog="showTransactionDialog"
@@ -48,5 +51,4 @@ function getAccountNamesByCurrency(currency: Currency) {
     v-model=isTransactionDialogShown
     :hideDialog="hideTransactionDialog"
     :transaction="dialogTransaction"
-  ></TransactionEditDialog>
-</template>
+></TransactionEditDialog></template>

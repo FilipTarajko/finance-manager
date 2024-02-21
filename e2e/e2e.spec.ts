@@ -9,7 +9,7 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('Name').fill('testname');
   await page.getByLabel('Amount').click();
   await page.getByLabel('Amount').fill('345.67');
-  await page.getByRole('combobox').locator('div').filter({ hasText: 'ItemItem' }).locator('div').click();
+  await page.getByRole('combobox').locator('div').filter({ hasText: 'Category' }).locator('div').click();
   await page.getByRole('option', { name: 'Eating out' }).click();
   await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('testname: 345.67')).toBeVisible();

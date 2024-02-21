@@ -3,7 +3,7 @@ import { useAccountsStore } from '@/stores/accountsStore';
 import { useCategoriesStore } from '@/stores/categoriesStore';
 import TransactionList from "@/components/Transactions/TransactionList.vue"
 import TransactionEditDialog from "@/components/Transactions/TransactionEditDialog.vue"
-import { computed, ref, type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import type { TransactionWithCategoryData } from '@/types/types';
 const accountsStore = useAccountsStore();
 const categoriesStore = useCategoriesStore();
@@ -24,7 +24,10 @@ function hideTransactionDialog() {
 <template>
   <h1>Accounts</h1>
   <ul>
-    <li v-for="account in accountsStore.accounts">
+    <li
+      v-for="account in accountsStore.accounts"
+      :key="account.id"
+    >
       {{ account }}
       <TransactionList
         :showDialog="showTransactionDialog"
