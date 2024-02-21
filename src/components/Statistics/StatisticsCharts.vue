@@ -75,9 +75,9 @@ const transactionsChronologicallyForBarChart = computed(() => {
         color: elem.categoryData.color
       }
     })
-    // @ts-ignore
-    array.sort((a, b) => b.timestamp - a.timestamp)
   }
+  // @ts-ignore
+  array.sort((a, b) => b.timestamp - a.timestamp)
   return array
 })
 </script>
