@@ -9,7 +9,8 @@ import defaultAccounts from './defaultAccounts.json'
 
 export const useAccountsStore = defineStore('accountsStore', () => {
   const accounts: Ref<Account[]> = useStorage('accounts', defaultAccounts)
+
   return {
-    accounts,
+    accounts
   }
 })

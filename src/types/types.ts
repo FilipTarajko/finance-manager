@@ -30,5 +30,11 @@ export type TransactionWithCategoryData = {
 export type Account = {
   id: number
   name: string
-  currency: string
+  currency_id: number
+}
+
+export type Currency = {
+  id: number
+  name: string
+  value: number
 }

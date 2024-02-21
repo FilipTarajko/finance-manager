@@ -9,6 +9,9 @@ const categoriesStore = useCategoriesStore()
 import { useAccountsStore } from '@/stores/accountsStore'
 const accountStore = useAccountsStore()
 
+import { useCurrenciesStore } from '@/stores/currenciesStore'
+const currenciesStore = useCurrenciesStore()
+
 const props = defineProps(['transaction', 'hideDialog'])
 
 const isEditing = computed(() => {
@@ -53,10 +56,11 @@ const categoryOptions = computed(() => {
 })
 
 const accountOptions = computed(() => {
-  return accountStore.accounts.map((elem) => {
+  return accountStore.accounts.map((acc) => {
     return {
-      title: elem.name + " (" + elem.currency + ")",
-      value: elem.id
+      title: acc.name + " ("
+        + currenciesStore.getCurrencyNameByAccount(acc) + ")",
+      value: acc.id
     }
   })
 })
