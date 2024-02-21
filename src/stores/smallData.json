@@ -9,13 +9,15 @@
         "id": 1,
         "name": "Dinner",
         "amount": -20,
-        "timestamp": 1707870875524
+        "timestamp": 1707870875524,
+        "account_id": 0
       },
       {
         "id": 4,
         "name": "Pizza",
         "amount": -19.99,
-        "timestamp": 1707871175524
+        "timestamp": 1707871175524,
+        "account_id": 0
       }
     ]
   },
@@ -29,7 +31,8 @@
         "id": 2,
         "name": "Scholarship",
         "amount": 1000,
-        "timestamp": 1707870975524
+        "timestamp": 1707870975524,
+        "account_id": 1
       }
     ]
   },
@@ -43,7 +46,8 @@
         "id": 3,
         "name": "Groceries",
         "amount": -61.53,
-        "timestamp": 1707871075524
+        "timestamp": 1707871075524,
+        "account_id": 0
       }
     ]
   },
@@ -57,7 +61,8 @@
         "id": 5,
         "name": "Gift from grandma",
         "amount": 200,
-        "timestamp": 1707871275524
+        "timestamp": 1707871275524,
+        "account_id": 2
       }
     ]
   },
@@ -71,13 +76,15 @@
         "id": 6,
         "name": "Gas",
         "amount": -250,
-        "timestamp": 1707871305524
+        "timestamp": 1707871305524,
+        "account_id": 0
       },
       {
         "id": 7,
         "name": "Bus ticket",
         "amount": -10,
-        "timestamp": 1707871375524
+        "timestamp": 1707871375524,
+        "account_id": 0
       }
     ]
   },
@@ -91,7 +98,8 @@
         "id": 8,
         "name": "Puss in Boots 2",
         "amount": -15,
-        "timestamp": 1707871475524
+        "timestamp": 1707871475524,
+        "account_id": 0
       }
     ]
   },
@@ -105,7 +113,8 @@
         "id": 9,
         "name": "??",
         "amount": -50,
-        "timestamp": 1707871475524
+        "timestamp": 1707871475524,
+        "account_id": 0
       }
     ]
   },

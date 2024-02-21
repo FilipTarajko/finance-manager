@@ -15,6 +15,7 @@ theme.global.name.value = 'dark'
   <nav class="mb-4">
     <RouterLink class="routerLink routerLink--left" :to="{ name: 'categories' }">Categories</RouterLink>
     <RouterLink class="routerLink" :to="{ name: 'transactions' }">Transactions</RouterLink>
+    <RouterLink class="routerLink" :to="{ name: 'accounts' }">Accounts</RouterLink>
     <RouterLink class="routerLink" :to="{ name: 'statistics' }">Statistics</RouterLink>
     <RouterLink class="routerLink" :to="{ name: 'importexport' }">Import/Export</RouterLink>
     <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->

@@ -3,6 +3,7 @@ export type TransactionWithoutCategoryData = {
   name: string
   amount: number
   timestamp: EpochTimeStamp
+  account_id: number
 }
 
 export type Category = {
@@ -18,9 +19,16 @@ export type TransactionWithCategoryData = {
   name: string
   amount: number
   timestamp: EpochTimeStamp
+  account_id: number
   categoryData: {
     name: string
     color: string
     icon: string
   }
+}
+
+export type Account = {
+  id: number
+  name: string
+  currency: string
 }

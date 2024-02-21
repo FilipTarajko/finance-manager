@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TransactionsView from '../views/TransactionsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,9 +14,14 @@ const router = createRouter({
       component: () => import('../views/CategoryDetailsView.vue')
     },
     {
+      path: '/accounts',
+      name: 'accounts',
+      component: () => import('../views/AccountsView.vue')
+    },
+    {
       path: '/transactions',
       name: 'transactions',
-      component: TransactionsView
+      component: () => import('../views/TransactionsView.vue')
     },
     {
       path: '/transactions/:transactionId',

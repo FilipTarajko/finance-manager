@@ -10,7 +10,6 @@ import { useStorage } from '@vueuse/core'
 import defaultData from './smallData.json'
 
 export const useCategoriesStore = defineStore('categoriesStore', () => {
-  // @ts-ignore
   const categories: Ref<Category[]> = useStorage('categories', defaultData)
 
   function createAndAddCategory(name: string, color: string, icon: string) {
@@ -62,7 +61,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     transactions.value.filter((elem: { amount: number }) => elem.amount < 0)
   )
 
-  function createAndAddTransaction(name: string, amount: number, category: Category) {
+  function createAndAddTransaction(name: string, amount: number, category: Category, account_id: number) {
     let nextId = 0
     for (const elem of transactions.value) {
       if (nextId <= elem.id) {
@@ -73,7 +72,8 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
       id: nextId,
       name,
       amount,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
+      account_id
     })
   }
 

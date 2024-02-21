@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '@/stores/categoriesStore';
+import { useAccountsStore } from '@/stores/accountsStore';
 import type { TransactionWithCategoryData } from '@/types/types'
 
 defineProps<{
@@ -8,6 +9,7 @@ defineProps<{
 }>()
 
 const categoriesStore = useCategoriesStore();
+const accountsStore = useAccountsStore();
 
 </script>
 
@@ -16,7 +18,8 @@ const categoriesStore = useCategoriesStore();
   <RouterLink :to="{ name: 'transaction', params: { transactionId: transaction.id } }">
     {{ transaction.name }}
   </RouterLink>:
-  {{ transaction.amount.toFixed(2) }} (
+  {{ transaction.amount.toFixed(2) }}
+  {{ accountsStore.accounts.find(elem => elem.id == transaction.account_id)?.currency }} (
   <span :style="{ color: transaction.categoryData.color }">
     <v-icon :icon="transaction.categoryData.icon" />{{ transaction.categoryData.name }} </span>)
   <v-icon

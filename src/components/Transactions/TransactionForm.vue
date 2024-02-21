@@ -6,6 +6,9 @@ import { required, maxLength, helpers } from '@vuelidate/validators'
 import { useCategoriesStore } from '@/stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
 
+import { useAccountsStore } from '@/stores/accountsStore'
+const accountStore = useAccountsStore()
+
 const props = defineProps(['transaction', 'hideDialog'])
 
 const isEditing = computed(() => {
@@ -15,13 +18,15 @@ const isEditing = computed(() => {
 const initialState = {
   name: props?.transaction?.name ?? '',
   amount: props?.transaction?.amount ?? null,
-  category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name) ?? null
+  category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name) ?? null,
+  account_id: props?.transaction?.account_id ?? 0
 }
 
 const state = reactive({
   name: initialState.name,
   amount: initialState.amount,
-  category: initialState.category
+  category: initialState.category,
+  account_id: initialState.account_id
 })
 
 const mustHaveAtMost2DecimalDigits = (value: number) => { return value == Math.round(value * 100) / 100 }
@@ -34,7 +39,8 @@ const rules = {
     mustNotBeEqualToZero: helpers.withMessage("Must not be equal to 0", mustNotBeEqualToZero),
     mustBeUniqueCategoryName: helpers.withMessage('Must have at most 2 decimal digits', mustHaveAtMost2DecimalDigits)
   },
-  category: { required }
+  category: { required },
+  account_id: { required }
 }
 
 const categoryOptions = computed(() => {
@@ -42,6 +48,15 @@ const categoryOptions = computed(() => {
     return {
       title: elem.name,
       value: elem
+    }
+  })
+})
+
+const accountOptions = computed(() => {
+  return accountStore.accounts.map((elem) => {
+    return {
+      title: elem.name + " (" + elem.currency + ")",
+      value: elem.id
     }
   })
 })
@@ -66,7 +81,7 @@ function editOrCreateAndAddTransaction() {
     categoriesStore.editExistingTransaction(props.transaction, state)
     props.hideDialog()
   } else {
-    categoriesStore.createAndAddTransaction(state.name, state.amount, state.category)
+    categoriesStore.createAndAddTransaction(state.name, state.amount, state.category, state.account_id)
   }
 }
 </script>
@@ -103,11 +118,23 @@ function editOrCreateAndAddTransaction() {
     <v-select
       v-model="state.category"
       :items="categoryOptions"
-      label="Item"
+      label="Category"
       required
       @change="v$.category.$touch"
       @blur="v$.category.$touch"
       :error-messages="v$.category.$errors.map((e) => e.$message) as string[]"
+      class="mb-2"
+    >
+    </v-select>
+
+    <v-select
+      v-model="state.account_id"
+      :items="accountOptions"
+      label="Account"
+      required
+      @change="v$.account_id.$touch"
+      @blur="v$.account_id.$touch"
+      :error-messages="v$.account_id.$errors.map((e) => e.$message) as string[]"
       class="mb-2"
     >
     </v-select>
