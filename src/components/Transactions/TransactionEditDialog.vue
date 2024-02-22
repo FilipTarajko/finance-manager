@@ -6,7 +6,6 @@ import { type Ref } from 'vue';
 const isDialogShown: Ref<boolean | undefined> = defineModel()
 
 defineProps<{
-  hideDialog: Function,
   transaction: TransactionWithCategoryData | null
 }>()
 
@@ -22,7 +21,7 @@ defineProps<{
       <v-card-text>
         <TransactionForm
           :transaction="transaction"
-          :hideDialog="hideDialog"
+          :hideDialog="() => { isDialogShown = false }"
         >
         </TransactionForm>
       </v-card-text>

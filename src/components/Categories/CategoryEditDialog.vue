@@ -6,7 +6,6 @@ import type { Ref } from 'vue';
 const isDialogShown: Ref<boolean | undefined> = defineModel()
 
 defineProps<{
-  hideDialog: Function,
   editedCategory: Category | null
 }>()
 </script>
@@ -20,7 +19,7 @@ defineProps<{
       <v-card-text>
         <CategoryForm
           :category="editedCategory"
-          :hideDialog="hideDialog"
+          :hideDialog="() => { isDialogShown = false }"
         > </CategoryForm>
       </v-card-text>
     </v-card>

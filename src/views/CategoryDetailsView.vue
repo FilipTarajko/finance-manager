@@ -16,20 +16,12 @@ function showCategoryDialog() {
   isCategoryDialogShown.value = true
 }
 
-function hideCategoryDialog() {
-  isCategoryDialogShown.value = false
-}
-
 let isTransactionDialogShown = ref(false)
 let dialogTransaction: Ref<TransactionWithCategoryData | null> = ref(null)
 
 function showTransactionDialog(transaction: TransactionWithCategoryData) {
   dialogTransaction.value = transaction
   isTransactionDialogShown.value = true
-}
-
-function hideTransactionDialog() {
-  isTransactionDialogShown.value = false
 }
 
 const category = computed(() => {
@@ -51,7 +43,6 @@ const transactionsInCategory = computed(() => {
       ></CategoryComponent>
       <CategoryEditDialog
         v-model="isCategoryDialogShown"
-        :hideDialog="hideCategoryDialog"
         :editedCategory="category"
       >
       </CategoryEditDialog>
@@ -62,7 +53,6 @@ const transactionsInCategory = computed(() => {
       ></TransactionList>
       <TransactionEditDialog
         v-model=isTransactionDialogShown
-        :hideDialog="hideTransactionDialog"
         :transaction="dialogTransaction"
       ></TransactionEditDialog>
     </template>

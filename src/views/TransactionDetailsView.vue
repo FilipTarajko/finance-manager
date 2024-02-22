@@ -16,10 +16,6 @@ function showDialog(transaction: TransactionWithCategoryData) {
   isDialogShown.value = true
 }
 
-function hideDialog() {
-  isDialogShown.value = false
-}
-
 const transaction = computed(() => {
   return categoriesStore.transactions.find((e) => e.id == (route.params.transactionId as any))
 })
@@ -35,7 +31,6 @@ const transaction = computed(() => {
       ></TransactionComponent>
       <TransactionEditDialog
         v-model=isDialogShown
-        :hideDialog="hideDialog"
         :transaction="transaction"
       ></TransactionEditDialog>
     </template>

@@ -14,10 +14,6 @@ function showDialog(transaction: TransactionWithCategoryData) {
   dialogTransaction.value = transaction
   isDialogShown.value = true
 }
-
-function hideDialog() {
-  isDialogShown.value = false
-}
 </script>
 
 <template>
@@ -31,7 +27,6 @@ function hideDialog() {
     ></TransactionList>
     <TransactionEditDialog
       v-model=isDialogShown
-      :hideDialog="hideDialog"
       :transaction="dialogTransaction"
     ></TransactionEditDialog>
   </main>

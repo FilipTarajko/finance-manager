@@ -18,10 +18,6 @@ function showTransactionDialog(transaction: TransactionWithCategoryData) {
   isTransactionDialogShown.value = true
 }
 
-function hideTransactionDialog() {
-  isTransactionDialogShown.value = false
-}
-
 function getAccountIdsByCurrency(currency: Currency) {
   return accountsStore.accounts.filter(acc => acc.currency_id == currency.id).map(e => e.id)
 }
@@ -57,7 +53,6 @@ function getAccountNamesByCurrency(currency: Currency) {
   </ul>
   <TransactionEditDialog
     v-model=isTransactionDialogShown
-    :hideDialog="hideTransactionDialog"
     :transaction="dialogTransaction"
   ></TransactionEditDialog>
 </template>

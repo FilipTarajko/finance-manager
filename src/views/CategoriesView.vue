@@ -14,10 +14,6 @@ function showDialog(category: Category) {
   editedCategory.value = category
   isDialogShown.value = true
 }
-
-function hideDialog() {
-  isDialogShown.value = false
-}
 </script>
 
 <template>
@@ -42,7 +38,6 @@ function hideDialog() {
     </div>
     <CategoryEditDialog
       v-model="isDialogShown"
-      :hideDialog="hideDialog"
       :editedCategory="editedCategory"
     >
     </CategoryEditDialog>
