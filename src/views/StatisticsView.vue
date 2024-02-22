@@ -3,13 +3,20 @@ import StatisticsTable from '@/components/Statistics/StatisticsTable.vue'
 import StatisticsCharts from '@/components/Statistics/StatisticsCharts.vue'
 import { computed, ref } from 'vue';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
+import { watch } from 'vue';
 const currenciesStore = useCurrenciesStore();
 
 let minTimestamp = ref(0)
 let maxTimestamp = ref(new Date().getTime())
 let filter_currency_id = ref(null)
 let displayed_currency = ref(currenciesStore.getCurrencyById(currenciesStore.default_currency_id)!)
-// let is_changing_currency_to_match_filter = ref(true)
+let is_changing_currency_to_match_filter = ref(true)
+
+watch([filter_currency_id, is_changing_currency_to_match_filter], () => {
+  if (is_changing_currency_to_match_filter.value && filter_currency_id.value != null) {
+    displayed_currency.value = currenciesStore.getCurrencyById(filter_currency_id.value)!
+  }
+})
 
 const filterCurrencyOptions = computed(() => {
   return [{
@@ -62,11 +69,11 @@ const displayCurrencyOptions = computed(() => {
     label="Display currency"
     class="mb-2"
   ></v-select>
-  <!-- <v-switch
+  <v-switch
     v-model="is_changing_currency_to_match_filter"
     label="Automatically change display currency to match filter currency"
   >
-  </v-switch> -->
+  </v-switch>
 
   <StatisticsTable
     :minTimestamp="minTimestamp"
