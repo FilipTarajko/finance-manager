@@ -13,6 +13,7 @@ const accountsStore = useAccountsStore();
 import defaultCurrencies from './defaultCurrencies.json'
 
 export const useCurrenciesStore = defineStore('currenciesStore', () => {
+  const default_currency_id: Ref<number> = useStorage('default_currency_id', 1)
   const currencies: Ref<Currency[]> = useStorage('currencies', defaultCurrencies)
 
   function getCurrencyNameByAccount(account: Account) {
@@ -26,6 +27,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
 
   return {
     currencies,
+    default_currency_id,
     getCurrencyNameByAccount,
     getCurrencyNameByTransaction
   }

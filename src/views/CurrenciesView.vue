@@ -33,22 +33,31 @@ function getAccountNamesByCurrency(currency: Currency) {
 </script>
 
 <template>
-  <h1>Accounts</h1>
+  <h1>Currencies</h1>
   <ul>
     <li
-      v-for="currency in  currenciesStore.currencies"
+      v-for="currency in currenciesStore.currencies"
       :key="currency.id"
     >
       {{ currency }}, accounts: {{ getAccountNamesByCurrency(currency).join(", ") }}
+      <div
+        v-if="currenciesStore.default_currency_id == currency.id"
+        style="color: green;"
+      >primary currency</div>
       <TransactionList
         :showDialog="showTransactionDialog"
         :transactions="categoriesStore.transactions.filter(elem => getAccountIdsByCurrency(currency).includes(elem.account_id))"
       >
       </TransactionList>
+      balance:
+      {{ categoriesStore.transactions.filter(elem =>
+        getAccountIdsByCurrency(currency).includes(elem.account_id)).reduce((sum, e) => e.amount + sum, 0).toFixed(2) }}
+      {{ currency.name }}
     </li>
   </ul>
   <TransactionEditDialog
     v-model=isTransactionDialogShown
     :hideDialog="hideTransactionDialog"
     :transaction="dialogTransaction"
-></TransactionEditDialog></template>
+  ></TransactionEditDialog>
+</template>
