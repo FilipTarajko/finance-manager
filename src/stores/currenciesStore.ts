@@ -16,6 +16,10 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
   const default_currency_id: Ref<number> = useStorage('default_currency_id', 1)
   const currencies: Ref<Currency[]> = useStorage('currencies', defaultCurrencies)
 
+  function getCurrencyById(id: number) {
+    return currencies.value.find(e => e.id == id)
+  }
+
   function getCurrencyNameByAccount(account: Account) {
     return currencies.value.find(e => e.id == account.currency_id)?.name
   }
@@ -39,6 +43,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     default_currency_id,
     getCurrencyNameByAccount,
     getCurrencyNameByTransaction,
-    getCurrencyByTransaction
+    getCurrencyByTransaction,
+    getCurrencyById
   }
 })
