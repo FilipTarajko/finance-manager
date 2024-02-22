@@ -82,6 +82,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     const index = category.transactions.findIndex((e) => e.id == transaction.id)
     category.transactions[index].amount = newState.amount
     category.transactions[index].name = newState.name
+    category.transactions[index].account_id = newState.account_id
     if (newState.category != category) {
       const movedTransaction = category.transactions.splice(index, 1)[0];
       newState.category.transactions.push(movedTransaction);
