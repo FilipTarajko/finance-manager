@@ -4,10 +4,13 @@ import PieChart from '@/components/Statistics/PieChart.vue'
 import BarChart from '@/components/Statistics/BarChart.vue'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
+import { useCurrenciesStore } from '@/stores/currenciesStore'
+const currenciesStore = useCurrenciesStore()
 
 const props = defineProps<{
   minTimestamp: number,
-  maxTimestamp: number
+  maxTimestamp: number,
+  currency_id: number | null
 }>();
 
 function preparePieGraphInput(array: []) {
@@ -20,6 +23,8 @@ const transactionInstancesByCategory = computed(() => {
     let value = category.transactions
       .filter(transaction => transaction.timestamp <= props.maxTimestamp)
       .filter(transaction => transaction.timestamp >= props.minTimestamp)
+      .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
+
       .length
     value && array.push({ name: category.name, value, color: category.color })
   })
@@ -33,6 +38,7 @@ const transactionGainsByCategory = computed(() => {
       .filter((e) => e.amount > 0)
       .filter(transaction => transaction.timestamp <= props.maxTimestamp)
       .filter(transaction => transaction.timestamp >= props.minTimestamp)
+      .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
       .reduce((sum, elem) => sum + elem.amount, 0)
       .toFixed(2)
     value != "0.00" && array.push({ name: category.name, value, color: category.color })
@@ -47,6 +53,7 @@ const transactionLossesByCategory = computed(() => {
       .filter((e) => e.amount < 0)
       .filter(transaction => transaction.timestamp <= props.maxTimestamp)
       .filter(transaction => transaction.timestamp >= props.minTimestamp)
+      .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
       .reduce((sum, elem) => sum - elem.amount, 0)
       .toFixed(2)
     value != "0.00" && array.push({ name: category.name, value, color: category.color })
@@ -59,6 +66,9 @@ const transactionsChronologicallyForBarChart = computed(() => {
   for (let i = 0; i < categoriesStore.transactions.length; i++) {
     let elem = categoriesStore.transactions[i];
     if (elem.timestamp < props.minTimestamp || elem.timestamp > props.maxTimestamp) {
+      continue;
+    }
+    if (props.currency_id != null && currenciesStore.getCurrencyByTransaction(elem)?.id != props.currency_id) {
       continue;
     }
     array.push({

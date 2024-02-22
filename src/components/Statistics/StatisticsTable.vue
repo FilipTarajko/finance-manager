@@ -1,35 +1,42 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '@/stores/categoriesStore'
+import { useCurrenciesStore } from '@/stores/currenciesStore'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
+const currenciesStore = useCurrenciesStore()
 
 const props = defineProps<{
   minTimestamp: number,
-  maxTimestamp: number
+  maxTimestamp: number,
+  currency_id: number | null
 }>();
 
 const positiveTransactionsInstances = computed(() => {
   return categoriesStore.positiveTransactions
     .filter(transaction => transaction.timestamp <= props.maxTimestamp)
     .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
     .length
 })
 const positiveTransactionsGains = computed(() => {
   return categoriesStore.positiveTransactions
     .filter(transaction => transaction.timestamp <= props.maxTimestamp)
     .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
     .reduce((sum, elem) => sum + elem.amount, 0)
 })
 const negativeTransactionsInstances = computed(() => {
   return categoriesStore.negativeTransactions
     .filter(transaction => transaction.timestamp <= props.maxTimestamp)
     .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
     .length
 })
 const negativeTransactionsLosses = computed(() => {
   return categoriesStore.negativeTransactions
     .filter(transaction => transaction.timestamp <= props.maxTimestamp)
     .filter(transaction => transaction.timestamp >= props.minTimestamp)
+    .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
     .reduce((sum, elem) => sum + elem.amount, 0)
 })
 const totalTransactionsInstances = computed(() => {
