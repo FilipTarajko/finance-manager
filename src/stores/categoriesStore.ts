@@ -28,7 +28,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
     })
   }
 
-  function editExistingCategory(category: Category, newState: any) {
+  function editExistingCategory(category: Category, newState: { name: string, color: string, icon: string }) {
     category.name = newState.name
     category.color = newState.color
     category.icon = newState.icon

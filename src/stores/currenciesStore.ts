@@ -38,6 +38,14 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     return account && getCurrencyByAccount(account)
   }
 
+  function getAccountIdsByCurrency(currency: Currency) {
+    return accountsStore.accounts.filter(acc => acc.currency_id == currency.id).map(e => e.id)
+  }
+
+  function getAccountNamesByCurrency(currency: Currency) {
+    return accountsStore.accounts.filter(acc => acc.currency_id == currency.id).map(e => e.name)
+  }
+
   function editExistingCurrency(currency: Currency, newState: { name: string, value: number }) {
     const index = currencies.value.findIndex((e) => e.id == currency.id)
     currencies.value[index].name = newState.name
@@ -65,6 +73,9 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
         accountsStore.deleteAccount(account)
       }
     })
+    if (currency.id == default_currency_id.value) {
+      default_currency_id.value = currencies.value[0].id
+    }
   }
 
 
@@ -77,6 +88,8 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     getCurrencyById,
     editExistingCurrency,
     createAndAddCurrency,
-    deleteCurrency
+    deleteCurrency,
+    getAccountIdsByCurrency,
+    getAccountNamesByCurrency
   }
 })

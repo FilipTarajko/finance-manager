@@ -1,28 +1,31 @@
 <script setup lang="ts">
-import type { Category, TransactionWithCategoryData } from '@/types/types'
 import { useCategoriesStore } from "@/stores/categoriesStore"
 const categoriesStore = useCategoriesStore();
-const accountsStore = useAccountsStore();
 import TransactionList from "@/components/Transactions/TransactionList.vue"
 import type { Currency } from '@/types/types';
-import { useAccountsStore } from '@/stores/accountsStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
+import { computed } from "vue";
 const currenciesStore = useCurrenciesStore();
 
-defineProps<{
+const props = defineProps<{
   currency: Currency,
   showCurrencyDialog: Function,
   showTransactionDialog: Function
 }>()
 
-function getAccountIdsByCurrency(currency: Currency) {
-  return accountsStore.accounts.filter(acc => acc.currency_id == currency.id).map(e => e.id)
-}
+const accountIds = computed(() => {
+  return currenciesStore.getAccountIdsByCurrency(props.currency)
+})
 
-function getAccountNamesByCurrency(currency: Currency) {
-  return accountsStore.accounts.filter(acc => acc.currency_id == currency.id).map(e => e.name)
-}
+const transactions = computed(() => {
+  return categoriesStore.transactions
+    .filter(elem => accountIds.value.includes(elem.account_id))
+})
 
+const balance = computed(() => {
+  return transactions.value
+    .reduce((sum, e) => e.amount + sum, 0).toFixed(2)
+})
 </script>
 
 
@@ -36,12 +39,13 @@ function getAccountNamesByCurrency(currency: Currency) {
     style="color: yellow"
   />
   <v-icon
-    @click="currenciesStore.deleteCurrency(currency)"
+    @click="currenciesStore.currencies.length != 1 && currenciesStore.deleteCurrency(currency)"
     icon="mdi-delete"
     aria-label="delete currency"
-    style="color: red"
+    :style="'color: ' + (currenciesStore.currencies.length != 1 ? 'red' : 'gray')"
+    :disabled="currenciesStore.currencies.length == 1"
   />
-  <br>Accounts: {{ getAccountNamesByCurrency(currency).join(", ") || '-' }}
+  <br>Accounts: {{ currenciesStore.getAccountNamesByCurrency(currency).join(", ") || '-' }}
   <br>
   <div
     v-if="currenciesStore.default_currency_id == currency.id"
@@ -49,11 +53,10 @@ function getAccountNamesByCurrency(currency: Currency) {
   >primary currency</div>
   <TransactionList
     :showDialog="showTransactionDialog"
-    :transactions="categoriesStore.transactions.filter(elem => getAccountIdsByCurrency(currency).includes(elem.account_id))"
+    :transactions="transactions"
   >
   </TransactionList>
   balance:
-  {{ categoriesStore.transactions.filter(elem =>
-    getAccountIdsByCurrency(currency).includes(elem.account_id)).reduce((sum, e) => e.amount + sum, 0).toFixed(2) }}
+  {{ balance }}
   {{ currency.name }}
 </template>

@@ -3,15 +3,26 @@ import { useCategoriesStore } from '@/stores/categoriesStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
 import { useAccountsStore } from '@/stores/accountsStore';
 import TransactionList from "@/components/Transactions/TransactionList.vue"
+import type { Account } from '@/types/types';
+import { computed } from 'vue';
 const categoriesStore = useCategoriesStore();
 const currenciesStore = useCurrenciesStore();
 const accountsStore = useAccountsStore();
 
-defineProps<{
-  account: any,
+const props = defineProps<{
+  account: Account,
   showTransactionDialog: Function,
   showAccountDialog: Function
 }>()
+
+const transactions = computed(() => {
+  return categoriesStore.transactions.filter(elem => elem.account_id == props.account.id)
+})
+
+const balance = computed(() => {
+  return transactions.value.
+    reduce((sum, e) => e.amount + sum, 0).toFixed(2)
+})
 </script>
 
 <template>
@@ -32,12 +43,10 @@ defineProps<{
   <br />
   <TransactionList
     :showDialog="showTransactionDialog"
-    :transactions="categoriesStore.transactions.filter(elem => elem.account_id == account.id)"
+    :transactions="transactions"
   >
   </TransactionList>
   balance:
-  {{ categoriesStore.transactions.filter(elem => elem.account_id == account.id).reduce((sum, e) => e.amount + sum,
-    0).toFixed(2)
-  }}
+  {{ balance }}
   {{ currenciesStore.getCurrencyNameByAccount(account) }}
 </template>

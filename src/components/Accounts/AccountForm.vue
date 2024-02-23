@@ -17,7 +17,7 @@ const isEditing = computed(() => {
 
 const initialState = {
   name: props?.account?.name ?? '',
-  currency_id: props?.account?.currency_id ?? 0
+  currency_id: props?.account?.currency_id ?? currenciesStore.default_currency_id
 }
 
 const state = reactive({
