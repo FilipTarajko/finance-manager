@@ -47,10 +47,20 @@ const balance = computed(() => {
   />
   <br>Accounts: {{ currenciesStore.getAccountNamesByCurrency(currency).join(", ") || '-' }}
   <br>
-  <div
+  <v-btn
     v-if="currenciesStore.default_currency_id == currency.id"
+    class="mb-1"
     style="color: green;"
-  >primary currency</div>
+    disabled
+  >default currency</v-btn>
+  <v-btn
+    v-else
+    class="mb-1"
+    @click="currenciesStore.default_currency_id = currency.id"
+  >
+    set as default
+  </v-btn>
+  <br>
   <TransactionList
     :showDialog="showTransactionDialog"
     :transactions="transactions"
