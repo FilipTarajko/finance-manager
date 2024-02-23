@@ -30,9 +30,14 @@ export const useAccountsStore = defineStore('accountsStore', () => {
     })
   }
 
+  function deleteAccount(account: Account) {
+    accounts.value = accounts.value.filter(elem => elem != account)
+  }
+
   return {
     accounts,
     editExistingAccount,
-    createAndAddAccount
+    createAndAddAccount,
+    deleteAccount
   }
 })

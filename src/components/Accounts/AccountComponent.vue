@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '@/stores/categoriesStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
-// import { useAccountsStore } from '@/stores/accountsStore';
+import { useAccountsStore } from '@/stores/accountsStore';
 import TransactionList from "@/components/Transactions/TransactionList.vue"
 const categoriesStore = useCategoriesStore();
 const currenciesStore = useCurrenciesStore();
-// const accountsStore = useAccountsStore();
+const accountsStore = useAccountsStore();
 
 defineProps<{
   account: any,
@@ -23,12 +23,12 @@ defineProps<{
     aria-label="edit category"
     style="color: yellow"
   />
-  <!-- <v-icon
+  <v-icon
     @click="accountsStore.deleteAccount(account)"
     icon="mdi-delete"
     aria-label="delete category"
     style="color: red"
-  /> -->
+  />
   <br />
   <TransactionList
     :showDialog="showTransactionDialog"
