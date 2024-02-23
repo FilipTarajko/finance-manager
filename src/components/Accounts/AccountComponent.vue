@@ -20,13 +20,13 @@ defineProps<{
     @click="showAccountDialog(account)"
     class="edit-button"
     icon="mdi-pencil"
-    aria-label="edit category"
+    aria-label="edit account"
     style="color: yellow"
   />
   <v-icon
     @click="accountsStore.deleteAccount(account)"
     icon="mdi-delete"
-    aria-label="delete category"
+    aria-label="delete account"
     style="color: red"
   />
   <br />

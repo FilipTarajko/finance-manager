@@ -35,12 +35,12 @@ function getAccountNamesByCurrency(currency: Currency) {
     aria-label="edit currency"
     style="color: yellow"
   />
-  <!-- <v-icon
+  <v-icon
     @click="currenciesStore.deleteCurrency(currency)"
     icon="mdi-delete"
     aria-label="delete currency"
     style="color: red"
-  /> -->
+  />
   <br>Accounts: {{ getAccountNamesByCurrency(currency).join(", ") || '-' }}
   <br>
   <div

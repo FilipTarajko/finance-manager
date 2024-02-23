@@ -58,6 +58,16 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     })
   }
 
+  function deleteCurrency(currency: Currency) {
+    currencies.value = currencies.value.filter(elem => elem != currency)
+    accountsStore.accounts.forEach(account => {
+      if (account.currency_id == currency.id) {
+        accountsStore.deleteAccount(account)
+      }
+    })
+  }
+
+
   return {
     currencies,
     default_currency_id,
@@ -66,6 +76,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     getCurrencyByTransaction,
     getCurrencyById,
     editExistingCurrency,
-    createAndAddCurrency
+    createAndAddCurrency,
+    deleteCurrency
   }
 })
