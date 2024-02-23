@@ -11,6 +11,7 @@ const currenciesStore = useCurrenciesStore();
 
 defineProps<{
   currency: Currency,
+  showCurrencyDialog: Function,
   showTransactionDialog: Function
 }>()
 
@@ -27,6 +28,19 @@ function getAccountNamesByCurrency(currency: Currency) {
 
 <template>
   {{ currency }}
+  <v-icon
+    @click="showCurrencyDialog(currency)"
+    class="edit-button"
+    icon="mdi-pencil"
+    aria-label="edit currency"
+    style="color: yellow"
+  />
+  <!-- <v-icon
+    @click="currenciesStore.deleteCurrency(currency)"
+    icon="mdi-delete"
+    aria-label="delete currency"
+    style="color: red"
+  /> -->
   <br>Accounts: {{ getAccountNamesByCurrency(currency).join(", ") || '-' }}
   <br>
   <div
