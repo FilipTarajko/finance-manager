@@ -6,6 +6,9 @@ import { required, maxLength, helpers } from '@vuelidate/validators'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
 const currenciesStore = useCurrenciesStore()
 
+import { useAccountsStore } from '@/stores/accountsStore'
+const accountsStore = useAccountsStore()
+
 const props = defineProps(['currency', 'hideDialog'])
 
 const isEditing = computed(() => {
@@ -14,24 +17,30 @@ const isEditing = computed(() => {
 
 const initialState = {
   name: props?.currency?.name ?? '',
-  value: props?.currency?.value ?? 0
+  value: props?.currency?.value ?? 0,
+  create_account: false
 }
 
 const state = reactive({
   name: initialState.name,
-  value: initialState.value
+  value: initialState.value,
+  create_account: initialState.create_account
 })
-
 
 const mustBeUniqueCurrencyName = (value: string) =>
   !currenciesStore.currencies.map((elem) => elem.name).includes(value) ||
   currenciesStore.currencies.includes(props?.currency)
 
+const canCreateAccountOfThisName = (value: string) => {
+  return !state.create_account || !accountsStore.accounts.map((acc) => acc.name).includes(value)
+}
+
 const rules = {
   name: {
     required,
     maxLength: maxLength(20),
-    mustBeUniqueCurrencyName: helpers.withMessage('Must be unique', mustBeUniqueCurrencyName)
+    mustBeUniqueCurrencyName: helpers.withMessage('Must be unique', mustBeUniqueCurrencyName),
+    mustBeUniqueAccountName: helpers.withMessage('There is already an account of this name', canCreateAccountOfThisName)
   },
   value: { required }
 }
@@ -56,7 +65,7 @@ function editOrCreateAndAddCurrency() {
     currenciesStore.editExistingCurrency(props.currency, state)
     props.hideDialog()
   } else {
-    currenciesStore.createAndAddCurrency(state.name, state.value)
+    currenciesStore.createAndAddCurrency(state.name, state.value, state.create_account)
   }
 }
 </script>
@@ -89,6 +98,15 @@ function editOrCreateAndAddCurrency() {
       class="mb-2"
     >
     </v-text-field>
+
+    <v-switch
+      v-if="!isEditing"
+      style="margin-top: -1rem;"
+      @change="v$.name.$touch"
+      v-model="state.create_account"
+      label="Also create account of the same name"
+    >
+    </v-switch>
 
     <v-btn
       class="me-4"

@@ -52,7 +52,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     currencies.value[index].value = newState.value
   }
 
-  function createAndAddCurrency(name: string, value: number) {
+  function createAndAddCurrency(name: string, value: number, create_account: boolean) {
     let nextId = 0
     for (const elem of currencies.value) {
       if (nextId <= elem.id) {
@@ -64,6 +64,9 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
       name,
       value
     })
+    if (create_account) {
+      accountsStore.createAndAddAccount(name, nextId)
+    }
   }
 
   function deleteCurrency(currency: Currency) {
