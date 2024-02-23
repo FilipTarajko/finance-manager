@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useAccountsStore } from '@/stores/accountsStore';
 import { useCategoriesStore } from '@/stores/categoriesStore'
+import { useCurrenciesStore } from '@/stores/currenciesStore'
 const categoriesStore = useCategoriesStore()
+const accountsStore = useAccountsStore()
+const currenciesStore = useCurrenciesStore()
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -10,7 +14,14 @@ function getLocale() {
 }
 
 function exportData() {
-  let text = JSON.stringify(categoriesStore.categories)
+  let dataToExport = {
+    categories: categoriesStore.categories,
+    default_account_id: accountsStore.default_account_id,
+    default_currency_id: currenciesStore.default_currency_id,
+    accounts: accountsStore.accounts,
+    currencies: currenciesStore.currencies
+  }
+  let text = JSON.stringify(dataToExport)
   let filename = 'exported data ' + new Date().toLocaleString(getLocale()) + '.json'
 
   const element = document.createElement('a')

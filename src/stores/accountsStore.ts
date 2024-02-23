@@ -6,10 +6,10 @@ import {
 import { useStorage } from '@vueuse/core'
 import defaultAccounts from './defaultAccounts.json'
 import { useCategoriesStore } from "@/stores/categoriesStore"
-const categoriesStore = useCategoriesStore();
 
 
 export const useAccountsStore = defineStore('accountsStore', () => {
+  const categoriesStore = useCategoriesStore();
   const default_account_id: Ref<number> = useStorage('default_account_id', 0)
   const accounts: Ref<Account[]> = useStorage('accounts', defaultAccounts)
 
