@@ -38,12 +38,34 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     return account && getCurrencyByAccount(account)
   }
 
+  function editExistingCurrency(currency: Currency, newState: { name: string, value: number }) {
+    const index = currencies.value.findIndex((e) => e.id == currency.id)
+    currencies.value[index].name = newState.name
+    currencies.value[index].value = newState.value
+  }
+
+  function createAndAddCurrency(name: string, value: number) {
+    let nextId = 0
+    for (const elem of currencies.value) {
+      if (nextId <= elem.id) {
+        nextId = elem.id + 1
+      }
+    }
+    currencies.value.push({
+      id: nextId,
+      name,
+      value
+    })
+  }
+
   return {
     currencies,
     default_currency_id,
     getCurrencyNameByAccount,
     getCurrencyNameByTransaction,
     getCurrencyByTransaction,
-    getCurrencyById
+    getCurrencyById,
+    editExistingCurrency,
+    createAndAddCurrency
   }
 })

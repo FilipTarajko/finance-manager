@@ -5,6 +5,7 @@ import type { TransactionWithCategoryData } from '@/types/types';
 import { ref, type Ref } from 'vue';
 import TransactionEditDialog from "@/components/Transactions/TransactionEditDialog.vue"
 import CurrencyComponent from "@/components/Currencies/CurrencyComponent.vue"
+import CurrencyForm from "@/components/Currencies/CurrencyForm.vue"
 
 function showTransactionDialog(transaction: TransactionWithCategoryData) {
   dialogTransaction.value = transaction
@@ -18,6 +19,7 @@ let dialogTransaction: Ref<TransactionWithCategoryData | null> = ref(null)
 
 <template>
   <h1>Currencies</h1>
+  <CurrencyForm></CurrencyForm>
   <ul>
     <li
       v-for="currency in currenciesStore.currencies"
@@ -32,4 +34,5 @@ let dialogTransaction: Ref<TransactionWithCategoryData | null> = ref(null)
   <TransactionEditDialog
     v-model=isTransactionDialogShown
     :transaction="dialogTransaction"
-></TransactionEditDialog></template>
+  ></TransactionEditDialog>
+</template>

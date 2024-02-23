@@ -26,7 +26,9 @@ function getAccountNamesByCurrency(currency: Currency) {
 
 
 <template>
-  {{ currency }}, accounts: {{ getAccountNamesByCurrency(currency).join(", ") }}
+  {{ currency }}
+  <br>Accounts: {{ getAccountNamesByCurrency(currency).join(", ") || '-' }}
+  <br>
   <div
     v-if="currenciesStore.default_currency_id == currency.id"
     style="color: green;"
