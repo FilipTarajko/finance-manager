@@ -28,6 +28,6 @@ defineProps<{
     </v-card>
   </template>
   <template v-else>
-    There are no transactions
+    There are no transactions<br>
   </template>
 </template>

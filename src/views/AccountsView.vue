@@ -2,6 +2,7 @@
 import { useAccountsStore } from '@/stores/accountsStore';
 import TransactionEditDialog from "@/components/Transactions/TransactionEditDialog.vue"
 import AccountComponent from "@/components/Accounts/AccountComponent.vue"
+import AccountForm from "@/components/Accounts/AccountForm.vue"
 import { ref, type Ref } from 'vue';
 import type { TransactionWithCategoryData } from '@/types/types';
 const accountsStore = useAccountsStore();
@@ -17,6 +18,7 @@ function showTransactionDialog(transaction: TransactionWithCategoryData) {
 
 <template>
   <h1>Accounts</h1>
+  <AccountForm></AccountForm>
   <ul>
     <li
       v-for="account in accountsStore.accounts"

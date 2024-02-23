@@ -13,6 +13,7 @@ defineProps<{
 
 <template>
   {{ account }}
+  <br />
   <TransactionList
     :showDialog="showTransactionDialog"
     :transactions="categoriesStore.transactions.filter(elem => elem.account_id == account.id)"
