@@ -35,11 +35,26 @@ const balance = computed(() => {
     style="color: yellow"
   />
   <v-icon
-    @click="accountsStore.deleteAccount(account)"
+    @click="accountsStore.accounts.length != 1 && accountsStore.deleteAccount(account)"
     icon="mdi-delete"
     aria-label="delete account"
-    style="color: red"
+    :style="'color: ' + (accountsStore.accounts.length != 1 ? 'red' : 'gray')"
+    :disabled="accountsStore.accounts.length == 1"
   />
+  <br>
+  <v-btn
+    v-if="accountsStore.default_account_id == account.id"
+    class="mb-1"
+    style="color: green;"
+    disabled
+  >default account</v-btn>
+  <v-btn
+    v-else
+    class="mb-1"
+    @click="accountsStore.default_account_id = account.id"
+  >
+    set as default
+  </v-btn>
   <br />
   <TransactionList
     :showDialog="showTransactionDialog"

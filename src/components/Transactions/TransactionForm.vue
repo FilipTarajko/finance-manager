@@ -7,7 +7,7 @@ import { useCategoriesStore } from '@/stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
 
 import { useAccountsStore } from '@/stores/accountsStore'
-const accountStore = useAccountsStore()
+const accountsStore = useAccountsStore()
 
 import { useCurrenciesStore } from '@/stores/currenciesStore'
 const currenciesStore = useCurrenciesStore()
@@ -22,7 +22,7 @@ const initialState = {
   name: props?.transaction?.name ?? '',
   amount: props?.transaction?.amount ?? null,
   category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name) ?? null,
-  account_id: props?.transaction?.account_id ?? 0
+  account_id: props?.transaction?.account_id ?? accountsStore.default_account_id
 }
 
 const state = reactive({
@@ -56,7 +56,7 @@ const categoryOptions = computed(() => {
 })
 
 const accountOptions = computed(() => {
-  return accountStore.accounts.map((acc) => {
+  return accountsStore.accounts.map((acc) => {
     return {
       title: acc.name + " ("
         + currenciesStore.getCurrencyNameByAccount(acc) + ")",

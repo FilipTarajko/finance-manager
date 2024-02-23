@@ -10,6 +10,7 @@ const categoriesStore = useCategoriesStore();
 
 
 export const useAccountsStore = defineStore('accountsStore', () => {
+  const default_account_id: Ref<number> = useStorage('default_account_id', 0)
   const accounts: Ref<Account[]> = useStorage('accounts', defaultAccounts)
 
   function editExistingAccount(account: Account, newState: { name: string, currency_id: number }) {
@@ -41,12 +42,16 @@ export const useAccountsStore = defineStore('accountsStore', () => {
         }
       })
     })
+    if (account.id == default_account_id.value) {
+      default_account_id.value = accounts.value[0].id
+    }
   }
 
   return {
     accounts,
     editExistingAccount,
     createAndAddAccount,
-    deleteAccount
+    deleteAccount,
+    default_account_id
   }
 })
