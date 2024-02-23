@@ -4,8 +4,10 @@ import {
   type Account
 } from '../types/types'
 import { useStorage } from '@vueuse/core'
-
 import defaultAccounts from './defaultAccounts.json'
+import { useCategoriesStore } from "@/stores/categoriesStore"
+const categoriesStore = useCategoriesStore();
+
 
 export const useAccountsStore = defineStore('accountsStore', () => {
   const accounts: Ref<Account[]> = useStorage('accounts', defaultAccounts)
@@ -32,6 +34,13 @@ export const useAccountsStore = defineStore('accountsStore', () => {
 
   function deleteAccount(account: Account) {
     accounts.value = accounts.value.filter(elem => elem != account)
+    categoriesStore.categories.forEach(category => {
+      category.transactions.forEach(transaction => {
+        if (transaction.account_id == account.id) {
+          categoriesStore.deleteTransaction(transaction)
+        }
+      })
+    })
   }
 
   return {
