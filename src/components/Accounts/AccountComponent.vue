@@ -1,18 +1,34 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '@/stores/categoriesStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
+// import { useAccountsStore } from '@/stores/accountsStore';
 import TransactionList from "@/components/Transactions/TransactionList.vue"
 const categoriesStore = useCategoriesStore();
 const currenciesStore = useCurrenciesStore();
+// const accountsStore = useAccountsStore();
 
 defineProps<{
   account: any,
-  showTransactionDialog: Function
+  showTransactionDialog: Function,
+  showAccountDialog: Function
 }>()
 </script>
 
 <template>
   {{ account }}
+  <v-icon
+    @click="showAccountDialog(account)"
+    class="edit-button"
+    icon="mdi-pencil"
+    aria-label="edit category"
+    style="color: yellow"
+  />
+  <!-- <v-icon
+    @click="accountsStore.deleteAccount(account)"
+    icon="mdi-delete"
+    aria-label="delete category"
+    style="color: red"
+  /> -->
   <br />
   <TransactionList
     :showDialog="showTransactionDialog"
