@@ -25,7 +25,6 @@ function tryImportFromFile() {
 }
 
 function tryImportData(stringToImport: string) {
-  console.time("tryImportData")
   const result = tryParseTextIntoData(stringToImport)
   if ("data" in result) {
     categoriesStore.categories = result.data.categories;
@@ -35,11 +34,9 @@ function tryImportData(stringToImport: string) {
     currenciesStore.currencies = result.data.currencies;
 
     console.log(`imported data with:\n${result.data.categories.length} categories\n${result.data.accounts.length} accounts\n${result.data.currencies.length} currencies`)
-    console.log("import data with: TODO")
   } else {
     console.error(result?.errorMessage || "unknown error")
   }
-  console.timeEnd("tryImportData")
 }
 </script>
 
@@ -178,7 +175,12 @@ export function tryParseTextIntoData(stringToImport: string) {
     if ('errorMessage' in currencies) {
       return currencies
     }
-
+    if (currencies.data.filter(currency=>currency.id == default_currency_id.data).length != 1) {
+      return {errorMessage: 'invalid relationship between default_currency_id and currencies'}
+    }
+    if (accounts.data.filter(account=>account.id == default_account_id.data).length != 1) {
+      return {errorMessage: 'invalid relationship between default_account_id and accounts'}
+    }
     return {
       data: {
         categories: categories.data,
