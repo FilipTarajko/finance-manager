@@ -3,11 +3,15 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useTheme } from 'vuetify'
 
 const theme = useTheme()
-theme.global.name.value = 'dark'
 
-// function toggleTheme() {
-//   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-// }
+if (window.matchMedia("(prefers-color-scheme: dark)")) {
+  toggleTheme()
+}
+
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+  document.getElementsByTagName('html')[0].classList.toggle("dark")
+}
 
 </script>
 
@@ -19,7 +23,7 @@ theme.global.name.value = 'dark'
     <RouterLink class="routerLink" :to="{ name: 'currencies' }">Currencies</RouterLink>
     <RouterLink class="routerLink" :to="{ name: 'statistics' }">Statistics</RouterLink>
     <RouterLink class="routerLink" :to="{ name: 'importexport' }">Import/Export</RouterLink>
-    <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
+    <v-btn @click="toggleTheme">toggle theme</v-btn>
   </nav>
 
   <RouterView />
