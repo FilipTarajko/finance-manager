@@ -78,6 +78,7 @@ function editOrCreateAndAddCategory() {
     categoriesStore.createAndAddCategory(state.name, state.color, icons[state.iconIndex])
   }
 }
+
 </script>
 
 <template>
@@ -122,7 +123,6 @@ function editOrCreateAndAddCategory() {
         v-for="icon in icons"
         :key="icon"
         :aria-label="'select icon: ' + icon.split('mdi-')[1].replace('-', ' ')"
-        :style="'background-color: ' + (icon == icons[state.iconIndex] ? '#444;' : '#212121')"
       >
         <v-icon
           size="25"
