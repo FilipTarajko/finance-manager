@@ -11,6 +11,9 @@ const currenciesStore = useCurrenciesStore()
 let fileData = ref([])
 let showJsonOnly = ref(true)
 const textFieldData = ref("")
+let snackbarText = ref('snackbar text')
+let isSnackbarDisplayed = ref(false)
+let snackbarColor = ref("red")
 
 function tryImportFromFile() {
   const file = fileData.value[0];
@@ -26,16 +29,23 @@ function tryImportFromFile() {
 
 function tryImportData(stringToImport: string) {
   const result = tryParseTextIntoData(stringToImport)
-  if ("data" in result) {
+  if ("data" in result && result.data) {
     categoriesStore.categories = result.data.categories;
     accountsStore.default_account_id = result.data.default_account_id;
     currenciesStore.default_currency_id = result.data.default_currency_id;
     accountsStore.accounts = result.data.accounts;
     currenciesStore.currencies = result.data.currencies;
 
-    console.log(`imported data with:\n${result.data.categories.length} categories\n${result.data.accounts.length} accounts\n${result.data.currencies.length} currencies`)
+    snackbarColor.value = 'green'
+    snackbarText.value = `Imported data with \n${result.data.categories.length} categories, \n${result.data.accounts.length} accounts, and \n${result.data.currencies.length} currencies.`
+    isSnackbarDisplayed.value = true;
   } else {
-    console.error(result?.errorMessage || "unknown error")
+    // @ts-ignore
+    let errorMessage = result?.errorMessage ?? "unknown error"
+    snackbarColor.value = 'red'
+    snackbarText.value = errorMessage
+    isSnackbarDisplayed.value = true;
+
   }
 }
 </script>
@@ -175,11 +185,11 @@ export function tryParseTextIntoData(stringToImport: string) {
     if ('errorMessage' in currencies) {
       return currencies
     }
-    if (currencies.data.filter(currency=>currency.id == default_currency_id.data).length != 1) {
-      return {errorMessage: 'invalid relationship between default_currency_id and currencies'}
+    if (currencies.data.filter(currency => currency.id == default_currency_id.data).length != 1) {
+      return { errorMessage: 'invalid relationship between default_currency_id and currencies' }
     }
-    if (accounts.data.filter(account=>account.id == default_account_id.data).length != 1) {
-      return {errorMessage: 'invalid relationship between default_account_id and accounts'}
+    if (accounts.data.filter(account => account.id == default_account_id.data).length != 1) {
+      return { errorMessage: 'invalid relationship between default_account_id and accounts' }
     }
     return {
       data: {
@@ -232,4 +242,24 @@ export function tryParseTextIntoData(stringToImport: string) {
       variant="outlined"
     > import from text </v-btn>
   </v-card>
+  <div class="text-center ma-2">
+    <v-btn @click="isSnackbarDisplayed = true">
+      Open Snackbar
+    </v-btn>
+    <v-snackbar
+      :color=snackbarColor
+      v-model="isSnackbarDisplayed"
+    >
+      {{ snackbarText }}
+
+      <template v-slot:actions>
+        <v-btn
+          variant="text"
+          @click="isSnackbarDisplayed = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
 </template>
