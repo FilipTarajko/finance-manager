@@ -8,6 +8,9 @@ import { useCurrenciesStore } from '@/stores/currenciesStore'
 import type { Currency, TransactionWithoutCategoryData } from '@/types/types';
 const currenciesStore = useCurrenciesStore()
 
+import { useThemeStore } from "@/stores/themeStore"
+const themeStore = useThemeStore()
+
 const props = defineProps<{
   minTimestamp: number,
   maxTimestamp: number,
@@ -96,7 +99,10 @@ const transactionsChronologicallyForBarChart = computed(() => {
 
 <template>
   <h2>charts</h2>
-  <template v-if="categoriesStore.transactions.length">
+  <div
+    v-if="categoriesStore.transactions.length"
+    :key="themeStore.darkTheme.toString()"
+  >
     <PieChart
       class="chart"
       name="transactions by category"
@@ -118,7 +124,7 @@ const transactionsChronologicallyForBarChart = computed(() => {
       subtitle="with zoom"
       :input="transactionsChronologicallyForBarChart"
     />
-  </template>
+  </div>
   <template v-else>
 
     There are no

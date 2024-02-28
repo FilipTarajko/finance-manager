@@ -5,6 +5,8 @@ import { PieChart } from 'echarts/charts'
 import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { provide, computed } from 'vue'
+import { useThemeStore } from '@/stores/themeStore'
+const themeStore = useThemeStore()
 
 const props = defineProps({
   name: {
@@ -18,10 +20,10 @@ const props = defineProps({
 
 use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent])
 
-provide(THEME_KEY, 'dark')
+provide(THEME_KEY, themeStore.darkTheme ? "dark" : "light")
 const option = computed(() => {
   return {
-    backgroundColor: '#212121',
+    backgroundColor: themeStore.darkTheme ? '#212121' : "#ffffff",
     title: {
       text: props.name,
       top: 12,

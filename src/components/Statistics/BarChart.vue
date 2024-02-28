@@ -6,6 +6,8 @@ import { CanvasRenderer } from 'echarts/renderers'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { computed, provide } from 'vue'
 import { DataZoomComponent } from 'echarts/components'
+import { useThemeStore } from '@/stores/themeStore'
+const themeStore = useThemeStore()
 
 const props = defineProps({
   name: {
@@ -23,10 +25,10 @@ const props = defineProps({
 
 use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer, DataZoomComponent])
 
-provide(THEME_KEY, 'dark')
+provide(THEME_KEY, themeStore.darkTheme ? "dark" : "light")
 const option = computed(() => {
   return {
-    backgroundColor: '#212121',
+    backgroundColor: themeStore.darkTheme ? '#212121' : "#ffffff",
     title: {
       text: props.name,
       left: 'center',
@@ -80,7 +82,8 @@ const option = computed(() => {
         //   color: '#ffffff'
         // },
         // @ts-ignore
-        data: props.input.map((e) => e)
+        data: props.input.map((e) => e),
+        animationDuration: 0
       }
     ]
   }

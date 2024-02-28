@@ -5,8 +5,10 @@ import { useTheme } from 'vuetify'
 
 
 export const useThemeStore = defineStore('themeStore', () => {
-  const darkTheme: Ref<boolean> = useStorage('darkTheme', true)
-  console.log(window.matchMedia("(prefers-color-scheme: dark)"))
+  const darkTheme: Ref<boolean> = useStorage('darkTheme', () => {
+    // by default, use preferred color scheme
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+  })
 
   const theme = useTheme()
   applyTheme()

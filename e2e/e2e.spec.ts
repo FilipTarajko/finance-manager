@@ -23,7 +23,7 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('Name').click();
   await page.getByLabel('Name').fill('qwertyuiop');
   await page.locator('.v-slider-track__background').click();
-  await page.locator('button:nth-child(7)').first().click();
+  await page.getByLabel('select icon: gift').click();
   await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('qwertyuiop')).toBeVisible();
 });
