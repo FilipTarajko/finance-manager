@@ -36,5 +36,6 @@ export type Account = {
 export type Currency = {
   id: number
   name: string
+  base_currency_id: number
   value: number
 }

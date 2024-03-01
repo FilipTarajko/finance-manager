@@ -2,16 +2,16 @@
   {
     "id": 0,
     "name": "cash",
-    "currency_id": 1
+    "currency_id": 2
   },
   {
     "id": 1,
     "name": "debit card",
-    "currency_id": 1
+    "currency_id": 2
   },
   {
     "id": 2,
     "name": "dollars account",
-    "currency_id": 0
+    "currency_id": 1
   }
 ]

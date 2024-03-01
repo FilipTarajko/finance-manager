@@ -18,12 +18,14 @@ const isEditing = computed(() => {
 const initialState = {
   name: props?.currency?.name ?? '',
   value: props?.currency?.value ?? 0,
+  base_currency_id: props?.currency?.base_currency_id ?? currenciesStore.default_currency_id,
   create_account: false
 }
 
 const state = reactive({
   name: initialState.name,
   value: initialState.value,
+  base_currency_id: initialState.base_currency_id,
   create_account: initialState.create_account
 })
 
@@ -35,12 +37,19 @@ const canCreateAccountOfThisName = (value: string) => {
   return !state.create_account || !accountsStore.accounts.map((acc) => acc.name).includes(value)
 }
 
+const mustBeExistingCurrencyId = (value: number) =>
+  currenciesStore.currencies.filter(currency => currency.id == value).length === 1
+
 const rules = {
   name: {
     required,
     maxLength: maxLength(20),
     mustBeUniqueCurrencyName: helpers.withMessage('Must be unique', mustBeUniqueCurrencyName),
     mustBeUniqueAccountName: helpers.withMessage('There is already an account of this name', canCreateAccountOfThisName)
+  },
+  base_currency_id: {
+    required,
+    mustBeExistingCurrencyId: helpers.withMessage('Base currency must exist', mustBeExistingCurrencyId)
   },
   value: { required }
 }
@@ -65,9 +74,18 @@ function editOrCreateAndAddCurrency() {
     currenciesStore.editExistingCurrency(props.currency, state)
     props.hideDialog()
   } else {
-    currenciesStore.createAndAddCurrency(state.name, state.value, state.create_account)
+    currenciesStore.createAndAddCurrency(state.name, state.base_currency_id, state.value, state.create_account)
   }
 }
+
+const baseCurrencyOptions = computed(() => {
+  return currenciesStore.currencies.map((currency) => {
+    return {
+      title: currency.name,
+      value: currency.id
+    }
+  })
+})
 </script>
 
 <template>
@@ -86,7 +104,7 @@ function editOrCreateAndAddCurrency() {
       class="mb-1"
     >
     </v-text-field>
-
+    <!-- :label="'Value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'" -->
     <v-text-field
       v-model.number="state.value"
       type="number"
@@ -98,6 +116,17 @@ function editOrCreateAndAddCurrency() {
       class="mb-2"
     >
     </v-text-field>
+    <v-select
+      v-model="state.base_currency_id"
+      :items="baseCurrencyOptions"
+      label="Based on currency"
+      required
+      @change="v$.base_currency_id.$touch"
+      @blur="v$.base_currency_id.$touch"
+      :error-messages="v$.base_currency_id.$errors.map((e) => e.$message) as string[]"
+      class="mb-2"
+    >
+    </v-select>
 
     <v-switch
       v-if="!isEditing"

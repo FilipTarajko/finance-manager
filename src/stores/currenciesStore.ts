@@ -12,10 +12,14 @@ import { useAccountsStore } from './accountsStore'
 import defaultCurrencies from './defaultCurrencies.json'
 
 export const useCurrenciesStore = defineStore('currenciesStore', () => {
-  const default_currency_id: Ref<number> = useStorage('default_currency_id', 0)
+  const default_currency_id: Ref<number> = useStorage('default_currency_id', 1)
   const currencies: Ref<Currency[]> = useStorage('currencies', defaultCurrencies)
 
   const accountsStore = useAccountsStore();
+
+  function getDefaultCurrency(): Currency {
+    return currencies.value.find(currency => currency.id == default_currency_id.value)!
+  }
 
   function getCurrencyById(id: number) {
     return currencies.value.find(e => e.id == id)
@@ -53,8 +57,8 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     currencies.value[index].value = newState.value
   }
 
-  function createAndAddCurrency(name: string, value: number, create_account: boolean) {
-    let nextId = 0
+  function createAndAddCurrency(name: string, base_currency_id: number, value: number, create_account: boolean) {
+    let nextId = 1
     for (const elem of currencies.value) {
       if (nextId <= elem.id) {
         nextId = elem.id + 1
@@ -63,6 +67,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     currencies.value.push({
       id: nextId,
       name,
+      base_currency_id,
       value
     })
     if (create_account) {
@@ -94,6 +99,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     createAndAddCurrency,
     deleteCurrency,
     getAccountIdsByCurrency,
-    getAccountNamesByCurrency
+    getAccountNamesByCurrency,
+    getDefaultCurrency
   }
 })

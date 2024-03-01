@@ -30,7 +30,10 @@ const balance = computed(() => {
 
 
 <template>
-  {{ currency }}
+  {{ currency.name }}
+  <!-- equal to {{ currency.value }}{{ currenciesStore.getDefaultCurrency().name }},  -->
+  (based on {{ currenciesStore.getCurrencyById(currency.base_currency_id)!.name }}),
+  value: {{ currency.value }}
   <v-icon
     @click="showCurrencyDialog(currency)"
     class="edit-button"
