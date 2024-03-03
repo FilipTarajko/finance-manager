@@ -17,14 +17,14 @@ const isEditing = computed(() => {
 
 const initialState = {
   name: props?.currency?.name ?? '',
-  value: props?.currency?.value ?? 0,
+  value_relative_to_base: props?.currency?.value_relative_to_base ?? 0,
   base_currency_id: props?.currency?.base_currency_id ?? currenciesStore.default_currency_id,
   create_account: false
 }
 
 const state = reactive({
   name: initialState.name,
-  value: initialState.value,
+  value_relative_to_base: initialState.value_relative_to_base,
   base_currency_id: initialState.base_currency_id,
   create_account: initialState.create_account
 })
@@ -51,7 +51,7 @@ const rules = {
     required,
     mustBeExistingCurrencyId: helpers.withMessage('Base currency must exist', mustBeExistingCurrencyId)
   },
-  value: { required }
+  value_relative_to_base: { required }
 }
 
 const v$ = useVuelidate(rules, state)
@@ -74,7 +74,7 @@ function editOrCreateAndAddCurrency() {
     currenciesStore.editExistingCurrency(props.currency, state)
     props.hideDialog()
   } else {
-    currenciesStore.createAndAddCurrency(state.name, state.base_currency_id, state.value, state.create_account)
+    currenciesStore.createAndAddCurrency(state.name, state.base_currency_id, state.value_relative_to_base, state.create_account)
   }
 }
 
@@ -104,15 +104,15 @@ const baseCurrencyOptions = computed(() => {
       class="mb-1"
     >
     </v-text-field>
-    <!-- :label="'Value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'" -->
     <v-text-field
-      v-model.number="state.value"
+      v-model.number="state.value_relative_to_base"
       type="number"
-      label="Value"
+      :label="'Value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'"
       required
-      @input="v$.value.$touch"
-      @blur="v$.value.$touch"
-      :error-messages="v$.value.$errors.map((e) => e.$message) as string[]"
+      :disabled="props?.currency?.id == currenciesStore.default_currency_id"
+      @input="v$.value_relative_to_base.$touch"
+      @blur="v$.value_relative_to_base.$touch"
+      :error-messages="v$.value_relative_to_base.$errors.map((e) => e.$message) as string[]"
       class="mb-2"
     >
     </v-text-field>
@@ -121,6 +121,7 @@ const baseCurrencyOptions = computed(() => {
       :items="baseCurrencyOptions"
       label="Based on currency"
       required
+      :disabled="props?.currency?.id == currenciesStore.default_currency_id"
       @change="v$.base_currency_id.$touch"
       @blur="v$.base_currency_id.$touch"
       :error-messages="v$.base_currency_id.$errors.map((e) => e.$message) as string[]"

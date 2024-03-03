@@ -51,13 +51,31 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     return accountsStore.accounts.filter(acc => acc.currency_id == currency.id).map(e => e.name)
   }
 
-  function editExistingCurrency(currency: Currency, newState: { name: string, value: number }) {
-    const index = currencies.value.findIndex((e) => e.id == currency.id)
-    currencies.value[index].name = newState.name
-    currencies.value[index].value = newState.value
+  function updateValueOfDependentCurrencies(currency: Currency) {
+    for (let i=0; i<currencies.value.length; i++) {
+      let currencyToUpdate = currencies.value[i];
+      if (currencyToUpdate.base_currency_id == currency.id) {
+        currencyToUpdate.value_relative_to_default = currency.value_relative_to_default * currencyToUpdate.value_relative_to_base;
+        updateValueOfDependentCurrencies(currencyToUpdate);
+      }
+    }
   }
 
-  function createAndAddCurrency(name: string, base_currency_id: number, value: number, create_account: boolean) {
+  function editExistingCurrency(currency: Currency, newState: { name: string, value_relative_to_base: number, base_currency_id: number }) {
+    const index = currencies.value.findIndex((e) => e.id == currency.id)
+    let editedCurrency = currencies.value[index]
+    let oldValueRelativeToBose = editedCurrency.value_relative_to_base;
+    editedCurrency.name = newState.name
+    editedCurrency.value_relative_to_base = newState.value_relative_to_base
+    editedCurrency.base_currency_id = newState.base_currency_id
+    editedCurrency.value_relative_to_default = editedCurrency.value_relative_to_base * getCurrencyById(editedCurrency.base_currency_id).value_relative_to_default;
+
+    if (oldValueRelativeToBose != editedCurrency.value_relative_to_base){
+      updateValueOfDependentCurrencies(editedCurrency);
+    }
+  }
+
+  function createAndAddCurrency(name: string, base_currency_id: number, value_relative_to_base: number, create_account: boolean) {
     let nextId = 1
     for (const elem of currencies.value) {
       if (nextId <= elem.id) {
@@ -68,7 +86,8 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
       id: nextId,
       name,
       base_currency_id,
-      value
+      value_relative_to_base,
+      value_relative_to_default: value_relative_to_base * getCurrencyById(base_currency_id)!.value_relative_to_default
     })
     if (create_account) {
       accountsStore.createAndAddAccount(name, nextId)

@@ -31,9 +31,15 @@ const balance = computed(() => {
 
 <template>
   {{ currency.name }}
-  <!-- equal to {{ currency.value }}{{ currenciesStore.getDefaultCurrency().name }},  -->
-  (based on {{ currenciesStore.getCurrencyById(currency.base_currency_id)!.name }}),
-  value: {{ currency.value }}
+  <template v-if="currency.id != currenciesStore.default_currency_id">
+    <template v-if="currency.base_currency_id != currenciesStore.default_currency_id">
+      (equal to {{ currency.value_relative_to_default }}{{ currenciesStore.getDefaultCurrency().name }},
+    </template>
+
+    <template v-else>(</template>defined as {{ currency.value_relative_to_base }}{{
+    currenciesStore.getCurrencyById(currency.base_currency_id)!.name
+  }})
+  </template>
   <v-icon
     @click="showCurrencyDialog(currency)"
     class="edit-button"
@@ -50,7 +56,7 @@ const balance = computed(() => {
   />
   <br>Accounts: {{ currenciesStore.getAccountNamesByCurrency(currency).join(", ") || '-' }}
   <br>
-  <v-btn
+  <!-- <v-btn
     v-if="currenciesStore.default_currency_id == currency.id"
     class="mb-1"
     style="color: green;"
@@ -63,7 +69,7 @@ const balance = computed(() => {
   >
     set as default
   </v-btn>
-  <br>
+  <br> -->
   <TransactionList
     :showDialog="showTransactionDialog"
     :transactions="transactions"

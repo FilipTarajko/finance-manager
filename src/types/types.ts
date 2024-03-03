@@ -37,5 +37,6 @@ export type Currency = {
   id: number
   name: string
   base_currency_id: number
-  value: number
+  value_relative_to_base: number
+  value_relative_to_default: number
 }

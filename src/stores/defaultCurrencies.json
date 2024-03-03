@@ -3,12 +3,21 @@
     "id": 1,
     "name": "usd",
     "base_currency_id": 1,
-    "value": 1.0
+    "value_relative_to_base": 1.0,
+    "value_relative_to_default": 1.0
   },
   {
     "id": 2,
     "name": "pln",
     "base_currency_id": 1,
-    "value": 0.25
+    "value_relative_to_base": 0.25,
+    "value_relative_to_default": 0.25
+  },
+  {
+    "id": 3,
+    "name": "10pln prepaid",
+    "base_currency_id": 2,
+    "value_relative_to_base": 10,
+    "value_relative_to_default": 2.5
   }
 ]
