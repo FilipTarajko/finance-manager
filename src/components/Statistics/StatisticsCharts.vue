@@ -25,7 +25,7 @@ function preparePieGraphInput(array: []) {
 function recalculateTransactionToMatchCurrency(transaction: TransactionWithoutCategoryData, target_currency: Currency) {
   return {
     ...transaction,
-    amount: transaction.amount * currenciesStore.getCurrencyByTransaction(transaction)?.value! / target_currency.value
+    amount: transaction.amount * currenciesStore.getCurrencyByTransaction(transaction)?.value_relative_to_default! / target_currency.value_relative_to_default
   }
 }
 

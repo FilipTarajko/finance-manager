@@ -68,7 +68,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     editedCurrency.name = newState.name
     editedCurrency.value_relative_to_base = newState.value_relative_to_base
     editedCurrency.base_currency_id = newState.base_currency_id
-    editedCurrency.value_relative_to_default = editedCurrency.value_relative_to_base * getCurrencyById(editedCurrency.base_currency_id).value_relative_to_default;
+    editedCurrency.value_relative_to_default = editedCurrency.value_relative_to_base * getCurrencyById(editedCurrency.base_currency_id)!.value_relative_to_default;
 
     if (oldValueRelativeToBose != editedCurrency.value_relative_to_base){
       updateValueOfDependentCurrencies(editedCurrency);

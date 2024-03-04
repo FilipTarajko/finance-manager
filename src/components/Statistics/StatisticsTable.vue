@@ -20,7 +20,7 @@ const commonFilteredTransactions = computed(() => {
     .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
     .map(elem => ({
       ...elem,
-      amount: elem.amount * currenciesStore.getCurrencyByTransaction(elem)?.value! / props.display_currency.value
+      amount: elem.amount * currenciesStore.getCurrencyByTransaction(elem)?.value_relative_to_default! / props.display_currency.value_relative_to_default
     }))
 })
 
