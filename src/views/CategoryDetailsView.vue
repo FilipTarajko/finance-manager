@@ -4,9 +4,9 @@ import TransactionEditDialog from '@/components/Transactions/TransactionEditDial
 import TransactionList from '@/components/Transactions/TransactionList.vue'
 import CategoryComponent from '@/components/Categories/CategoryComponent.vue'
 import { useCategoriesStore } from '../stores/categoriesStore'
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import type { TransactionWithCategoryData } from '@/types/types'
+import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
 
@@ -16,13 +16,7 @@ function showCategoryDialog() {
   isCategoryDialogShown.value = true
 }
 
-let isTransactionDialogShown = ref(false)
-let dialogTransaction: Ref<TransactionWithCategoryData | null> = ref(null)
-
-function showTransactionDialog(transaction: TransactionWithCategoryData) {
-  dialogTransaction.value = transaction
-  isTransactionDialogShown.value = true
-}
+let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
 const category = computed(() => {
   return categoriesStore.categories.find((e) => e.id == (route.params.categoryId as any))
@@ -56,6 +50,7 @@ const transactionsInCategory = computed(() => {
         :transaction="dialogTransaction"
       ></TransactionEditDialog>
     </template>
+
     <template v-else> Category not found </template>
   </main>
 </template>

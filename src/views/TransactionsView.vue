@@ -2,18 +2,12 @@
 import TransactionForm from '@/components/Transactions/TransactionForm.vue'
 import TransactionList from '@/components/Transactions/TransactionList.vue'
 import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
-import { ref, type Ref } from 'vue'
-import type { TransactionWithCategoryData } from '@/types/types'
 import { useCategoriesStore } from '@/stores/categoriesStore';
 const categoriesStore = useCategoriesStore()
 
-let isDialogShown = ref(false)
-let dialogTransaction: Ref<TransactionWithCategoryData | null> = ref(null)
+import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
+let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
-function showDialog(transaction: TransactionWithCategoryData) {
-  dialogTransaction.value = transaction
-  isDialogShown.value = true
-}
 </script>
 
 <template>
@@ -23,10 +17,10 @@ function showDialog(transaction: TransactionWithCategoryData) {
     <h2>transaction history</h2>
     <TransactionList
       :transactions="categoriesStore.transactions"
-      :showDialog="showDialog"
+      :showDialog="showTransactionDialog"
     ></TransactionList>
     <TransactionEditDialog
-      v-model=isDialogShown
+      v-model=isTransactionDialogShown
       :transaction="dialogTransaction"
     ></TransactionEditDialog>
   </main>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCurrenciesStore } from '@/stores/currenciesStore';
 const currenciesStore = useCurrenciesStore();
-import type { Currency, TransactionWithCategoryData } from '@/types/types';
+import type { Currency } from '@/types/types';
 import { ref, type Ref } from 'vue';
 import TransactionEditDialog from "@/components/Transactions/TransactionEditDialog.vue"
 import CurrencyComponent from "@/components/Currencies/CurrencyComponent.vue"
@@ -15,14 +15,8 @@ function showCurrencyDialog(currency: Currency) {
   isCurrencyDialogShown.value = true
 }
 
-
-let isTransactionDialogShown = ref(false)
-let dialogTransaction: Ref<TransactionWithCategoryData | null> = ref(null)
-function showTransactionDialog(transaction: TransactionWithCategoryData) {
-  dialogTransaction.value = transaction
-  isTransactionDialogShown.value = true
-}
-
+import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
+let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
 </script>
 
