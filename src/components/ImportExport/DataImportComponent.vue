@@ -8,6 +8,10 @@ const categoriesStore = useCategoriesStore()
 const accountsStore = useAccountsStore()
 const currenciesStore = useCurrenciesStore()
 
+const isDataBeingProcessed = defineModel()
+const isLoadingFromFile: Ref<boolean> = ref(false)
+const isLoadingFromText: Ref<boolean> = ref(false)
+
 const fileData = ref([])
 const showJsonOnly = ref(true)
 const textFieldData = ref("")
@@ -16,6 +20,8 @@ const isSnackbarDisplayed = ref(false)
 const snackbarColor = ref("red")
 
 function tryImportFromFile() {
+  isDataBeingProcessed.value = true
+  isLoadingFromFile.value = true
   const file = fileData.value[0];
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -25,6 +31,16 @@ function tryImportFromFile() {
     }
   };
   reader.readAsText(file);
+  isDataBeingProcessed.value = false
+  isLoadingFromFile.value = false
+}
+
+function tryImportFromText(stringToImport: string) {
+  isDataBeingProcessed.value = true
+  isLoadingFromText.value = true
+  tryImportData(stringToImport)
+  isDataBeingProcessed.value = false
+  isLoadingFromText.value = false
 }
 
 function tryImportData(stringToImport: string) {
@@ -45,7 +61,6 @@ function tryImportData(stringToImport: string) {
     snackbarColor.value = 'red'
     snackbarText.value = errorMessage
     isSnackbarDisplayed.value = true;
-
   }
 }
 </script>
@@ -99,10 +114,14 @@ export function isCurrency(obj: unknown): obj is Currency {
     typeof obj === 'object' &&
     'id' in obj &&
     typeof obj.id === 'number' &&
+    'base_currency_id' in obj &&
+    typeof obj.base_currency_id === 'number' &&
     'name' in obj &&
     typeof obj.name === 'string' &&
-    'value' in obj &&
-    typeof obj.value === 'number'
+    'value_relative_to_base' in obj &&
+    typeof obj.value_relative_to_base === 'number' &&
+    'value_relative_to_default' in obj &&
+    typeof obj.value_relative_to_default === 'number'
   );
 }
 
@@ -223,7 +242,8 @@ export function tryParseTextIntoData(stringToImport: string) {
     ></v-file-input>
     <v-btn
       class="mb-4"
-      :disabled="!fileData.length"
+      :disabled="!fileData.length || isDataBeingProcessed"
+      :loading="isLoadingFromFile"
       @click="tryImportFromFile()"
       variant="outlined"
     > import from file</v-btn>
@@ -237,15 +257,13 @@ export function tryParseTextIntoData(stringToImport: string) {
     </v-textarea>
     <v-btn
       class="mb-4"
-      :disabled="!textFieldData"
-      @click="tryImportData(textFieldData)"
+      :disabled="!textFieldData || isDataBeingProcessed"
+      :loading="isLoadingFromText"
+      @click="tryImportFromText(textFieldData)"
       variant="outlined"
     > import from text </v-btn>
   </v-card>
   <div class="text-center ma-2">
-    <v-btn @click="isSnackbarDisplayed = true">
-      Open Snackbar
-    </v-btn>
     <v-snackbar
       :color=snackbarColor
       v-model="isSnackbarDisplayed"

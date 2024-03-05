@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useAccountsStore } from '@/stores/accountsStore';
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
 const categoriesStore = useCategoriesStore()
 const accountsStore = useAccountsStore()
 const currenciesStore = useCurrenciesStore()
+
+const isDataBeingProcessed = defineModel()
+const isExportingToFile: Ref<boolean> = ref(false)
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -14,6 +18,8 @@ function getLocale() {
 }
 
 function exportData() {
+  isDataBeingProcessed.value = true
+  isExportingToFile.value = true
   const dataToExport = {
     categories: categoriesStore.categories,
     default_account_id: accountsStore.default_account_id,
@@ -31,6 +37,8 @@ function exportData() {
   document.body.appendChild(element)
   element.click()
   document.body.removeChild(element)
+  isDataBeingProcessed.value = false
+  isExportingToFile.value = false
 }
 </script>
 
@@ -40,6 +48,8 @@ function exportData() {
     <v-btn
       class="mb-4 mt-4"
       @click="exportData"
+      :disabled="isDataBeingProcessed"
+      :loading="isExportingToFile"
       variant="outlined"
     > export data </v-btn>
   </v-card>
