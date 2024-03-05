@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { type Ref, ref } from 'vue';
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import { useAccountsStore } from '@/stores/accountsStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
@@ -8,16 +8,19 @@ const categoriesStore = useCategoriesStore()
 const accountsStore = useAccountsStore()
 const currenciesStore = useCurrenciesStore()
 
-const isDataBeingProcessed = defineModel()
+const isDataBeingProcessed: Ref<boolean | undefined> = defineModel()
 const isLoadingFromFile: Ref<boolean> = ref(false)
 const isLoadingFromText: Ref<boolean> = ref(false)
 
 const fileData = ref([])
 const showJsonOnly = ref(true)
 const textFieldData = ref("")
-const snackbarText = ref('snackbar text')
-const isSnackbarDisplayed = ref(false)
-const snackbarColor = ref("red")
+
+const emit = defineEmits(['snackbar'])
+
+function emitSnackbarMessage(color: string, text: string) {
+  emit('snackbar', color, text)
+}
 
 function tryImportFromFile() {
   isDataBeingProcessed.value = true
@@ -52,15 +55,11 @@ function tryImportData(stringToImport: string) {
     accountsStore.accounts = result.data.accounts;
     currenciesStore.currencies = result.data.currencies;
 
-    snackbarColor.value = 'green'
-    snackbarText.value = `Imported data with \n${result.data.categories.length} categories, \n${result.data.accounts.length} accounts, and \n${result.data.currencies.length} currencies.`
-    isSnackbarDisplayed.value = true;
+    emitSnackbarMessage('green', `Imported data with \n${result.data.categories.length} categories, \n${result.data.accounts.length} accounts, and \n${result.data.currencies.length} currencies.`)
   } else {
     // @ts-ignore
     const errorMessage = result?.errorMessage ?? "unknown error"
-    snackbarColor.value = 'red'
-    snackbarText.value = errorMessage
-    isSnackbarDisplayed.value = true;
+    emitSnackbarMessage('red', errorMessage)
   }
 }
 </script>
@@ -263,21 +262,4 @@ export function tryParseTextIntoData(stringToImport: string) {
       variant="outlined"
     > import from text </v-btn>
   </v-card>
-  <div class="text-center ma-2">
-    <v-snackbar
-      :color=snackbarColor
-      v-model="isSnackbarDisplayed"
-    >
-      {{ snackbarText }}
-
-      <template v-slot:actions>
-        <v-btn
-          variant="text"
-          @click="isSnackbarDisplayed = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </div>
 </template>

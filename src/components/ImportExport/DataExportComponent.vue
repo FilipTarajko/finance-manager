@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { type Ref, ref } from 'vue';
 import { useAccountsStore } from '@/stores/accountsStore';
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
@@ -7,8 +7,14 @@ const categoriesStore = useCategoriesStore()
 const accountsStore = useAccountsStore()
 const currenciesStore = useCurrenciesStore()
 
-const isDataBeingProcessed = defineModel()
+const isDataBeingProcessed: Ref<boolean | undefined> = defineModel()
 const isExportingToFile: Ref<boolean> = ref(false)
+
+const emit = defineEmits(['snackbar'])
+
+function emitSnackbarMessage(color: string, text: string) {
+  emit('snackbar', color, text)
+}
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -36,6 +42,7 @@ function exportData() {
   element.style.display = 'none'
   document.body.appendChild(element)
   element.click()
+  emitSnackbarMessage('green', "File is being downloaded")
   document.body.removeChild(element)
   isDataBeingProcessed.value = false
   isExportingToFile.value = false
