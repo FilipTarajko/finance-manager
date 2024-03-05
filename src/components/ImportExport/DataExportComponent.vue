@@ -14,15 +14,15 @@ function getLocale() {
 }
 
 function exportData() {
-  let dataToExport = {
+  const dataToExport = {
     categories: categoriesStore.categories,
     default_account_id: accountsStore.default_account_id,
     default_currency_id: currenciesStore.default_currency_id,
     accounts: accountsStore.accounts,
     currencies: currenciesStore.currencies
   }
-  let text = JSON.stringify(dataToExport)
-  let filename = 'exported data ' + new Date().toLocaleString(getLocale()) + '.json'
+  const text = JSON.stringify(dataToExport)
+  const filename = 'exported data ' + new Date().toLocaleString(getLocale()) + '.json'
 
   const element = document.createElement('a')
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))

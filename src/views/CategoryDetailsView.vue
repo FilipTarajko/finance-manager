@@ -10,13 +10,13 @@ import { useTransactionFormComposable } from "@/composables/transactionFormCompo
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
 
-let isCategoryDialogShown = ref(false)
+const isCategoryDialogShown = ref(false)
 
 function showCategoryDialog() {
   isCategoryDialogShown.value = true
 }
 
-let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
 const category = computed(() => {
   return categoriesStore.categories.find((e) => e.id == (route.params.categoryId as any))

@@ -30,9 +30,9 @@ function recalculateTransactionToMatchCurrency(transaction: TransactionWithoutCa
 }
 
 const transactionInstancesByCategory = computed(() => {
-  let array: any = []
+  const array: any = []
   categoriesStore.categories.forEach((category) => {
-    let value = category.transactions
+    const value = category.transactions
       .filter(transaction => transaction.timestamp <= props.maxTimestamp)
       .filter(transaction => transaction.timestamp >= props.minTimestamp)
       .filter(transaction => props.filter_currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.filter_currency_id)
@@ -43,9 +43,9 @@ const transactionInstancesByCategory = computed(() => {
 })
 
 const transactionGainsByCategory = computed(() => {
-  let array: any = []
+  const array: any = []
   categoriesStore.categories.forEach((category) => {
-    let value = category.transactions
+    const value = category.transactions
       .filter((e) => e.amount > 0)
       .filter(transaction => transaction.timestamp <= props.maxTimestamp)
       .filter(transaction => transaction.timestamp >= props.minTimestamp)
@@ -58,9 +58,9 @@ const transactionGainsByCategory = computed(() => {
 })
 
 const transactionLossesByCategory = computed(() => {
-  let array: any = []
+  const array: any = []
   categoriesStore.categories.forEach((category) => {
-    let value = category.transactions
+    const value = category.transactions
       .filter((e) => e.amount < 0)
       .filter(transaction => transaction.timestamp <= props.maxTimestamp)
       .filter(transaction => transaction.timestamp >= props.minTimestamp)
@@ -73,9 +73,9 @@ const transactionLossesByCategory = computed(() => {
 })
 
 const transactionsChronologicallyForBarChart = computed(() => {
-  let array: any = []
+  const array: any = []
   for (let i = 0; i < categoriesStore.transactions.length; i++) {
-    let elem = categoriesStore.transactions[i];
+    const elem = categoriesStore.transactions[i];
     if (elem.timestamp < props.minTimestamp || elem.timestamp > props.maxTimestamp) {
       continue;
     }

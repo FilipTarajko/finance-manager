@@ -8,15 +8,15 @@ import CurrencyComponent from "@/components/Currencies/CurrencyComponent.vue"
 import CurrencyEditDialog from "@/components/Currencies/CurrencyEditDialog.vue"
 import CurrencyForm from "@/components/Currencies/CurrencyForm.vue"
 
-let isCurrencyDialogShown = ref(false)
-let dialogCurrency: Ref<Currency | null> = ref(null)
+const isCurrencyDialogShown = ref(false)
+const dialogCurrency: Ref<Currency | null> = ref(null)
 function showCurrencyDialog(currency: Currency) {
   dialogCurrency.value = currency
   isCurrencyDialogShown.value = true
 }
 
 import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
-let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
 </script>
 

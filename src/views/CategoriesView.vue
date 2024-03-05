@@ -7,8 +7,8 @@ import type { Category } from '@/types/types'
 import { ref, type Ref } from 'vue'
 const categoriesStore = useCategoriesStore()
 
-let isDialogShown = ref(false)
-let editedCategory: Ref<Category | null> = ref(null)
+const isDialogShown = ref(false)
+const editedCategory: Ref<Category | null> = ref(null)
 
 function showDialog(category: Category) {
   editedCategory.value = category

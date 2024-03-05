@@ -8,12 +8,12 @@ const categoriesStore = useCategoriesStore()
 const accountsStore = useAccountsStore()
 const currenciesStore = useCurrenciesStore()
 
-let fileData = ref([])
-let showJsonOnly = ref(true)
+const fileData = ref([])
+const showJsonOnly = ref(true)
 const textFieldData = ref("")
-let snackbarText = ref('snackbar text')
-let isSnackbarDisplayed = ref(false)
-let snackbarColor = ref("red")
+const snackbarText = ref('snackbar text')
+const isSnackbarDisplayed = ref(false)
+const snackbarColor = ref("red")
 
 function tryImportFromFile() {
   const file = fileData.value[0];
@@ -41,7 +41,7 @@ function tryImportData(stringToImport: string) {
     isSnackbarDisplayed.value = true;
   } else {
     // @ts-ignore
-    let errorMessage = result?.errorMessage ?? "unknown error"
+    const errorMessage = result?.errorMessage ?? "unknown error"
     snackbarColor.value = 'red'
     snackbarText.value = errorMessage
     isSnackbarDisplayed.value = true;
@@ -160,7 +160,7 @@ export function validateDefaultCurrencyIdFromObject(data: any): { errorMessage: 
 
 export function tryParseTextIntoData(stringToImport: string) {
   try {
-    let parsedData = JSON.parse(stringToImport)
+    const parsedData = JSON.parse(stringToImport)
     if (!("categories" in parsedData && "default_account_id" in parsedData && "default_currency_id" in parsedData && "accounts" in parsedData && "currencies" in parsedData)) {
       return { errorMessage: "data incomplete" }
     }

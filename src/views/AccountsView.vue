@@ -9,10 +9,10 @@ import type { Account } from '@/types/types';
 import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
 const accountsStore = useAccountsStore();
 
-let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
-let isAccountDialogShown = ref(false)
-let dialogAccount: Ref<Account | null> = ref(null)
+const isAccountDialogShown = ref(false)
+const dialogAccount: Ref<Account | null> = ref(null)
 
 function showAccountDialog(account: Account) {
   dialogAccount.value = account

@@ -8,7 +8,7 @@ const categoriesStore = useCategoriesStore()
 const route = useRoute()
 
 import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
-let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
 const transaction = computed(() => {
   return categoriesStore.transactions.find((e) => e.id == (route.params.transactionId as any))

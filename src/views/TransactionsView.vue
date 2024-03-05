@@ -6,7 +6,7 @@ import { useCategoriesStore } from '@/stores/categoriesStore';
 const categoriesStore = useCategoriesStore()
 
 import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
-let { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
 
 </script>
 

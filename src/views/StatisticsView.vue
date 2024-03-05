@@ -6,11 +6,11 @@ import { useCurrenciesStore } from '@/stores/currenciesStore';
 import { watch } from 'vue';
 const currenciesStore = useCurrenciesStore();
 
-let minTimestamp = ref(0)
-let maxTimestamp = ref(new Date().getTime())
-let filter_currency_id = ref(null)
-let displayed_currency = ref(currenciesStore.getCurrencyById(currenciesStore.default_currency_id)!)
-let is_changing_currency_to_match_filter = ref(true)
+const minTimestamp = ref(0)
+const maxTimestamp = ref(new Date().getTime())
+const filter_currency_id = ref(null)
+const displayed_currency = ref(currenciesStore.getCurrencyById(currenciesStore.default_currency_id)!)
+const is_changing_currency_to_match_filter = ref(true)
 
 watch([filter_currency_id, is_changing_currency_to_match_filter], () => {
   if (is_changing_currency_to_match_filter.value && filter_currency_id.value != null) {
