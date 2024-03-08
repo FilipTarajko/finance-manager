@@ -14,12 +14,7 @@ export type Category = {
   transactions: TransactionWithoutCategoryData[]
 }
 
-export type TransactionWithCategoryData = {
-  id: number
-  name: string
-  amount: number
-  timestamp: EpochTimeStamp
-  account_id: number
+export type TransactionWithCategoryData = TransactionWithoutCategoryData & {
   categoryData: {
     name: string
     color: string
