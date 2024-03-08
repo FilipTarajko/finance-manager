@@ -17,6 +17,8 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
 
   const accountsStore = useAccountsStore();
 
+  const currenciesSupportedByApi = ['EUR', 'USD', 'JPY', 'BGN', 'CZK', 'DKK', 'GBP', 'HUF', 'PLN', 'RON', 'SEK', 'CHF', 'ISK', 'NOK', 'HRK', 'RUB', 'TRY', 'AUD', 'BRL', 'CAD', 'CNY', 'HKD', 'IDR', 'ILS', 'INR', 'KRW', 'MXN', 'MYR', 'NZD', 'PHP', 'SGD', 'THB', 'ZAR'];
+
   function getDefaultCurrency(): Currency {
     return currencies.value.find(currency => currency.id == default_currency_id.value)!
   }
@@ -61,7 +63,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     }
   }
 
-  function editExistingCurrency(currency: Currency, newState: { name: string, value_relative_to_base: number, base_currency_id: number }) {
+  function editExistingCurrency(currency: Currency, newState: { name: string, value_relative_to_base: number, base_currency_id: number, api_name: string }) {
     const index = currencies.value.findIndex((e) => e.id == currency.id)
     const editedCurrency = currencies.value[index]
     const oldValueRelativeToBose = editedCurrency.value_relative_to_base;
@@ -69,13 +71,16 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     editedCurrency.value_relative_to_base = newState.value_relative_to_base
     editedCurrency.base_currency_id = newState.base_currency_id
     editedCurrency.value_relative_to_default = editedCurrency.value_relative_to_base * getCurrencyById(editedCurrency.base_currency_id)!.value_relative_to_default;
+    editedCurrency.api_name = newState.api_name
 
     if (oldValueRelativeToBose != editedCurrency.value_relative_to_base){
       updateValueOfDependentCurrencies(editedCurrency);
     }
+
+    updateValuesWithApi()
   }
 
-  function createAndAddCurrency(name: string, base_currency_id: number, value_relative_to_base: number, create_account: boolean) {
+  function createAndAddCurrency(name: string, base_currency_id: number, value_relative_to_base: number, create_account: boolean, api_name: string) {
     let nextId = 1
     for (const elem of currencies.value) {
       if (nextId <= elem.id) {
@@ -87,11 +92,14 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
       name,
       base_currency_id,
       value_relative_to_base,
-      value_relative_to_default: value_relative_to_base * getCurrencyById(base_currency_id)!.value_relative_to_default
+      value_relative_to_default: value_relative_to_base * getCurrencyById(base_currency_id)!.value_relative_to_default,
+      api_name
     })
     if (create_account) {
       accountsStore.createAndAddAccount(name, nextId)
     }
+
+    updateValuesWithApi()
   }
 
   function deleteCurrency(currency: Currency) {
@@ -106,6 +114,25 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     }
   }
 
+  async function updateValuesWithApi(){
+    const updated_currencies_array = []
+    for (let i=0; i<currencies.value.length; i++) {
+      const currency = currencies.value[i]
+      const base_currency = getCurrencyById(currency.base_currency_id)
+      if (currency.api_name && base_currency?.api_name && currency.id != default_currency_id.value) {
+        const response = await fetch(`https://api.vatcomply.com/rates?base=${base_currency.api_name.toUpperCase()}`)
+        const new_value_relative_to_base = (1/(await response.json()).rates[currency.api_name.toUpperCase()])
+        currency.value_relative_to_base = new_value_relative_to_base
+        currency.value_relative_to_default = currency.value_relative_to_base * base_currency.value_relative_to_default
+        updated_currencies_array.push(currency.name)
+      }
+    }
+    if (updated_currencies_array.length) {
+      console.log(`Updated rates of: ${updated_currencies_array}`)
+    } else {
+      console.log(`No currencies were updated`)
+    }
+  }
 
   return {
     currencies,
@@ -119,6 +146,8 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     deleteCurrency,
     getAccountIdsByCurrency,
     getAccountNamesByCurrency,
-    getDefaultCurrency
+    getDefaultCurrency,
+    currenciesSupportedByApi,
+    updateValuesWithApi
   }
 })

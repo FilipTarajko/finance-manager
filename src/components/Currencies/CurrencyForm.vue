@@ -19,19 +19,26 @@ const initialState = {
   name: props?.currency?.name ?? '',
   value_relative_to_base: props?.currency?.value_relative_to_base ?? 0,
   base_currency_id: props?.currency?.base_currency_id ?? currenciesStore.default_currency_id,
-  create_account: false
+  create_account: false,
+  api_name: props?.currency?.api_name ?? ""
 }
 
 const state = reactive({
   name: initialState.name,
   value_relative_to_base: initialState.value_relative_to_base,
   base_currency_id: initialState.base_currency_id,
-  create_account: initialState.create_account
+  create_account: initialState.create_account,
+  api_name: initialState.api_name
 })
 
 const mustBeUniqueCurrencyName = (value: string) =>
   !currenciesStore.currencies.map((elem) => elem.name).includes(value) ||
   currenciesStore.currencies.includes(props?.currency)
+
+const mustBeSupportedByApiOrEmpty = (value: string) => {
+  const value_uppercased = value.toUpperCase()
+  return currenciesStore.currenciesSupportedByApi.includes(value_uppercased) || value === ""
+}
 
 const canCreateAccountOfThisName = (value: string) => {
   return !state.create_account || !accountsStore.accounts.map((acc) => acc.name).includes(value)
@@ -51,7 +58,10 @@ const rules = {
     required,
     mustBeExistingCurrencyId: helpers.withMessage('Base currency must exist', mustBeExistingCurrencyId)
   },
-  value_relative_to_base: { required }
+  value_relative_to_base: { required },
+  api_name: {
+    mustBeSupportedByApiOrEmpty: helpers.withMessage("Must be supported by API or empty", mustBeSupportedByApiOrEmpty)
+  }
 }
 
 const v$ = useVuelidate(rules, state)
@@ -74,7 +84,7 @@ function editOrCreateAndAddCurrency() {
     currenciesStore.editExistingCurrency(props.currency, state)
     props.hideDialog()
   } else {
-    currenciesStore.createAndAddCurrency(state.name, state.base_currency_id, state.value_relative_to_base, state.create_account)
+    currenciesStore.createAndAddCurrency(state.name, state.base_currency_id, state.value_relative_to_base, state.create_account, state.api_name)
   }
 }
 
@@ -105,9 +115,19 @@ const baseCurrencyOptions = computed(() => {
     >
     </v-text-field>
     <v-text-field
+      v-model.uppercased="state.api_name"
+      label="API name (optional)"
+      required
+      @input="v$.api_name.$touch"
+      @blur="v$.api_name.$touch"
+      :error-messages="v$.api_name.$errors.map((e) => e.$message) as string[]"
+      class="mb-1"
+    >
+    </v-text-field>
+    <v-text-field
       v-model.number="state.value_relative_to_base"
       type="number"
-      :label="'Value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'"
+      :label="'Current value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'"
       required
       :disabled="props?.currency?.id == currenciesStore.default_currency_id"
       @input="v$.value_relative_to_base.$touch"

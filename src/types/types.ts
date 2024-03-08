@@ -34,4 +34,5 @@ export type Currency = {
   base_currency_id: number
   value_relative_to_base: number
   value_relative_to_default: number
+  api_name: string
 }

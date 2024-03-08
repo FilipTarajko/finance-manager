@@ -120,7 +120,9 @@ export function isCurrency(obj: unknown): obj is Currency {
     'value_relative_to_base' in obj &&
     typeof obj.value_relative_to_base === 'number' &&
     'value_relative_to_default' in obj &&
-    typeof obj.value_relative_to_default === 'number'
+    typeof obj.value_relative_to_default === 'number' &&
+    'api_name' in obj &&
+    typeof obj.api_name === 'string'
   );
 }
 

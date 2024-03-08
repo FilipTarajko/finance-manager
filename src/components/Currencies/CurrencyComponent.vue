@@ -31,14 +31,21 @@ const balance = computed(() => {
 
 <template>
   {{ currency.name }}
+  <template v-if="currency.api_name != ''">
+    (api name: {{ currency.api_name }})
+  </template>
   <template v-if="currency.id != currenciesStore.default_currency_id">
     <template v-if="currency.base_currency_id != currenciesStore.default_currency_id">
       (equal to {{ currency.value_relative_to_default }}{{ currenciesStore.getDefaultCurrency().name }},
     </template>
+    <template v-else>(</template>
 
-    <template v-else>(</template>defined as {{ currency.value_relative_to_base }}{{
-    currenciesStore.getCurrencyById(currency.base_currency_id)!.name
-  }})
+    <template v-if="!currency.api_name || !currenciesStore.getCurrencyById(currency.base_currency_id)?.api_name">defined as {{
+    currency.value_relative_to_base }}{{ currenciesStore.getCurrencyById(currency.base_currency_id)!.name}})
+    </template>
+    <template v-else>updated with api, today: {{ currency.value_relative_to_base }}{{
+    currenciesStore.getCurrencyById(currency.base_currency_id)!.name}})
+    </template>
   </template>
   <v-icon
     @click="showCurrencyDialog(currency)"
