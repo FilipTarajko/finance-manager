@@ -24,7 +24,9 @@ function showSnackbarMessage(color: string, text: string) {
       :color=snackbarColor
       v-model="isSnackbarDisplayed"
     >
-      {{ snackbarText }}
+      <span style="word-break: break-all;">
+        {{ snackbarText }}
+      </span>
 
       <template v-slot:actions>
         <v-btn
