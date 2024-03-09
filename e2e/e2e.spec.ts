@@ -26,4 +26,8 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('select icon: gift').click();
   await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('qwertyuiop')).toBeVisible();
+
+  // Category - delete
+  await page.locator('li').filter({ hasText: 'qwertyuiop' }).getByLabel('delete category').click();
+  await expect(page.getByText('qwertyuiop')).toBeHidden();
 });
