@@ -26,8 +26,17 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('select icon: gift').click();
   await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('qwertyuiop')).toBeVisible();
+  expect (await page.locator('li').filter({ hasText: 'qwertyuiop' }).innerHTML()).toContain('mdi-gift');
+
+  // Category - update
+  await page.locator('li').filter({ hasText: 'qwertyuiop' }).getByLabel('edit category').click();
+  await page.locator('#editedCategoryNameTextField').click();
+  await page.locator('#editedCategoryNameTextField').fill('editedname');
+  await page.getByRole('dialog').getByLabel('select icon: school').click();
+  await page.getByRole('button', { name: 'update' }).click();
+  expect (await page.locator('li').filter({ hasText: 'editedname' }).innerHTML()).toContain('mdi-school');
 
   // Category - delete
-  await page.locator('li').filter({ hasText: 'qwertyuiop' }).getByLabel('delete category').click();
+  await page.locator('li').filter({ hasText: 'editedname' }).getByLabel('delete category').click();
   await expect(page.getByText('qwertyuiop')).toBeHidden();
 });

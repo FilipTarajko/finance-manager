@@ -88,6 +88,7 @@ function editOrCreateAndAddCategory() {
     style="width: 24rem"
   >
     <v-text-field
+      :id="isEditing ? 'editedCategoryNameTextField' : 'newCategoryNameTextField' "
       v-model="state.name"
       label="Name"
       required
