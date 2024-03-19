@@ -50,7 +50,7 @@ const mustBeExistingCurrencyId = (value: number) =>
 const rules = {
   name: {
     required,
-    maxLength: maxLength(20),
+    maxLength: maxLength(8),
     mustBeUniqueCurrencyName: helpers.withMessage('Must be unique', mustBeUniqueCurrencyName),
     mustBeUniqueAccountName: helpers.withMessage('There is already an account of this name', canCreateAccountOfThisName)
   },

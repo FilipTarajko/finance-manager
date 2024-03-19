@@ -23,18 +23,16 @@ function showAccountDialog(account: Account) {
 <template>
   <h1>Accounts</h1>
   <AccountForm></AccountForm>
-  <ul>
-    <li
-      v-for="account in accountsStore.accounts"
-      :key="account.id"
-    >
-      <AccountComponent
-        :account="account"
-        :showTransactionDialog="showTransactionDialog"
-        :showAccountDialog="showAccountDialog"
-      ></AccountComponent>
-    </li>
-  </ul>
+  <div
+    v-for="account in accountsStore.accounts"
+    :key="account.id"
+  >
+    <AccountComponent
+      :account="account"
+      :showTransactionDialog="showTransactionDialog"
+      :showAccountDialog="showAccountDialog"
+    ></AccountComponent>
+  </div>
   <AccountEditDialog
     v-model=isAccountDialogShown
     :editedAccount="dialogAccount"

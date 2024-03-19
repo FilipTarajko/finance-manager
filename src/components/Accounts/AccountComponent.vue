@@ -26,22 +26,30 @@ const balance = computed(() => {
 </script>
 
 <template>
-  {{ account }}
-  <v-icon
-    @click="showAccountDialog(account)"
-    class="edit-button"
-    icon="mdi-pencil"
-    aria-label="edit account"
-    style="color: yellow"
-  />
-  <v-icon
-    @click="accountsStore.accounts.length != 1 && accountsStore.deleteAccount(account)"
-    icon="mdi-delete"
-    aria-label="delete account"
-    :style="'color: ' + (accountsStore.accounts.length != 1 ? 'red' : 'gray')"
-    :disabled="accountsStore.accounts.length == 1"
-  />
-  <br>
+  <div class="mt-12" style="font-size: 1.2rem; display: flex; flex-direction: row; justify-content: space-between;">
+    <div>
+      {{ account.name }}
+      - balance:
+      {{ balance }}
+      {{ currenciesStore.getCurrencyNameByAccount(account) }}
+    </div>
+    <div>
+      <v-icon
+        @click="showAccountDialog(account)"
+        class="edit-button"
+        icon="mdi-pencil"
+        aria-label="edit account"
+        style="color: yellow"
+      />
+      <v-icon
+        @click="accountsStore.accounts.length != 1 && accountsStore.deleteAccount(account)"
+        icon="mdi-delete"
+        aria-label="delete account"
+        :style="'color: ' + (accountsStore.accounts.length != 1 ? 'red' : 'gray')"
+        :disabled="accountsStore.accounts.length == 1"
+      />
+    </div>
+  </div>
   <v-btn
     v-if="accountsStore.default_account_id == account.id"
     class="mb-1"
@@ -59,9 +67,6 @@ const balance = computed(() => {
   <TransactionList
     :showDialog="showTransactionDialog"
     :transactions="transactions"
-  >
+    >
   </TransactionList>
-  balance:
-  {{ balance }}
-  {{ currenciesStore.getCurrencyNameByAccount(account) }}
 </template>

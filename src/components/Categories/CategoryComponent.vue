@@ -12,22 +12,27 @@ defineProps<{
 
 
 <template>
-  <RouterLink :to="'/categories/' + category.id">{{ category.name }}</RouterLink>
-  <v-icon
+  <div style="display: flex; flex-direction: row;">
+  <div style="width: 25ch;">
+    <v-icon
     :icon="category.icon"
     :color="category.color"
-  />
-  <v-icon
+    /> <RouterLink :to="'/categories/' + category.id">{{ category.name }}</RouterLink>
+  </div>
+  <div style="width: 6ch;">
+    <v-icon
     @click="showDialog(category)"
     class="edit-button"
     icon="mdi-pencil"
     aria-label="edit category"
     style="color: yellow"
-  />
-  <v-icon
+    />
+    <v-icon
     @click="categoriesStore.deleteCategory(category)"
     icon="mdi-delete"
     aria-label="delete category"
     style="color: red"
-  />
+    />
+  </div>
+</div>
 </template>

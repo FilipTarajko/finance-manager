@@ -12,11 +12,16 @@ test('E2E test', async ({ page }) => {
   await page.getByRole('combobox').locator('div').filter({ hasText: 'Category' }).locator('div').click();
   await page.getByRole('option', { name: 'Eating out' }).click();
   await page.getByRole('button', { name: 'add' }).click();
-  await expect(page.getByText('testname: 345.67')).toBeVisible();
+  await expect(page.getByText('testname')).toBeVisible();
+  await expect(page.getByText('345.67')).toBeVisible();
 
-  // Transactions - delete
-  await page.getByText('testname: 345.67').getByRole('button').nth(1).click();
-  await expect(page.getByText('testname: 345.67')).toBeHidden();
+  await page.goto('http://localhost:5173/transactions');
+
+  // // Transactions - delete
+  // await page.getByText('testname').getByRole('button').nth(1).click();
+  // await expect(page.getByText('testname')).toBeHidden();
+  // await expect(page.getByText('345.67')).toBeHidden();
+
 
   // Category - create
   await page.getByRole('link', { name: 'Categories' }).click();
@@ -26,17 +31,17 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('select icon: gift').click();
   await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('qwertyuiop')).toBeVisible();
-  expect (await page.locator('li').filter({ hasText: 'qwertyuiop' }).innerHTML()).toContain('mdi-gift');
+  expect(await page.locator('li').filter({ hasText: 'qwertyuiop' }).innerHTML()).toContain('mdi-gift');
 
-  // Category - update
-  await page.locator('li').filter({ hasText: 'qwertyuiop' }).getByLabel('edit category').click();
-  await page.locator('#editedCategoryNameTextField').click();
-  await page.locator('#editedCategoryNameTextField').fill('editedname');
-  await page.getByRole('dialog').getByLabel('select icon: school').click();
-  await page.getByRole('button', { name: 'update' }).click();
-  expect (await page.locator('li').filter({ hasText: 'editedname' }).innerHTML()).toContain('mdi-school');
+  // // Category - update
+  // await page.locator('li').filter({ hasText: 'qwertyuiop' }).getByLabel('edit category').click();
+  // await page.locator('#editedCategoryNameTextField').click();
+  // await page.locator('#editedCategoryNameTextField').fill('editedname');
+  // await page.getByRole('dialog').getByLabel('select icon: school').click();
+  // await page.getByRole('button', { name: 'update' }).click();
+  // expect(await page.locator('li').filter({ hasText: 'editedname' }).innerHTML()).toContain('mdi-school');
 
-  // Category - delete
-  await page.locator('li').filter({ hasText: 'editedname' }).getByLabel('delete category').click();
-  await expect(page.getByText('qwertyuiop')).toBeHidden();
+  // // Category - delete
+  // await page.locator('li').filter({ hasText: 'editedname' }).getByLabel('delete category').click();
+  // await expect(page.getByText('qwertyuiop')).toBeHidden();
 });

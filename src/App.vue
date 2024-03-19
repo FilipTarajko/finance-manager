@@ -5,7 +5,7 @@ const themeStore = useThemeStore()
 </script>
 
 <template>
-  <nav class="mb-4">
+  <nav class="mb-4" style="display: flex; flex-direction: row; justify-content: space-between; align-items: baseline;">
     <RouterLink class="routerLink routerLink--left" :to="{ name: 'categories' }">Categories</RouterLink>
     <RouterLink class="routerLink" :to="{ name: 'transactions' }">Transactions</RouterLink>
     <RouterLink class="routerLink" :to="{ name: 'accounts' }">Accounts</RouterLink>

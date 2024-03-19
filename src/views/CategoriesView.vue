@@ -21,8 +21,8 @@ function showDialog(category: Category) {
     <h1>Categories</h1>
     <CategoryForm></CategoryForm>
     <h2>categories list</h2>
-    <ul v-if="categoriesStore.categories.length > 0">
-      <li
+    <div v-if="categoriesStore.categories.length > 0">
+      <div
         v-for="category of categoriesStore.categories"
         :key="category.id"
         :style="{ color: category.color, 'list-style': 'none' }"
@@ -31,8 +31,8 @@ function showDialog(category: Category) {
           :category="category"
           :showDialog="showDialog"
         ></CategoryComponent>
-      </li>
-    </ul>
+      </div>
+    </div>
     <div v-else>
       There are no categories
     </div>

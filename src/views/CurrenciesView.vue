@@ -30,18 +30,16 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = u
 <template>
   <h1>Currencies</h1>
   <CurrencyForm></CurrencyForm>
-  <ul>
-    <li
-      v-for="currency in currenciesStore.currencies"
-      :key="currency.id"
-    >
-      <CurrencyComponent
-        :currency="currency"
-        :showCurrencyDialog="showCurrencyDialog"
-        :showTransactionDialog="showTransactionDialog"
-      ></CurrencyComponent>
-    </li>
-  </ul>
+  <div
+    v-for="currency in currenciesStore.currencies"
+    :key="currency.id"
+  >
+    <CurrencyComponent
+      :currency="currency"
+      :showCurrencyDialog="showCurrencyDialog"
+      :showTransactionDialog="showTransactionDialog"
+    ></CurrencyComponent>
+  </div>
   <CurrencyEditDialog
     v-model=isCurrencyDialogShown
     :editedCurrency="dialogCurrency"

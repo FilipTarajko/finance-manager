@@ -5,7 +5,6 @@ import { computed } from 'vue';
 
 const height_limit = 300
 const height_per_transaction = 25.5
-const height_after_last_transaction = 15
 
 const props = defineProps<{
   showDialog: Function,
@@ -13,7 +12,7 @@ const props = defineProps<{
 }>()
 
 const height_for_all_transactions = computed(() => {
-  return props.transactions.length * height_per_transaction + height_after_last_transaction;
+  return props.transactions.length * height_per_transaction;
 })
 
 const height = computed(() => {
@@ -28,16 +27,10 @@ const height = computed(() => {
 <template>
   <template v-if="transactions.length">
 
-    <v-card width="500">
-      <v-virtual-scroll
-        :height="height"
-        :items="transactions"
-      >
+    <v-card width="760" style="padding: 0.5rem;">
+      <v-virtual-scroll :height="height" :items="transactions">
         <template v-slot:default="{ item }">
-          <TransactionComponent
-            :transaction=item
-            :showDialog=showDialog
-          ></TransactionComponent>
+          <TransactionComponent :transaction=item :showDialog=showDialog></TransactionComponent>
         </template>
       </v-virtual-scroll>
     </v-card>
