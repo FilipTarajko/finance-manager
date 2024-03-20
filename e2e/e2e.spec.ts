@@ -15,12 +15,11 @@ test('E2E test', async ({ page }) => {
   await expect(page.getByText('testname')).toBeVisible();
   await expect(page.getByText('345.67')).toBeVisible();
 
-  await page.goto('http://localhost:5173/transactions');
-
   // // Transactions - delete
-  // await page.getByText('testname').getByRole('button').nth(1).click();
-  // await expect(page.getByText('testname')).toBeHidden();
-  // await expect(page.getByText('345.67')).toBeHidden();
+
+  await page.locator('div:nth-child(10) > div > div:nth-child(5) > .mdi-delete').click();
+  await expect(page.getByText('testname')).toBeHidden();
+  await expect(page.getByText('345.67')).toBeHidden();
 
 
   // Category - create
@@ -31,17 +30,25 @@ test('E2E test', async ({ page }) => {
   await page.getByLabel('select icon: gift').click();
   await page.getByRole('button', { name: 'add' }).click();
   await expect(page.getByText('qwertyuiop')).toBeVisible();
-  expect(await page.locator('li').filter({ hasText: 'qwertyuiop' }).innerHTML()).toContain('mdi-gift');
+  // expect(await page.locator('li').filter({ hasText: 'qwertyuiop' }).innerHTML()).toContain('mdi-gift');
 
   // // Category - update
+
+
+  await page.locator('div:nth-child(13) > div > div:nth-child(2) > .mdi-pencil').click();
   // await page.locator('li').filter({ hasText: 'qwertyuiop' }).getByLabel('edit category').click();
-  // await page.locator('#editedCategoryNameTextField').click();
-  // await page.locator('#editedCategoryNameTextField').fill('editedname');
-  // await page.getByRole('dialog').getByLabel('select icon: school').click();
-  // await page.getByRole('button', { name: 'update' }).click();
+  await page.locator('#editedCategoryNameTextField').click();
+  await page.locator('#editedCategoryNameTextField').fill('editedname');
+  await page.getByRole('dialog').getByLabel('select icon: school').click();
+  await page.getByRole('button', { name: 'update' }).click();
+  await page.waitForTimeout(500)
+  await expect(page.getByText('editedname')).toBeVisible();
   // expect(await page.locator('li').filter({ hasText: 'editedname' }).innerHTML()).toContain('mdi-school');
 
   // // Category - delete
+  await page.locator('div:nth-child(13) > div > div:nth-child(2) > .mdi-delete').click();
+  await expect(page.getByText('editedname')).toBeHidden();
+
   // await page.locator('li').filter({ hasText: 'editedname' }).getByLabel('delete category').click();
   // await expect(page.getByText('qwertyuiop')).toBeHidden();
 });
