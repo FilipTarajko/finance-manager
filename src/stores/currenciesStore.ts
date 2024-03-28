@@ -9,7 +9,6 @@ import {
 import { useStorage } from '@vueuse/core'
 import { useAccountsStore } from './accountsStore'
 import { useSnackbarStore } from '@/stores/snackbarStore';
-const snackbarStore = useSnackbarStore()
 
 import defaultCurrencies from './defaultCurrencies.json'
 
@@ -18,6 +17,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
   const currencies: Ref<Currency[]> = useStorage('currencies', defaultCurrencies)
 
   const accountsStore = useAccountsStore();
+  const snackbarStore = useSnackbarStore();
 
   const currenciesSupportedByApi = ['EUR', 'USD', 'JPY', 'BGN', 'CZK', 'DKK', 'GBP', 'HUF', 'PLN', 'RON', 'SEK', 'CHF', 'ISK', 'NOK', 'HRK', 'RUB', 'TRY', 'AUD', 'BRL', 'CAD', 'CNY', 'HKD', 'IDR', 'ILS', 'INR', 'KRW', 'MXN', 'MYR', 'NZD', 'PHP', 'SGD', 'THB', 'ZAR'];
 
@@ -56,7 +56,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
   }
 
   function updateValueOfDependentCurrencies(currency: Currency) {
-    for (let i=0; i<currencies.value.length; i++) {
+    for (let i = 0; i < currencies.value.length; i++) {
       const currencyToUpdate = currencies.value[i];
       if (currencyToUpdate.base_currency_id == currency.id) {
         currencyToUpdate.value_relative_to_default = currency.value_relative_to_default * currencyToUpdate.value_relative_to_base;
@@ -75,7 +75,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     editedCurrency.value_relative_to_default = editedCurrency.value_relative_to_base * getCurrencyById(editedCurrency.base_currency_id)!.value_relative_to_default;
     editedCurrency.api_name = newState.api_name
 
-    if (oldValueRelativeToBose != editedCurrency.value_relative_to_base){
+    if (oldValueRelativeToBose != editedCurrency.value_relative_to_base) {
       updateValueOfDependentCurrencies(editedCurrency);
     }
 
@@ -116,15 +116,15 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
     }
   }
 
-  async function updateValuesWithApi(){
+  async function updateValuesWithApi() {
     const updated_currencies_array = []
     const changed_values_of_currencies = []
-    for (let i=0; i<currencies.value.length; i++) {
+    for (let i = 0; i < currencies.value.length; i++) {
       const currency = currencies.value[i]
       const base_currency = getCurrencyById(currency.base_currency_id)
       if (currency.api_name && base_currency?.api_name && currency.id != default_currency_id.value) {
         const response = await fetch(`https://api.vatcomply.com/rates?base=${base_currency.api_name.toUpperCase()}`)
-        const new_value_relative_to_base = (1/(await response.json()).rates[currency.api_name.toUpperCase()])
+        const new_value_relative_to_base = (1 / (await response.json()).rates[currency.api_name.toUpperCase()])
         currency.value_relative_to_base = new_value_relative_to_base
         const old_value_relative_to_default = currency.value_relative_to_default;
         currency.value_relative_to_default = currency.value_relative_to_base * base_currency.value_relative_to_default
