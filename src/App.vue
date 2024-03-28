@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { useThemeStore } from "@/stores/themeStore"
+import { useSnackbarStore } from './stores/snackbarStore';
+
 const themeStore = useThemeStore()
+const snackbarStore = useSnackbarStore()
 </script>
 
 <template>
@@ -16,6 +19,25 @@ const themeStore = useThemeStore()
   </nav>
 
   <RouterView />
+  <div class="text-center ma-2">
+    <v-snackbar
+      :color=snackbarStore.snackbarColor
+      v-model="snackbarStore.isSnackbarDisplayed"
+    >
+      <span style="word-break: break-all;">
+        {{ snackbarStore.snackbarText }}
+      </span>
+
+      <template v-slot:actions>
+        <v-btn
+          variant="text"
+          @click="snackbarStore.isSnackbarDisplayed = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
 </template>
 
 <style scoped lang="scss">

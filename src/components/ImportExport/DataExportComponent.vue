@@ -9,12 +9,9 @@ const currenciesStore = useCurrenciesStore()
 
 const isDataBeingProcessed: Ref<boolean | undefined> = defineModel()
 const isExportingToFile: Ref<boolean> = ref(false)
-
-const emit = defineEmits(['snackbar'])
-
-function emitSnackbarMessage(color: string, text: string) {
-  emit('snackbar', color, text)
-}
+  
+import { useSnackbarStore } from '@/stores/snackbarStore';
+const snackbarStore = useSnackbarStore()
 
 function getLocale() {
   if (navigator.languages != undefined) {
@@ -42,7 +39,7 @@ function exportData() {
   element.style.display = 'none'
   document.body.appendChild(element)
   element.click()
-  emitSnackbarMessage('green', "File is being downloaded")
+  snackbarStore.showSnackbarMessage('green', "File is being downloaded")
   document.body.removeChild(element)
   isDataBeingProcessed.value = false
   isExportingToFile.value = false

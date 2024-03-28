@@ -7,7 +7,7 @@ import TransactionEditDialog from "@/components/Transactions/TransactionEditDial
 import CurrencyComponent from "@/components/Currencies/CurrencyComponent.vue"
 import CurrencyEditDialog from "@/components/Currencies/CurrencyEditDialog.vue"
 import CurrencyForm from "@/components/Currencies/CurrencyForm.vue"
-
+  
 const isCurrencyDialogShown = ref(false)
 const dialogCurrency: Ref<Currency | null> = ref(null)
 const isRatesApiUpdateInProgress = ref(false)

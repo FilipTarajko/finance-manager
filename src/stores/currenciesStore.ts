@@ -8,6 +8,8 @@ import {
 } from '../types/types'
 import { useStorage } from '@vueuse/core'
 import { useAccountsStore } from './accountsStore'
+import { useSnackbarStore } from '@/stores/snackbarStore';
+const snackbarStore = useSnackbarStore()
 
 import defaultCurrencies from './defaultCurrencies.json'
 
@@ -116,6 +118,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
 
   async function updateValuesWithApi(){
     const updated_currencies_array = []
+    const changed_values_of_currencies = []
     for (let i=0; i<currencies.value.length; i++) {
       const currency = currencies.value[i]
       const base_currency = getCurrencyById(currency.base_currency_id)
@@ -123,14 +126,22 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
         const response = await fetch(`https://api.vatcomply.com/rates?base=${base_currency.api_name.toUpperCase()}`)
         const new_value_relative_to_base = (1/(await response.json()).rates[currency.api_name.toUpperCase()])
         currency.value_relative_to_base = new_value_relative_to_base
+        const old_value_relative_to_default = currency.value_relative_to_default;
         currency.value_relative_to_default = currency.value_relative_to_base * base_currency.value_relative_to_default
         updated_currencies_array.push(currency.name)
+        if (old_value_relative_to_default != currency.value_relative_to_default) {
+          changed_values_of_currencies.push(currency.name)
+        }
       }
     }
-    if (updated_currencies_array.length) {
-      console.log(`Updated rates of: ${updated_currencies_array}`)
+    if (changed_values_of_currencies.length) {
+      snackbarStore.showSnackbarMessage('green', `Updated rates of currencies: ${changed_values_of_currencies.join(', ')}`)
+    }
+    else if (updated_currencies_array.length) {
+      snackbarStore.showSnackbarMessage('green', `Rates were checked, but all were already up to date`)
     } else {
       console.log(`No currencies were updated`)
+      snackbarStore.showSnackbarMessage('yellow', `No rates matched API`)
     }
   }
 

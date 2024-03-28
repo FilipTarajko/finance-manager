@@ -3,10 +3,12 @@ import { type Ref, ref } from 'vue';
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import { useAccountsStore } from '@/stores/accountsStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
+import { useSnackbarStore } from '@/stores/snackbarStore';
 import type { Account, Category, Currency } from '@/types/types';
 const categoriesStore = useCategoriesStore()
 const accountsStore = useAccountsStore()
 const currenciesStore = useCurrenciesStore()
+const snackbarStore = useSnackbarStore()
 
 const isDataBeingProcessed: Ref<boolean | undefined> = defineModel()
 const isLoadingFromFile: Ref<boolean> = ref(false)
@@ -15,12 +17,6 @@ const isLoadingFromText: Ref<boolean> = ref(false)
 const fileData = ref([])
 const showJsonOnly = ref(true)
 const textFieldData = ref("")
-
-const emit = defineEmits(['snackbar'])
-
-function emitSnackbarMessage(color: string, text: string) {
-  emit('snackbar', color, text)
-}
 
 function tryImportFromFile() {
   isDataBeingProcessed.value = true
@@ -55,11 +51,11 @@ function tryImportData(stringToImport: string) {
     accountsStore.accounts = result.data.accounts;
     currenciesStore.currencies = result.data.currencies;
 
-    emitSnackbarMessage('green', `Imported data with \n${result.data.categories.length} categories, \n${result.data.accounts.length} accounts, and \n${result.data.currencies.length} currencies.`)
+    snackbarStore.showSnackbarMessage('green', `Imported data with \n${result.data.categories.length} categories, \n${result.data.accounts.length} accounts, and \n${result.data.currencies.length} currencies.`)
   } else {
     // @ts-ignore
     const errorMessage = result?.errorMessage ?? "unknown error"
-    emitSnackbarMessage('red', errorMessage)
+    snackbarStore.showSnackbarMessage('red', errorMessage)
   }
 }
 </script>
