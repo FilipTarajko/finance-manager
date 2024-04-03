@@ -16,7 +16,7 @@ const currenciesStore = useCurrenciesStore();
 
 <template>
   <div style="display: flex; flex-direction: row;">
-    <div style="width: 25%;">
+    <div style="width: 25%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
       <RouterLink :to="{ name: 'transaction', params: { transactionId: transaction.id } }">
         {{ transaction.name }}
       </RouterLink>
@@ -24,12 +24,11 @@ const currenciesStore = useCurrenciesStore();
     <div style="width: 25%; margin-right: 1ch; text-align: right;">
       {{ transaction.amount.toFixed(2) }}
     </div>
-    <div style="width: 13%;">
+    <div style="width: 13%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
       {{ currenciesStore.getCurrencyNameByTransaction(transaction) }}
     </div>
-    <div style="width: 30%;">
-      <span :style="{ color: transaction.categoryData.color }">
-        <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }} </span>
+    <div style="width: 30%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;" :style="{ color: transaction.categoryData.color }">
+        <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }}
     </div>
     <div style="width: 7%;">
       <v-icon @click="showDialog(transaction)" class="edit-button" icon="mdi-pencil" aria-label="edit transaction"
