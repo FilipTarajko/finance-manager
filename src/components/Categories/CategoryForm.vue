@@ -44,7 +44,7 @@ const mustBeUniqueCategoryName = (value: string) =>
 const rules = {
   name: {
     required,
-    maxLength: maxLength(14),
+    maxLength: maxLength(20),
     mustBeUniqueCategoryName: helpers.withMessage('Must be unique', mustBeUniqueCategoryName)
   },
   color: { required },
