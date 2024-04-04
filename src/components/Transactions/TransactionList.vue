@@ -27,7 +27,7 @@ const height = computed(() => {
 <template>
   <template v-if="transactions.length">
 
-    <v-card width="760" style="padding: 0.5rem;">
+    <v-card style="padding: 0.5rem;">
       <v-virtual-scroll :height="height" :items="transactions">
         <template v-slot:default="{ item }">
           <TransactionComponent :transaction=item :showDialog=showDialog></TransactionComponent>

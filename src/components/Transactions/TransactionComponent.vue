@@ -15,22 +15,22 @@ const currenciesStore = useCurrenciesStore();
 
 
 <template>
-  <div style="display: flex; flex-direction: row;">
-    <div style="width: 25%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+    <div id="name">
       <RouterLink :to="{ name: 'transaction', params: { transactionId: transaction.id } }">
         {{ transaction.name }}
       </RouterLink>
     </div>
-    <div style="width: 25%; margin-right: 1ch; text-align: right;">
+    <div id="amount" style="margin-right: 1ch; text-align: right;">
       {{ transaction.amount.toFixed(2) }}
     </div>
-    <div style="width: 13%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+    <div id="currency">
       {{ currenciesStore.getCurrencyNameByTransaction(transaction) }}
     </div>
-    <div style="width: 30%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;" :style="{ color: transaction.categoryData.color }">
-        <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }}
+    <div id="category" :style="{ color: transaction.categoryData.color }">
+      <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }}
     </div>
-    <div style="width: 7%;">
+    <div id="icons">
       <v-icon @click="showDialog(transaction)" class="edit-button" icon="mdi-pencil" aria-label="edit transaction"
         style="color: yellow" />
       <v-icon icon="mdi-delete" class="remove-button" style="color: red" aria-label="delete transaction"
@@ -38,3 +38,64 @@ const currenciesStore = useCurrenciesStore();
     </div>
   </div>
 </template>
+
+<style scoped>
+div {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#name {
+  order: 1;
+  width: 24%;
+}
+
+#amount {
+  order: 2;
+  width: 24%;
+}
+
+#currency {
+  order: 3;
+  width: 13%;
+}
+
+#category {
+  order: 4;
+  width: calc(37% - 6.2ch);
+}
+
+#icons {
+  order: 5;
+  width: 6ch;
+}
+
+@media (max-width: 500px) {
+  div {
+    font-size: 12px;
+  }
+
+  #name {
+    width: 45%;
+  }
+
+  #amount {
+    width: 50%;
+    order: 6;
+  }
+
+  #currency {
+    width: 46%;
+    order: 7;
+  }
+
+  #category {
+    width: calc(55% - 6ch);
+  }
+
+  #icons {
+    width: 6ch;
+  }
+}
+</style>
