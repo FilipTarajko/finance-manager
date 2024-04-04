@@ -25,7 +25,6 @@ function showDialog(category: Category) {
       <div
         v-for="category of categoriesStore.categories"
         :key="category.id"
-        :style="{ color: category.color, 'list-style': 'none' }"
       >
         <CategoryComponent
           :category="category"
