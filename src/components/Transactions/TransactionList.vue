@@ -1,34 +1,17 @@
 <script setup lang="ts">
 import TransactionComponent from '@/components/Transactions/TransactionComponent.vue'
 import type { TransactionWithCategoryData } from '@/types/types';
-import { computed } from 'vue';
 
-const height_limit = 300
-const height_per_transaction = 25.5
-
-const props = defineProps<{
+defineProps<{
   showDialog: Function,
   transactions: TransactionWithCategoryData[]
 }>()
-
-const height_for_all_transactions = computed(() => {
-  return props.transactions.length * height_per_transaction;
-})
-
-const height = computed(() => {
-  if (height_for_all_transactions.value < height_limit) {
-    return height_for_all_transactions.value;
-  } else {
-    return height_limit;
-  }
-})
 </script>
 
 <template>
   <template v-if="transactions.length">
-
     <v-card style="padding: 0.5rem;">
-      <v-virtual-scroll :height="height" :items="transactions">
+      <v-virtual-scroll :maxHeight="300" :items="transactions">
         <template v-slot:default="{ item }">
           <TransactionComponent :transaction=item :showDialog=showDialog></TransactionComponent>
         </template>
