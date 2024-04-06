@@ -23,7 +23,7 @@ test('E2E test', async ({ page }) => {
 
 
   // Category - create
-  await page.getByRole('link', { name: 'Categories' }).click();
+  await page.getByRole('banner').getByRole('link', { name: 'Categories' }).click();
   await page.getByLabel('Name').click();
   await page.getByLabel('Name').fill('qwertyuiop');
   await page.locator('.v-slider-track__background').click();
