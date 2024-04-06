@@ -12,8 +12,8 @@ defineProps<{
 
 
 <template>
-  <div style="display: grid; grid-template-columns: 40ch 6ch;">
-    <div>
+  <div style="display: grid; max-width: 46ch; grid-template-columns: auto 6ch;">
+    <div style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
       <v-icon
       :icon="category.icon"
       :color="category.color"
