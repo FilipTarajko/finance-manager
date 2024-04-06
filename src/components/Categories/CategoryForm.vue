@@ -85,7 +85,7 @@ function editOrCreateAndAddCategory() {
   <h2>{{ isEditing ? 'edit category: ' + props.category.name : 'new category' }}</h2>
   <form
     class="mb-4"
-    style="width: 24rem"
+    style="width: 24.1rem;"
   >
     <v-text-field
       :id="isEditing ? 'editedCategoryNameTextField' : 'newCategoryNameTextField' "
@@ -113,11 +113,13 @@ function editOrCreateAndAddCategory() {
     ></v-color-picker>
 
     <v-label>Icon</v-label>
+    <br>
     <v-btn-toggle
       v-model="state.iconIndex"
       class="mb-2"
       shaped
       mandatory
+      style="display: flex; flex-wrap: wrap; justify-content: start; height: auto;"
     >
       <v-btn
         size="35"
