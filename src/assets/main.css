@@ -4,7 +4,7 @@
   margin: 0 auto;
   padding: 1rem;
   font-weight: normal;
-  max-width: 820px;
+  max-width: 1000px;
   width: 100%;
 }
 
@@ -15,8 +15,8 @@ a,
   transition: 0.4s;
 }
 
-@media (hover: hover) {
+/* @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
   }
-}
+} */

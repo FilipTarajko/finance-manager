@@ -21,24 +21,26 @@ function showAccountDialog(account: Account) {
 </script>
 
 <template>
-  <h1>Accounts</h1>
-  <AccountForm></AccountForm>
-  <div
-    v-for="account in accountsStore.accounts"
-    :key="account.id"
-  >
-    <AccountComponent
-      :account="account"
-      :showTransactionDialog="showTransactionDialog"
-      :showAccountDialog="showAccountDialog"
-    ></AccountComponent>
-  </div>
-  <AccountEditDialog
-    v-model=isAccountDialogShown
-    :editedAccount="dialogAccount"
-  ></AccountEditDialog>
-  <TransactionEditDialog
-    v-model=isTransactionDialogShown
-    :transaction="dialogTransaction"
-  ></TransactionEditDialog>
+  <main>
+    <h1>Accounts</h1>
+    <AccountForm></AccountForm>
+    <div
+      v-for="account in accountsStore.accounts"
+      :key="account.id"
+    >
+      <AccountComponent
+        :account="account"
+        :showTransactionDialog="showTransactionDialog"
+        :showAccountDialog="showAccountDialog"
+      ></AccountComponent>
+    </div>
+    <AccountEditDialog
+      v-model=isAccountDialogShown
+      :editedAccount="dialogAccount"
+    ></AccountEditDialog>
+    <TransactionEditDialog
+      v-model=isTransactionDialogShown
+      :transaction="dialogTransaction"
+    ></TransactionEditDialog>
+  </main>
 </template>

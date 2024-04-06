@@ -28,41 +28,43 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = u
 </script>
 
 <template>
-  <h1>Currencies</h1>
-  <CurrencyForm></CurrencyForm>
-  <div
-    v-for="currency in currenciesStore.currencies"
-    :key="currency.id"
-  >
-    <CurrencyComponent
-      :currency="currency"
-      :showCurrencyDialog="showCurrencyDialog"
-      :showTransactionDialog="showTransactionDialog"
-    ></CurrencyComponent>
-  </div>
-  <CurrencyEditDialog
-    v-model=isCurrencyDialogShown
-    :editedCurrency="dialogCurrency"
-  ></CurrencyEditDialog>
-  <TransactionEditDialog
-    v-model=isTransactionDialogShown
-    :transaction="dialogTransaction"
-  ></TransactionEditDialog>
+  <main>
+    <h1>Currencies</h1>
+    <CurrencyForm></CurrencyForm>
+    <div
+      v-for="currency in currenciesStore.currencies"
+      :key="currency.id"
+    >
+      <CurrencyComponent
+        :currency="currency"
+        :showCurrencyDialog="showCurrencyDialog"
+        :showTransactionDialog="showTransactionDialog"
+      ></CurrencyComponent>
+    </div>
+    <CurrencyEditDialog
+      v-model=isCurrencyDialogShown
+      :editedCurrency="dialogCurrency"
+    ></CurrencyEditDialog>
+    <TransactionEditDialog
+      v-model=isTransactionDialogShown
+      :transaction="dialogTransaction"
+    ></TransactionEditDialog>
 
-  <v-btn
-    :loading="isRatesApiUpdateInProgress"
-    :disabled="isRatesApiUpdateInProgress"
-    class="mt-16"
-    color="info"
-    @click="updateRates">
-    update currency values with api
-  </v-btn>
+    <v-btn
+      :loading="isRatesApiUpdateInProgress"
+      :disabled="isRatesApiUpdateInProgress"
+      class="mt-16"
+      color="info"
+      @click="updateRates">
+      update currency values with api
+    </v-btn>
 
-  <div class="mt-2 border-solid pa-2">
-    api supports: {{ currenciesStore.currenciesSupportedByApi }}
-    <hr class="mt-2 mb-2">
-    used api: <a href="https://www.vatcomply.com/">VATcomply</a>
-    <hr class="mt-2 mb-2">
-    new api data on workdays, 16:00 CET
-  </div>
+    <div class="mt-2 border-solid pa-2">
+      api supports: {{ currenciesStore.currenciesSupportedByApi }}
+      <hr class="mt-2 mb-2">
+      used api: <a href="https://www.vatcomply.com/">VATcomply</a>
+      <hr class="mt-2 mb-2">
+      new api data on workdays, 16:00 CET
+    </div>
+  </main>
 </template>

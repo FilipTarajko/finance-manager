@@ -42,55 +42,57 @@ const displayCurrencyOptions = computed(() => {
 </script>
 
 <template>
-  <h1>Statistics</h1>
+  <main>
+    <h1>Statistics</h1>
 
-  <h2>filters</h2>
-  <div style="display: flex; flex-direction: row;;">
-    <v-text-field
-      class="mr-2"
-      v-model.number="minTimestamp"
-      type="number"
-      label="minTimestamp"
+    <h2>filters</h2>
+    <div style="display: flex; flex-direction: row;;">
+      <v-text-field
+        class="mr-2"
+        v-model.number="minTimestamp"
+        type="number"
+        label="minTimestamp"
+      >
+      </v-text-field>
+      <v-text-field
+        class="ml-2"
+        v-model.number="maxTimestamp"
+        type="number"
+        label="maxTimestamp"
+      >
+      </v-text-field>
+    </div>
+    <v-select
+      v-model="filter_currency_id"
+      :items="filterCurrencyOptions"
+      label="Filter by currency"
+      class="mb-2"
+    ></v-select>
+    <h2>display settings</h2>
+    <v-select
+      v-model="displayed_currency"
+      :items="displayCurrencyOptions"
+      label="Display currency"
+      class="mb-2"
+    ></v-select>
+    <v-switch
+      style="margin-top: -2rem;"
+      v-model="is_changing_currency_to_match_filter"
+      label="Automatically change display currency to match filter currency"
     >
-    </v-text-field>
-    <v-text-field
-      class="ml-2"
-      v-model.number="maxTimestamp"
-      type="number"
-      label="maxTimestamp"
-    >
-    </v-text-field>
-  </div>
-  <v-select
-    v-model="filter_currency_id"
-    :items="filterCurrencyOptions"
-    label="Filter by currency"
-    class="mb-2"
-  ></v-select>
-  <h2>display settings</h2>
-  <v-select
-    v-model="displayed_currency"
-    :items="displayCurrencyOptions"
-    label="Display currency"
-    class="mb-2"
-  ></v-select>
-  <v-switch
-    style="margin-top: -2rem;"
-    v-model="is_changing_currency_to_match_filter"
-    label="Automatically change display currency to match filter currency"
-  >
-  </v-switch>
+    </v-switch>
 
-  <StatisticsTable
-    :minTimestamp="minTimestamp"
-    :maxTimestamp="maxTimestamp"
-    :currency_id="filter_currency_id"
-    :display_currency="displayed_currency"
-  ></StatisticsTable>
-  <StatisticsCharts
-    :minTimestamp="minTimestamp"
-    :maxTimestamp="maxTimestamp"
-    :filter_currency_id="filter_currency_id"
-    :display_currency="displayed_currency"
-  ></StatisticsCharts>
+    <StatisticsTable
+      :minTimestamp="minTimestamp"
+      :maxTimestamp="maxTimestamp"
+      :currency_id="filter_currency_id"
+      :display_currency="displayed_currency"
+    ></StatisticsTable>
+    <StatisticsCharts
+      :minTimestamp="minTimestamp"
+      :maxTimestamp="maxTimestamp"
+      :filter_currency_id="filter_currency_id"
+      :display_currency="displayed_currency"
+    ></StatisticsCharts>
+  </main>
 </template>

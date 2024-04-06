@@ -7,7 +7,9 @@ const isDataBeingProcessed: Ref<boolean> = ref(false)
 </script>
 
 <template>
-  <h1 class="mb-4">Export or import data</h1>
-  <Export v-model=isDataBeingProcessed></Export>
-  <Import v-model=isDataBeingProcessed></Import>
+  <main>
+    <h1 class="mb-4">Export or import data</h1>
+    <Export v-model=isDataBeingProcessed></Export>
+    <Import v-model=isDataBeingProcessed></Import>
+  </main>
 </template>
