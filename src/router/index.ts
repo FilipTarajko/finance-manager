@@ -6,6 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'categories',
+      alias: '/categories',
       component: () => import('../views/CategoriesView.vue')
     },
     {
