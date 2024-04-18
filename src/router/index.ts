@@ -25,13 +25,18 @@ const router = createRouter({
     },
     {
       path: '/transactions',
-      name: 'transactions',
-      component: () => import('../views/TransactionsView.vue')
-    },
-    {
-      path: '/transactions/:transactionId',
-      name: 'transaction',
-      component: () => import('../views/TransactionDetailsView.vue')
+      children: [
+        {
+          path: '',
+          name: 'transactions',
+          component: () => import('../views/TransactionsView.vue')
+        },
+        {
+          path: ':transactionId',
+          name: 'transaction',
+          component: () => import('../views/TransactionDetailsView.vue')
+        }
+      ]
     },
     {
       path: '/statistics',
