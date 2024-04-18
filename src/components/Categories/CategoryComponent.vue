@@ -25,7 +25,7 @@ defineProps<{
       class="edit-button"
       icon="mdi-pencil"
       aria-label="edit category"
-      style="color: yellow"
+      style="color: var(--visible-yellow)"
       />
       <v-icon
       @click="categoriesStore.deleteCategory(category)"

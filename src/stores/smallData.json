@@ -24,7 +24,7 @@
   {
     "id": 2,
     "name": "Education",
-    "color": "#ffff22",
+    "color": "#ffd700",
     "icon": "mdi-school",
     "transactions": [
       {
@@ -128,7 +128,7 @@
   {
     "id": 9,
     "name": "test another2",
-    "color": "#fff000",
+    "color": "#ffb700",
     "icon": "mdi-help",
     "transactions": []
   },

@@ -32,7 +32,7 @@ const currenciesStore = useCurrenciesStore();
     </div>
     <div id="icons">
       <v-icon @click="showDialog(transaction)" class="edit-button" icon="mdi-pencil" aria-label="edit transaction"
-        style="color: yellow" />
+        style="color: var(--visible-yellow)" />
       <v-icon icon="mdi-delete" class="remove-button" style="color: red" aria-label="delete transaction"
         @click="categoriesStore.deleteTransaction(transaction)"></v-icon>
     </div>

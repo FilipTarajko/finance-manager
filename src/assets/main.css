@@ -24,3 +24,11 @@ a,
 form {
   max-width: 100%;
 }
+
+:root {
+  --visible-yellow: #FFD700;
+}
+
+:root.dark {
+  --visible-yellow: yellow;
+}

@@ -39,7 +39,7 @@ const balance = computed(() => {
         class="edit-button"
         icon="mdi-pencil"
         aria-label="edit account"
-        style="color: yellow"
+        style="color: var(--visible-yellow)"
       />
       <v-icon
         @click="accountsStore.accounts.length != 1 && accountsStore.deleteAccount(account)"

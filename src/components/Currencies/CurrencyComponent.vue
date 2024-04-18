@@ -56,7 +56,7 @@ const balance = computed(() => {
         class="edit-button"
         icon="mdi-pencil"
         aria-label="edit currency"
-        style="color: yellow"
+        style="color: var(--visible-yellow)"
       />
       <v-icon
         @click="currenciesStore.currencies.length != 1 && currenciesStore.deleteCurrency(currency)"

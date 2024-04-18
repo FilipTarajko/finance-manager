@@ -56,7 +56,7 @@ const drawer: Ref<any> = ref(null);
           Accounts
         </RouterLink>
         <RouterLink class="routerLink" :to="{ name: 'currencies' }">
-          <v-icon color="yellow" icon="mdi-currency-usd"></v-icon>
+          <v-icon color="var(--visible-yellow)" icon="mdi-currency-usd"></v-icon>
           Currencies
         </RouterLink>
         <RouterLink class="routerLink" :to="{ name: 'statistics' }">
@@ -104,6 +104,11 @@ nav>.routerLink {
 
 .router-link-exact-active {
   background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0.4rem
+}
+
+.v-list .routerLink {
+  background-color: rgba(130, 130, 130, 0.05);
   border-radius: 0.4rem
 }
 
