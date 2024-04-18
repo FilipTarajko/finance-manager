@@ -102,6 +102,16 @@ nav>.routerLink {
   // border: 1px solid white;
 }
 
+.router-link-exact-active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0.4rem
+}
+
+.v-list .router-link-exact-active {
+  background-color: rgba(150, 150, 150, 0.2);
+  border-radius: 0.4rem
+}
+
 #drawer .routerLink {
   margin: 0.3rem;
 }
