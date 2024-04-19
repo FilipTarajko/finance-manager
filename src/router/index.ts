@@ -16,8 +16,18 @@ const router = createRouter({
     },
     {
       path: '/accounts',
-      name: 'accounts',
-      component: () => import('../views/AccountsView.vue')
+      children: [
+        {
+          path: '',
+          name: 'accounts',
+          component: () => import('../views/AccountsView.vue')
+        },
+        {
+          path: ':accountId',
+          name: 'account',
+          component: () => import('../views/AccountDetailsView.vue')
+        }
+      ]
     },
     {
       path: '/currencies',
