@@ -28,7 +28,9 @@ const currenciesStore = useCurrenciesStore();
       {{ currenciesStore.getCurrencyNameByTransaction(transaction) }}
     </div>
     <div id="category" :style="{ color: transaction.categoryData.color }">
-      <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }}
+      <RouterLink :style="{ color: transaction.categoryData.color }" :to="{ name: 'category', params: {categoryId: transaction.categoryData.id} }">
+        <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }}
+      </RouterLink>
     </div>
     <div id="icons">
       <v-icon @click="showDialog(transaction)" class="edit-button" icon="mdi-pencil" aria-label="edit transaction"

@@ -14,10 +14,13 @@ defineProps<{
 <template>
   <div style="display: grid; max-width: 46ch; grid-template-columns: auto 6ch;">
     <div style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
-      <v-icon
-      :icon="category.icon"
-      :color="category.color"
-      /> <RouterLink :to="'/categories/' + category.id">{{ category.name }}</RouterLink>
+      <RouterLink :to="'/categories/' + category.id">
+        <v-icon
+        :icon="category.icon"
+        :color="category.color"
+        />
+        {{ category.name }}
+      </RouterLink>
     </div>
     <div>
       <v-icon

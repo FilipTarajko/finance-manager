@@ -50,16 +50,16 @@ const transaction = computed(() => {
           category
         </div>
         <div>
-          <span :style="{ color: transaction.categoryData.color }">
+          <RouterLink :style="{ color: transaction.categoryData.color }" :to="{ name: 'category', params: {categoryId: transaction.categoryData.id} }">
             <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }}
-          </span>
+          </RouterLink>
         </div>
         <div>
           account
         </div>
-        <div>
-          {{ accountsStore.getAccountById(transaction.account_id).name }}
-        </div>
+          <RouterLink :to="{ name: 'account', params: {accountId: transaction.account_id} }">
+            {{ accountsStore.getAccountById(transaction.account_id).name }}
+          </RouterLink>
         <div>
           date
         </div>

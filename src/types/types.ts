@@ -16,6 +16,7 @@ export type Category = {
 
 export type TransactionWithCategoryData = TransactionWithoutCategoryData & {
   categoryData: {
+    id: number
     name: string
     color: string
     icon: string

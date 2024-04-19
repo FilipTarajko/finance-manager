@@ -28,12 +28,12 @@ const drawer: Ref<any> = ref(null);
         </div>
         <nav class="display-if-not-narrow-screen"
           style="flex-direction: row; justify-content: space-between; align-items: baseline;">
-          <RouterLink class="routerLink routerLink--left" :to="{ name: 'categories' }">Categories</RouterLink>
-          <RouterLink class="routerLink" :to="{ name: 'transactions' }">Transactions</RouterLink>
-          <RouterLink class="routerLink" :to="{ name: 'accounts' }">Accounts</RouterLink>
-          <RouterLink class="routerLink" :to="{ name: 'currencies' }">Currencies</RouterLink>
-          <RouterLink class="routerLink" :to="{ name: 'statistics' }">Statistics</RouterLink>
-          <RouterLink class="routerLink" :to="{ name: 'importexport' }">Import/Export</RouterLink>
+          <RouterLink class="layoutRouterLink layoutRouterLink--left" :to="{ name: 'categories' }">Categories</RouterLink>
+          <RouterLink class="layoutRouterLink" :to="{ name: 'transactions' }">Transactions</RouterLink>
+          <RouterLink class="layoutRouterLink" :to="{ name: 'accounts' }">Accounts</RouterLink>
+          <RouterLink class="layoutRouterLink" :to="{ name: 'currencies' }">Currencies</RouterLink>
+          <RouterLink class="layoutRouterLink" :to="{ name: 'statistics' }">Statistics</RouterLink>
+          <RouterLink class="layoutRouterLink" :to="{ name: 'importexport' }">Import/Export</RouterLink>
         </nav>
         <v-btn variant="outlined" style="min-width: 0px; width: 50px;" @click="themeStore.toggleTheme">
           <v-icon icon="mdi-theme-light-dark"></v-icon>
@@ -47,27 +47,27 @@ const drawer: Ref<any> = ref(null);
           Close
         </v-btn>
         <!-- <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item> -->
-        <RouterLink class="routerLink" :to="{ name: 'categories' }">
+        <RouterLink class="layoutRouterLink" :to="{ name: 'categories' }">
           <v-icon color="primary" icon="mdi-shape"></v-icon>
           Categories
         </RouterLink>
-        <RouterLink class="routerLink" :to="{ name: 'transactions' }">
+        <RouterLink class="layoutRouterLink" :to="{ name: 'transactions' }">
           <v-icon icon="mdi-dots-grid"></v-icon>
           Transactions
         </RouterLink>
-        <RouterLink class="routerLink" :to="{ name: 'accounts' }">
+        <RouterLink class="layoutRouterLink" :to="{ name: 'accounts' }">
           <v-icon color="warning" icon="mdi-credit-card"></v-icon>
           Accounts
         </RouterLink>
-        <RouterLink class="routerLink" :to="{ name: 'currencies' }">
+        <RouterLink class="layoutRouterLink" :to="{ name: 'currencies' }">
           <v-icon color="var(--visible-yellow)" icon="mdi-currency-usd"></v-icon>
           Currencies
         </RouterLink>
-        <RouterLink class="routerLink" :to="{ name: 'statistics' }">
+        <RouterLink class="layoutRouterLink" :to="{ name: 'statistics' }">
           <v-icon color="green" icon="mdi-chart-bar"></v-icon>
           Statistics
         </RouterLink>
-        <RouterLink class="routerLink" :to="{ name: 'importexport' }">
+        <RouterLink class="layoutRouterLink" :to="{ name: 'importexport' }">
           <v-icon color="cyan" icon="mdi-export"></v-icon>
           Import/Export
         </RouterLink>
@@ -98,7 +98,7 @@ const drawer: Ref<any> = ref(null);
   background: none !important;
 }
 
-.routerLink {
+.layoutRouterLink {
   padding: 0.35rem 0.7rem;
   margin-bottom: -0.2rem;
 
@@ -107,7 +107,7 @@ const drawer: Ref<any> = ref(null);
   }
 }
 
-nav>.routerLink {
+nav>.layoutRouterLink {
   color: white;
   // border: 1px solid white;
 }
@@ -117,7 +117,7 @@ nav>.routerLink {
   border-radius: 0.4rem
 }
 
-.v-list .routerLink {
+.v-list .layoutRouterLink {
   background-color: rgba(130, 130, 130, 0.05);
   border-radius: 0.4rem
 }
@@ -127,11 +127,11 @@ nav>.routerLink {
   border-radius: 0.4rem
 }
 
-#drawer .routerLink {
+#drawer .layoutRouterLink {
   margin: 0.3rem;
 }
 
-.routerLink>.v-icon {
+.layoutRouterLink>.v-icon {
   margin-right: 0.5rem;
 }
 

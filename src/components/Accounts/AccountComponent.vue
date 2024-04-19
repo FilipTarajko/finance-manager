@@ -28,7 +28,10 @@ const balance = computed(() => {
 <template>
   <div class="mt-12" style="font-size: 1.2rem; display: flex; flex-direction: row; justify-content: space-between;">
     <div>
-      {{ account.name }}
+
+      <RouterLink :to="{ name: 'account', params: {accountId: account.id} }">
+        {{ account.name }}
+      </RouterLink>
       - balance:
       {{ balance }}
       {{ currenciesStore.getCurrencyNameByAccount(account) }}

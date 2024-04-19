@@ -42,6 +42,7 @@ export const useCategoriesStore = defineStore('categoriesStore', () => {
         result.push({
           ...category.transactions[j],
           categoryData: {
+            id: category.id,
             name: category.name,
             color: category.color,
             icon: category.icon
