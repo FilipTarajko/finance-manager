@@ -152,6 +152,7 @@ export const useCurrenciesStore = defineStore('currenciesStore', () => {
   return {
     currencies,
     default_currency_id,
+    getCurrencyByAccount,
     getCurrencyNameByAccount,
     getCurrencyNameByTransaction,
     getCurrencyByTransaction,

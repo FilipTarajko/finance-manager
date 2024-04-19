@@ -23,6 +23,10 @@ const balance = computed(() => {
   return transactions.value.
     reduce((sum, e) => e.amount + sum, 0).toFixed(2)
 })
+
+const currency = computed(() => {
+  return currenciesStore.getCurrencyByAccount(props.account)
+})
 </script>
 
 <template>
@@ -34,7 +38,9 @@ const balance = computed(() => {
       </RouterLink>
       - balance:
       {{ balance }}
-      {{ currenciesStore.getCurrencyNameByAccount(account) }}
+      <RouterLink :to="{ name: 'currency', params: { currencyId: currency!.id } }">
+        {{ currency!.name }}
+      </RouterLink>
     </div>
     <div>
       <v-icon

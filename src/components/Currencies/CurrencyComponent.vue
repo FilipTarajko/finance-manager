@@ -5,7 +5,9 @@ import TransactionList from "@/components/Transactions/TransactionList.vue"
 import type { Currency } from '@/types/types';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
 import { computed } from "vue";
+import { useAccountsStore } from "@/stores/accountsStore";
 const currenciesStore = useCurrenciesStore();
+const accountsStore = useAccountsStore();
 
 const props = defineProps<{
   currency: Currency,
@@ -32,7 +34,9 @@ const balance = computed(() => {
 <template>
   <div class="mt-12 mb-1" style="font-size: 1.2rem; display: flex; flex-direction: row;">
     <div style="width: 92%;">
-    {{ currency.name }}
+      <RouterLink :to="{ name: 'currency', params: { currencyId: currency.id } }">
+        {{ currency.name }}
+      </RouterLink>
     <template v-if="currency.api_name != ''">
       (api name: {{ currency.api_name }})
     </template>
@@ -40,7 +44,7 @@ const balance = computed(() => {
       <template v-if="currency.base_currency_id != currenciesStore.default_currency_id">
         (equal to {{ currency.value_relative_to_default }}{{ currenciesStore.getDefaultCurrency().name }},
       </template>
-      <template v-else>(</template>
+      <template v-else> (</template>
 
       <template v-if="!currency.api_name || !currenciesStore.getCurrencyById(currency.base_currency_id)?.api_name">defined as {{
       currency.value_relative_to_base }}{{ currenciesStore.getCurrencyById(currency.base_currency_id)!.name}})
@@ -69,9 +73,17 @@ const balance = computed(() => {
   </div>
   balance:
   {{ balance }}
-  {{ currency.name }}
+  <RouterLink style="color: var(--color-text);" :to="{ name: 'currency', params: { currencyId: currency.id } }">
+    {{ currency.name }}
+  </RouterLink>
   <br>
-  Accounts: {{ currenciesStore.getAccountNamesByCurrency(currency).join(", ") || '-' }}
+  Accounts:
+  <span v-for="accountId in accountIds" :key="accountId">
+    <RouterLink :to="{ name: 'account', params: { accountId: accountId } }">
+      {{ accountsStore.getAccountById(accountId).name }}
+    </RouterLink>
+    <span v-if="accountId != accountIds[accountIds.length-1]">, </span>
+  </span>
   <br>
   <!-- <v-btn
     v-if="currenciesStore.default_currency_id == currency.id"

@@ -31,8 +31,18 @@ const router = createRouter({
     },
     {
       path: '/currencies',
-      name: 'currencies',
-      component: () => import('../views/CurrenciesView.vue')
+      children: [
+        {
+          path: '',
+          name: 'currencies',
+          component: () => import('../views/CurrenciesView.vue')
+        },
+        {
+          path: ':currencyId',
+          name: 'currency',
+          component: () => import('../views/CurrencyDetailsView.vue')
+        }
+      ]
     },
     {
       path: '/transactions',

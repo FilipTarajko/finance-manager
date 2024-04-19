@@ -2,14 +2,17 @@
 import { useCategoriesStore } from '@/stores/categoriesStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
 import type { TransactionWithCategoryData } from '@/types/types'
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   transaction: TransactionWithCategoryData,
   showDialog: Function
 }>()
 
 const categoriesStore = useCategoriesStore();
 const currenciesStore = useCurrenciesStore();
+
+const currency = currenciesStore.getCurrencyByTransaction(props.transaction)!;
 
 </script>
 
@@ -25,7 +28,9 @@ const currenciesStore = useCurrenciesStore();
       {{ transaction.amount.toFixed(2) }}
     </div>
     <div id="currency">
-      {{ currenciesStore.getCurrencyNameByTransaction(transaction) }}
+      <RouterLink :to="{ name: 'currency', params: { currencyId: currency.id } }">
+        {{ currency.name }}
+      </RouterLink>
     </div>
     <div id="category" :style="{ color: transaction.categoryData.color }">
       <RouterLink :style="{ color: transaction.categoryData.color }" :to="{ name: 'category', params: {categoryId: transaction.categoryData.id} }">

@@ -16,6 +16,11 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = u
 const transaction = computed(() => {
   return categoriesStore.transactions.find((e) => e.id == (route.params.transactionId as any))
 })
+
+const currency = computed(() => {
+  return transaction.value && currenciesStore.getCurrencyByTransaction(transaction?.value)
+})
+
 </script>
 
 <template>
@@ -44,7 +49,9 @@ const transaction = computed(() => {
           currency
         </div>
         <div>
-          {{ currenciesStore.getCurrencyNameByTransaction(transaction) }}
+          <RouterLink :to="{ name: 'currency', params: { currencyId: currency?.id } }">
+            {{ currency?.name }}
+          </RouterLink>
         </div>
         <div>
           category
