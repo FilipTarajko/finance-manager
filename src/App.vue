@@ -20,7 +20,11 @@ const drawer: Ref<any> = ref(null);
           <v-icon icon="mdi-menu"></v-icon>
         </v-btn>
         <div>
-          <v-toolbar-title style="font-size: 1.4rem;">Finance Manager</v-toolbar-title>
+          <v-toolbar-title style="font-size: 1.4rem;">
+            <RouterLink id="logo" to="/" >
+              Finance Manager
+            </RouterLink>
+          </v-toolbar-title>
         </div>
         <nav class="display-if-not-narrow-screen"
           style="flex-direction: row; justify-content: space-between; align-items: baseline;">
@@ -88,6 +92,12 @@ const drawer: Ref<any> = ref(null);
 </template>
 
 <style scoped lang="scss">
+
+#logo {
+  color: white;
+  background: none !important;
+}
+
 .routerLink {
   padding: 0.35rem 0.7rem;
   margin-bottom: -0.2rem;
