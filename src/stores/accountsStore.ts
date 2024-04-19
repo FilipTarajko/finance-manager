@@ -33,6 +33,10 @@ export const useAccountsStore = defineStore('accountsStore', () => {
     })
   }
 
+  function getAccountById(id: number): Account {
+    return accounts.value.find(elem => elem.id == id) as Account
+  }
+
   function deleteAccount(account: Account) {
     accounts.value = accounts.value.filter(elem => elem != account)
     categoriesStore.categories.forEach(category => {
@@ -51,6 +55,7 @@ export const useAccountsStore = defineStore('accountsStore', () => {
     accounts,
     editExistingAccount,
     createAndAddAccount,
+    getAccountById,
     deleteAccount,
     default_account_id
   }
