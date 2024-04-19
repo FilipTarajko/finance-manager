@@ -39,6 +39,13 @@ const displayCurrencyOptions = computed(() => {
   })
 })
 
+function setMinDate(dateString: string) {
+  minTimestamp.value = Math.floor((new Date(dateString).getTime())/86400000)*86400000
+}
+
+function setMaxDate(dateString: string) {
+  maxTimestamp.value = (1+Math.floor((new Date(dateString).getTime())/86400000))*86400000
+}
 </script>
 
 <template>
@@ -46,19 +53,20 @@ const displayCurrencyOptions = computed(() => {
     <h1>Statistics</h1>
 
     <h2>filters</h2>
-    <div style="display: flex; flex-direction: row;;">
+
+    <div style="display: flex; flex-direction: row;">
       <v-text-field
         class="mr-2"
-        v-model.number="minTimestamp"
-        type="number"
-        label="minTimestamp"
+        type="date"
+        label="min date"
+        @change="(e: any) => setMinDate(e.target.value)"
       >
       </v-text-field>
       <v-text-field
         class="ml-2"
-        v-model.number="maxTimestamp"
-        type="number"
-        label="maxTimestamp"
+        type="date"
+        label="max date"
+        @change="(e: any) => setMaxDate(e.target.value)"
       >
       </v-text-field>
     </div>
