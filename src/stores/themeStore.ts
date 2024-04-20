@@ -4,7 +4,7 @@ import { useStorage } from '@vueuse/core'
 import { useTheme } from 'vuetify'
 
 
-export const useThemeStore = defineStore('themeStore', () => {
+export const useThemeStore = defineStore('theme', () => {
   const darkTheme: Ref<boolean> = useStorage('darkTheme', () => {
     // by default, use preferred color scheme
     return window.matchMedia("(prefers-color-scheme: dark)").matches

@@ -12,7 +12,7 @@ import { useSnackbarStore } from '@/stores/snackbarStore';
 
 import defaultCurrencies from './defaultCurrencies.json'
 
-export const useCurrenciesStore = defineStore('currenciesStore', () => {
+export const useCurrenciesStore = defineStore('currencies', () => {
   const default_currency_id: Ref<number> = useStorage('default_currency_id', 1)
   const currencies: Ref<Currency[]> = useStorage('currencies', defaultCurrencies)
 

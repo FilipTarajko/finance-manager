@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useSnackbarStore = defineStore('snackbarStore', () => {
+export const useSnackbarStore = defineStore('snackbar', () => {
     const snackbarText = ref('snackbar text')
     const isSnackbarDisplayed = ref(false)
     const snackbarColor = ref("red")

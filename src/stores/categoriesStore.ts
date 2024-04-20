@@ -9,7 +9,7 @@ import { useStorage } from '@vueuse/core'
 
 import defaultData from './smallData.json'
 
-export const useCategoriesStore = defineStore('categoriesStore', () => {
+export const useCategoriesStore = defineStore('categories', () => {
   const categories: Ref<Category[]> = useStorage('categories', defaultData)
 
   function createAndAddCategory(name: string, color: string, icon: string) {
