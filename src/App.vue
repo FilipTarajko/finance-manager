@@ -37,6 +37,9 @@ onUnmounted(() => {
     <v-app-bar app color="green" style="width: 100%;">
       <div
         style="margin: auto; padding: 0 1rem; width: 100%; max-width: 1000px; display: flex; justify-content: space-between; align-items: baseline;">
+        <a class="skip-nav-link" href="#main-content" tabindex="0" aria-hidden="false">
+          skip navigation
+        </a>
         <v-btn class="display-if-narrow-screen" variant="outlined" style="min-width: 0px; width: 50px;"
           @click.stop="drawer = !drawer">
           <v-icon icon="mdi-menu"></v-icon>
@@ -97,7 +100,7 @@ onUnmounted(() => {
     </v-navigation-drawer>
   </v-layout>
 
-  <RouterView style='margin-top: 4rem;' />
+  <RouterView id="main-content" style='margin-top: 4rem;' />
   <div class="text-center ma-2">
     <v-snackbar :color=snackbarStore.snackbarColor v-model="snackbarStore.isSnackbarDisplayed">
       <span style="word-break: break-all;">
@@ -118,6 +121,17 @@ onUnmounted(() => {
 #logo {
   color: white;
   background: none !important;
+}
+
+.skip-nav-link {
+  position: absolute;
+  top: 0px;
+  display: absolute;
+  color: #4CAF50;
+
+  &:focus {
+    color: white;
+  }
 }
 
 .layoutRouterLink {
@@ -161,19 +175,19 @@ nav>.layoutRouterLink {
   display: none;
 }
 
-@media (max-width: 900px) {
-  .display-if-narrow-screen {
-    display: block;
-  }
-}
-
 .display-if-not-narrow-screen {
   display: flex;
 }
 
 @media (max-width: 900px) {
+  .display-if-narrow-screen {
+    display: block;
+  }
   .display-if-not-narrow-screen {
     display: none;
+  }
+  .skip-nav-link {
+    left: 70px;
   }
 }
 </style>
