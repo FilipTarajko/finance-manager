@@ -40,7 +40,7 @@ const rules = {
   amount: {
     required,
     mustNotBeEqualToZero: helpers.withMessage("Must not be equal to 0", mustNotBeEqualToZero),
-    mustBeUniqueCategoryName: helpers.withMessage('Must have at most 2 decimal digits', mustHaveAtMost2DecimalDigits)
+    mustHaveAtMost2DecimalDigits: helpers.withMessage('Must have at most 2 decimal digits', mustHaveAtMost2DecimalDigits)
   },
   category: { required },
   account_id: { required }
@@ -96,6 +96,7 @@ function editOrCreateAndAddTransaction() {
     v-if="categoriesStore.categories.length"
     class="mb-4"
     style="width: 24rem"
+    @submit.prevent="editOrCreateAndAddTransaction"
   >
     <v-text-field
       v-model="state.name"
@@ -110,6 +111,7 @@ function editOrCreateAndAddTransaction() {
 
     <v-text-field
       type="number"
+      step="0.01"
       v-model.number="state.amount"
       label="Amount"
       required
@@ -145,7 +147,7 @@ function editOrCreateAndAddTransaction() {
 
     <v-btn
       class="me-4"
-      @click="editOrCreateAndAddTransaction"
+      type="submit"
       color="success"
     >
       {{ isEditing ? 'update' : 'add' }}

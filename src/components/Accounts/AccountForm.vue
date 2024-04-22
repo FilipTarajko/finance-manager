@@ -79,6 +79,7 @@ function editOrCreateAndAddAccount() {
     v-if="currenciesStore.currencies.length"
     class="mb-4"
     style="width: 24rem"
+    @submit.prevent="editOrCreateAndAddAccount"
   >
     <v-text-field
       v-model="state.name"
@@ -105,8 +106,8 @@ function editOrCreateAndAddAccount() {
 
     <v-btn
       class="me-4"
-      @click="editOrCreateAndAddAccount"
       color="success"
+      type="submit"
     >
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>

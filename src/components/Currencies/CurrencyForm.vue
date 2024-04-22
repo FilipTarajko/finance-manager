@@ -103,6 +103,7 @@ const baseCurrencyOptions = computed(() => {
   <form
     class="mb-4"
     style="width: 24rem"
+    @submit.prevent="editOrCreateAndAddCurrency"
   >
     <v-text-field
       v-model="state.name"
@@ -117,23 +118,10 @@ const baseCurrencyOptions = computed(() => {
     <v-text-field
       v-model.uppercased="state.api_name"
       label="API name (optional)"
-      required
       @input="v$.api_name.$touch"
       @blur="v$.api_name.$touch"
       :error-messages="v$.api_name.$errors.map((e) => e.$message) as string[]"
       class="mb-1"
-    >
-    </v-text-field>
-    <v-text-field
-      v-model.number="state.value_relative_to_base"
-      type="number"
-      :label="'Current value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'"
-      required
-      :disabled="props?.currency?.id == currenciesStore.default_currency_id"
-      @input="v$.value_relative_to_base.$touch"
-      @blur="v$.value_relative_to_base.$touch"
-      :error-messages="v$.value_relative_to_base.$errors.map((e) => e.$message) as string[]"
-      class="mb-2"
     >
     </v-text-field>
     <v-select
@@ -148,6 +136,18 @@ const baseCurrencyOptions = computed(() => {
       class="mb-2"
     >
     </v-select>
+    <v-text-field
+      v-model.number="state.value_relative_to_base"
+      type="number"
+      :label="'Current value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'"
+      required
+      :disabled="props?.currency?.id == currenciesStore.default_currency_id"
+      @input="v$.value_relative_to_base.$touch"
+      @blur="v$.value_relative_to_base.$touch"
+      :error-messages="v$.value_relative_to_base.$errors.map((e) => e.$message) as string[]"
+      class="mb-2"
+    >
+    </v-text-field>
 
     <v-switch
       v-if="!isEditing"
@@ -160,7 +160,7 @@ const baseCurrencyOptions = computed(() => {
 
     <v-btn
       class="me-4"
-      @click="editOrCreateAndAddCurrency"
+      type="submit"
       color="success"
     >
       {{ isEditing ? 'update' : 'add' }}

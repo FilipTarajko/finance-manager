@@ -86,6 +86,7 @@ function editOrCreateAndAddCategory() {
   <form
     class="mb-4"
     style="width: 24.1rem;"
+    @submit.prevent="editOrCreateAndAddCategory"
   >
     <v-text-field
       :id="isEditing ? 'editedCategoryNameTextField' : 'newCategoryNameTextField' "
@@ -136,7 +137,7 @@ function editOrCreateAndAddCategory() {
     <br />
     <v-btn
       class="me-4"
-      @click="editOrCreateAndAddCategory"
+      type="submit"
       color="success"
     >
       {{ isEditing ? 'update' : 'add' }}
