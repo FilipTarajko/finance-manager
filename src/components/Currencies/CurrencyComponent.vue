@@ -13,7 +13,7 @@ const props = defineProps<{
   currency: Currency
 }>()
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'showCurrencyDialog', currency: Currency): void
   (e: 'showTransactionDialog', transaction: TransactionWithCategoryData): void
 }>()
