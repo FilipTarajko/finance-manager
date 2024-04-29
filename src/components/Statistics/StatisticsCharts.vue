@@ -128,7 +128,7 @@ const transactionsChronologicallyForBarChart = computed(() => {
   <template v-else>
 
     There are no
-    <RouterLink :to="{ name: 'transactions' }">transactions</RouterLink>, so no charts can be shown.
+    <RouterLink :to="{ name: 'transactions' }" tabindex="0">transactions</RouterLink>, so no charts can be shown.
   </template>
 </template>
 

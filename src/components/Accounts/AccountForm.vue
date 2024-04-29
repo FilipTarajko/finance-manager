@@ -125,7 +125,7 @@ function editOrCreateAndAddAccount() {
   </form>
   <template v-else>
     There are no
-    <RouterLink :to="{ name: 'currency' }">currencies</RouterLink>,
+    <RouterLink :to="{ name: 'currency' }" tabindex="0">currencies</RouterLink>,
     so account can't be created.
   </template>
 </template>

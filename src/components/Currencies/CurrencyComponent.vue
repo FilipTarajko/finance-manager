@@ -34,7 +34,7 @@ const balance = computed(() => {
 <template>
   <div class="mt-12 mb-1" style="font-size: 1.2rem; display: flex; flex-direction: row;">
     <div style="width: 92%;">
-      <RouterLink :to="{ name: 'currency', params: { currencyId: currency.id } }">
+      <RouterLink :to="{ name: 'currency', params: { currencyId: currency.id } }" tabindex="0">
         {{ currency.name }}
       </RouterLink>
     <template v-if="currency.api_name != ''">
@@ -55,20 +55,26 @@ const balance = computed(() => {
     </template>
     </div>
     <div style="width: 8%; text-align: right;">
-      <v-icon
+      <button
         @click="showCurrencyDialog(currency)"
         class="edit-button"
-        icon="mdi-pencil"
         aria-label="edit currency"
-        style="color: var(--visible-yellow)"
-      />
-      <v-icon
-        @click="currenciesStore.currencies.length != 1 && currenciesStore.deleteCurrency(currency)"
-        icon="mdi-delete"
-        aria-label="delete currency"
-        :style="'color: ' + (currenciesStore.currencies.length != 1 ? 'red' : 'gray')"
-        :disabled="currenciesStore.currencies.length == 1"
-      />
+        >
+        <v-icon
+          icon="mdi-pencil"
+          style="color: var(--visible-yellow)"
+        />
+      </button>
+      <button
+          @click="currenciesStore.currencies.length != 1 && currenciesStore.deleteCurrency(currency)"
+          aria-label="delete currency"
+          :disabled="currenciesStore.currencies.length == 1"
+        >
+        <v-icon
+          icon="mdi-delete"
+          :style="'color: ' + (currenciesStore.currencies.length != 1 ? 'red' : 'gray')"
+        />
+      </button>
     </div>
   </div>
   balance:
@@ -79,7 +85,7 @@ const balance = computed(() => {
   <br>
   Accounts:
   <span v-for="accountId in accountIds" :key="accountId">
-    <RouterLink :to="{ name: 'account', params: { accountId: accountId } }">
+    <RouterLink :to="{ name: 'account', params: { accountId: accountId } }" tabindex="0">
       {{ accountsStore.getAccountById(accountId).name }}
     </RouterLink>
     <span v-if="accountId != accountIds[accountIds.length-1]">, </span>

@@ -62,7 +62,7 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = u
     <div class="mt-2 border-solid pa-2">
       api supports: {{ currenciesStore.currenciesSupportedByApi }}
       <hr class="mt-2 mb-2">
-      used api: <a href="https://www.vatcomply.com/">VATcomply</a>
+      used api: <a href="https://www.vatcomply.com/" tabindex="0">VATcomply</a>
       <hr class="mt-2 mb-2">
       new api data on workdays, 16:00 CET
     </div>
