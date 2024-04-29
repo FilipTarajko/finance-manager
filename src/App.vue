@@ -21,7 +21,6 @@ const drawerLinkTabIndex = computed(() => {
 let width = ref(window.innerWidth)
 
 function updateWindowWidth() {
-  console.log('updateWindowWidth')
   width.value = window.innerWidth
 }
 

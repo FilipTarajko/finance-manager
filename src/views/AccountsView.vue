@@ -29,7 +29,7 @@ function showAccountDialog(account: Account) {
       <AccountComponent
         :account="account"
         :showTransactionDialog="showTransactionDialog"
-        :showAccountDialog="showAccountDialog"
+        @showAccountDialog="showAccountDialog"
       ></AccountComponent>
     </div>
     <AccountEditDialog

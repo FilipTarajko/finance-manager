@@ -16,7 +16,7 @@ defineProps<{
       <v-card-text>
         <AccountForm
           :account="editedAccount ?? undefined"
-          :hideDialog="
+          @hideDialog="
             () => {
               isDialogShown = false
             }

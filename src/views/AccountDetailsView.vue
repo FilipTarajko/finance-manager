@@ -33,7 +33,7 @@ function showAccountDialog(account: Account) {
       <AccountComponent
         :account="account"
         :showTransactionDialog="showTransactionDialog"
-        :showAccountDialog="showAccountDialog"
+        @showAccountDialog="showAccountDialog"
       ></AccountComponent>
       <AccountEditDialog
         v-model="isAccountDialogShown"

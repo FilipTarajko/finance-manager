@@ -12,7 +12,10 @@ const accountsStore = useAccountsStore()
 const props = defineProps<{
   account: Account
   showTransactionDialog: Function
-  showAccountDialog: Function
+}>()
+
+defineEmits<{
+  (e: 'showAccountDialog', account: Account): void
 }>()
 
 const transactions = computed(() => {
@@ -44,7 +47,11 @@ const currency = computed(() => {
       </RouterLink>
     </div>
     <div>
-      <button class="edit-button" @click="showAccountDialog(account)" aria-label="edit account">
+      <button
+        class="edit-button"
+        @click="$emit('showAccountDialog', account)"
+        aria-label="edit account"
+      >
         <v-icon icon="mdi-pencil" style="color: var(--visible-yellow)" />
       </button>
       <button
