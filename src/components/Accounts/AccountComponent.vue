@@ -10,8 +10,8 @@ const currenciesStore = useCurrenciesStore()
 const accountsStore = useAccountsStore()
 
 const props = defineProps<{
-  account: Account,
-  showTransactionDialog: Function,
+  account: Account
+  showTransactionDialog: Function
   showAccountDialog: Function
 }>()
 

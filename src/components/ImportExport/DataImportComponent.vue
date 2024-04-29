@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { type Ref, ref } from 'vue';
+import { type Ref, ref } from 'vue'
 import { useCategoriesStore } from '@/stores/categoriesStore'
-import { useAccountsStore } from '@/stores/accountsStore';
-import { useCurrenciesStore } from '@/stores/currenciesStore';
-import { useSnackbarStore } from '@/stores/snackbarStore';
-import type { Account, Category, Currency } from '@/types/types';
+import { useAccountsStore } from '@/stores/accountsStore'
+import { useCurrenciesStore } from '@/stores/currenciesStore'
+import { useSnackbarStore } from '@/stores/snackbarStore'
+import type { Account, Category, Currency } from '@/types/types'
 const categoriesStore = useCategoriesStore()
 const accountsStore = useAccountsStore()
 const currenciesStore = useCurrenciesStore()
@@ -16,20 +16,20 @@ const isLoadingFromText: Ref<boolean> = ref(false)
 
 const fileData = ref([])
 const showJsonOnly = ref(true)
-const textFieldData = ref("")
+const textFieldData = ref('')
 
 function tryImportFromFile() {
   isDataBeingProcessed.value = true
   isLoadingFromFile.value = true
-  const file = fileData.value[0];
-  const reader = new FileReader();
+  const file = fileData.value[0]
+  const reader = new FileReader()
   reader.onload = (e) => {
-    const data = (e?.target?.result);
+    const data = e?.target?.result
     if (data as string) {
-      tryImportData(data as string);
+      tryImportData(data as string)
     }
-  };
-  reader.readAsText(file);
+  }
+  reader.readAsText(file)
   isDataBeingProcessed.value = false
   isLoadingFromFile.value = false
 }
@@ -44,17 +44,20 @@ function tryImportFromText(stringToImport: string) {
 
 function tryImportData(stringToImport: string) {
   const result = tryParseTextIntoData(stringToImport)
-  if ("data" in result && result.data) {
-    categoriesStore.categories = result.data.categories;
-    accountsStore.default_account_id = result.data.default_account_id;
-    currenciesStore.default_currency_id = result.data.default_currency_id;
-    accountsStore.accounts = result.data.accounts;
-    currenciesStore.currencies = result.data.currencies;
+  if ('data' in result && result.data) {
+    categoriesStore.categories = result.data.categories
+    accountsStore.default_account_id = result.data.default_account_id
+    currenciesStore.default_currency_id = result.data.default_currency_id
+    accountsStore.accounts = result.data.accounts
+    currenciesStore.currencies = result.data.currencies
 
-    snackbarStore.showSnackbarMessage('green', `Imported data with \n${result.data.categories.length} categories, \n${result.data.accounts.length} accounts, and \n${result.data.currencies.length} currencies.`)
+    snackbarStore.showSnackbarMessage(
+      'green',
+      `Imported data with \n${result.data.categories.length} categories, \n${result.data.accounts.length} accounts, and \n${result.data.currencies.length} currencies.`
+    )
   } else {
     // @ts-ignore
-    const errorMessage = result?.errorMessage ?? "unknown error"
+    const errorMessage = result?.errorMessage ?? 'unknown error'
     snackbarStore.showSnackbarMessage('red', errorMessage)
   }
 }
@@ -75,19 +78,20 @@ export function isCategory(obj: unknown): obj is Category {
     typeof obj.icon === 'string' &&
     'transactions' in obj &&
     Array.isArray(obj.transactions) &&
-    obj.transactions.every(transaction =>
-      transaction &&
-      typeof transaction === 'object' &&
-      'id' in transaction &&
-      typeof transaction.id === 'number' &&
-      'name' in transaction &&
-      typeof transaction.name === 'string' &&
-      'amount' in transaction &&
-      typeof transaction.amount === 'number' &&
-      'timestamp' in transaction &&
-      typeof transaction.timestamp === 'number'
+    obj.transactions.every(
+      (transaction) =>
+        transaction &&
+        typeof transaction === 'object' &&
+        'id' in transaction &&
+        typeof transaction.id === 'number' &&
+        'name' in transaction &&
+        typeof transaction.name === 'string' &&
+        'amount' in transaction &&
+        typeof transaction.amount === 'number' &&
+        'timestamp' in transaction &&
+        typeof transaction.timestamp === 'number'
     )
-  );
+  )
 }
 
 export function isAccount(obj: unknown): obj is Account {
@@ -100,7 +104,7 @@ export function isAccount(obj: unknown): obj is Account {
     typeof obj.name === 'string' &&
     'currency_id' in obj &&
     typeof obj.currency_id === 'number'
-  );
+  )
 }
 
 export function isCurrency(obj: unknown): obj is Currency {
@@ -119,66 +123,84 @@ export function isCurrency(obj: unknown): obj is Currency {
     typeof obj.value_relative_to_default === 'number' &&
     'api_name' in obj &&
     typeof obj.api_name === 'string'
-  );
+  )
 }
 
-export function validateCategoriesFromObject(data: any): { errorMessage: string } | { data: Category[] } {
+export function validateCategoriesFromObject(
+  data: any
+): { errorMessage: string } | { data: Category[] } {
   if (!Array.isArray(data)) {
-    return { errorMessage: "'categories' is not an array" };
+    return { errorMessage: "'categories' is not an array" }
   }
   for (let i = 0; i < data.length; i++) {
     if (!isCategory(data[i])) {
-      return { errorMessage: `${JSON.stringify(data[i])} is not a valid category` };
+      return { errorMessage: `${JSON.stringify(data[i])} is not a valid category` }
     }
   }
-  return { data: data };
+  return { data: data }
 }
 
-export function validateAccountsFromObject(data: any): { errorMessage: string } | { data: Account[] } {
+export function validateAccountsFromObject(
+  data: any
+): { errorMessage: string } | { data: Account[] } {
   if (!Array.isArray(data)) {
-    return { errorMessage: "'accounts' is not an array" };
+    return { errorMessage: "'accounts' is not an array" }
   }
   for (let i = 0; i < data.length; i++) {
     if (!isAccount(data[i])) {
-      return { errorMessage: `${JSON.stringify(data[i])} is not a valid account` };
+      return { errorMessage: `${JSON.stringify(data[i])} is not a valid account` }
     }
   }
-  return { data: data };
+  return { data: data }
 }
 
-export function validateCurrenciesFromObject(data: any): { errorMessage: string } | { data: Currency[] } {
+export function validateCurrenciesFromObject(
+  data: any
+): { errorMessage: string } | { data: Currency[] } {
   if (!Array.isArray(data)) {
-    return { errorMessage: "'currencies' is not an array" };
+    return { errorMessage: "'currencies' is not an array" }
   }
   for (let i = 0; i < data.length; i++) {
     if (!isCurrency(data[i])) {
-      return { errorMessage: `${JSON.stringify(data[i])} is not a valid currency` };
+      return { errorMessage: `${JSON.stringify(data[i])} is not a valid currency` }
     }
   }
-  return { data: data };
+  return { data: data }
 }
 
-export function validateDefaultAccountIdFromObject(data: any): { errorMessage: string } | { data: number } {
+export function validateDefaultAccountIdFromObject(
+  data: any
+): { errorMessage: string } | { data: number } {
   if (typeof data == 'number') {
     return { data }
   } else {
-    return { errorMessage: "not a number" }
+    return { errorMessage: 'not a number' }
   }
 }
 
-export function validateDefaultCurrencyIdFromObject(data: any): { errorMessage: string } | { data: number } {
+export function validateDefaultCurrencyIdFromObject(
+  data: any
+): { errorMessage: string } | { data: number } {
   if (typeof data == 'number') {
     return { data }
   } else {
-    return { errorMessage: "not a number" }
+    return { errorMessage: 'not a number' }
   }
 }
 
 export function tryParseTextIntoData(stringToImport: string) {
   try {
     const parsedData = JSON.parse(stringToImport)
-    if (!("categories" in parsedData && "default_account_id" in parsedData && "default_currency_id" in parsedData && "accounts" in parsedData && "currencies" in parsedData)) {
-      return { errorMessage: "data incomplete" }
+    if (
+      !(
+        'categories' in parsedData &&
+        'default_account_id' in parsedData &&
+        'default_currency_id' in parsedData &&
+        'accounts' in parsedData &&
+        'currencies' in parsedData
+      )
+    ) {
+      return { errorMessage: 'data incomplete' }
     }
 
     const categories = validateCategoriesFromObject(parsedData.categories)
@@ -201,10 +223,10 @@ export function tryParseTextIntoData(stringToImport: string) {
     if ('errorMessage' in currencies) {
       return currencies
     }
-    if (currencies.data.filter(currency => currency.id == default_currency_id.data).length != 1) {
+    if (currencies.data.filter((currency) => currency.id == default_currency_id.data).length != 1) {
       return { errorMessage: 'invalid relationship between default_currency_id and currencies' }
     }
-    if (accounts.data.filter(account => account.id == default_account_id.data).length != 1) {
+    if (accounts.data.filter((account) => account.id == default_account_id.data).length != 1) {
       return { errorMessage: 'invalid relationship between default_account_id and accounts' }
     }
     return {
@@ -217,7 +239,7 @@ export function tryParseTextIntoData(stringToImport: string) {
       }
     }
   } catch {
-    return { errorMessage: "not a json" };
+    return { errorMessage: 'not a json' }
   }
 }
 </script>
@@ -225,13 +247,7 @@ export function tryParseTextIntoData(stringToImport: string) {
 <template>
   <v-card class="pa-4 mb-12">
     <h2>Import from file</h2>
-    <v-switch
-      v-model="showJsonOnly"
-      class="mt-2"
-      inset
-      label="Only show .json files"
-    >
-    </v-switch>
+    <v-switch v-model="showJsonOnly" class="mt-2" inset label="Only show .json files"> </v-switch>
     <v-file-input
       v-model="fileData"
       :accept="showJsonOnly ? 'application/json' : ''"
@@ -243,21 +259,21 @@ export function tryParseTextIntoData(stringToImport: string) {
       :loading="isLoadingFromFile"
       @click="tryImportFromFile()"
       variant="outlined"
-    > import from file</v-btn>
+    >
+      import from file</v-btn
+    >
   </v-card>
   <v-card class="pa-4">
     <h2>Import from text</h2>
-    <v-textarea
-      class="mt-4"
-      v-model="textFieldData"
-    >
-    </v-textarea>
+    <v-textarea class="mt-4" v-model="textFieldData"> </v-textarea>
     <v-btn
       class="mb-4"
       :disabled="!textFieldData || isDataBeingProcessed"
       :loading="isLoadingFromText"
       @click="tryImportFromText(textFieldData)"
       variant="outlined"
-    > import from text </v-btn>
+    >
+      import from text
+    </v-btn>
   </v-card>
 </template>

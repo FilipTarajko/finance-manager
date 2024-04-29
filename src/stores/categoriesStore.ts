@@ -28,7 +28,10 @@ export const useCategoriesStore = defineStore('categories', () => {
     })
   }
 
-  function editExistingCategory(category: Category, newState: { name: string, color: string, icon: string }) {
+  function editExistingCategory(
+    category: Category,
+    newState: { name: string; color: string; icon: string }
+  ) {
     category.name = newState.name
     category.color = newState.color
     category.icon = newState.icon
@@ -62,7 +65,12 @@ export const useCategoriesStore = defineStore('categories', () => {
     transactions.value.filter((elem: { amount: number }) => elem.amount < 0)
   )
 
-  function createAndAddTransaction(name: string, amount: number, category: Category, account_id: number) {
+  function createAndAddTransaction(
+    name: string,
+    amount: number,
+    category: Category,
+    account_id: number
+  ) {
     let nextId = 0
     for (const elem of transactions.value) {
       if (nextId <= elem.id) {
@@ -85,13 +93,13 @@ export const useCategoriesStore = defineStore('categories', () => {
     category.transactions[index].name = newState.name
     category.transactions[index].account_id = newState.account_id
     if (newState.category != category) {
-      const movedTransaction = category.transactions.splice(index, 1)[0];
-      newState.category.transactions.push(movedTransaction);
+      const movedTransaction = category.transactions.splice(index, 1)[0]
+      newState.category.transactions.push(movedTransaction)
     }
   }
 
   function tryGetCategoryByName(searchedName: String): Category | undefined {
-    return categories.value.find(category => category.name == searchedName)
+    return categories.value.find((category) => category.name == searchedName)
   }
 
   // @ts-ignore
@@ -112,7 +120,7 @@ export const useCategoriesStore = defineStore('categories', () => {
   }
 
   function deleteCategory(category: Category) {
-    categories.value = categories.value.filter(elem => elem != category)
+    categories.value = categories.value.filter((elem) => elem != category)
   }
 
   return {

@@ -32,15 +32,22 @@ const state = reactive({
   account_id: initialState.account_id
 })
 
-const mustHaveAtMost2DecimalDigits = (value: number) => { return value == Math.round(value * 100) / 100 }
-const mustNotBeEqualToZero = (value: number) => { return value != 0 }
+const mustHaveAtMost2DecimalDigits = (value: number) => {
+  return value == Math.round(value * 100) / 100
+}
+const mustNotBeEqualToZero = (value: number) => {
+  return value != 0
+}
 
 const rules = {
   name: { required, maxLength: maxLength(20) },
   amount: {
     required,
-    mustNotBeEqualToZero: helpers.withMessage("Must not be equal to 0", mustNotBeEqualToZero),
-    mustHaveAtMost2DecimalDigits: helpers.withMessage('Must have at most 2 decimal digits', mustHaveAtMost2DecimalDigits)
+    mustNotBeEqualToZero: helpers.withMessage('Must not be equal to 0', mustNotBeEqualToZero),
+    mustHaveAtMost2DecimalDigits: helpers.withMessage(
+      'Must have at most 2 decimal digits',
+      mustHaveAtMost2DecimalDigits
+    )
   },
   category: { required },
   account_id: { required }
@@ -58,8 +65,7 @@ const categoryOptions = computed(() => {
 const accountOptions = computed(() => {
   return accountsStore.accounts.map((acc) => {
     return {
-      title: acc.name + " ("
-        + currenciesStore.getCurrencyNameByAccount(acc) + ")",
+      title: acc.name + ' (' + currenciesStore.getCurrencyNameByAccount(acc) + ')',
       value: acc.id
     }
   })
@@ -85,7 +91,12 @@ function editOrCreateAndAddTransaction() {
     categoriesStore.editExistingTransaction(props.transaction, state)
     props.hideDialog()
   } else {
-    categoriesStore.createAndAddTransaction(state.name, state.amount, state.category, state.account_id)
+    categoriesStore.createAndAddTransaction(
+      state.name,
+      state.amount,
+      state.category,
+      state.account_id
+    )
   }
 }
 </script>
@@ -145,28 +156,15 @@ function editOrCreateAndAddTransaction() {
     >
     </v-select>
 
-    <v-btn
-      class="me-4"
-      type="submit"
-      color="success"
-    >
+    <v-btn class="me-4" type="submit" color="success">
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
-    <v-btn
-      class="me-4"
-      @click="clear"
-      color="error"
-      theme="light"
-    > reset </v-btn>
-    <v-btn
-      v-if="isEditing"
-      @click="hideDialog"
-      color="warning"
-    > cancel & exit </v-btn>
+    <v-btn class="me-4" @click="clear" color="error" theme="light"> reset </v-btn>
+    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
   </form>
   <template v-else>
     There are no
-    <RouterLink :to="{ name: 'categories' }" tabindex="0">categories</RouterLink>,
-    so transactions can't be created.
+    <RouterLink :to="{ name: 'categories' }" tabindex="0">categories</RouterLink>, so transactions
+    can't be created.
   </template>
 </template>

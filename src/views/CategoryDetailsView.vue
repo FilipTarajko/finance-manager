@@ -6,7 +6,7 @@ import CategoryComponent from '@/components/Categories/CategoryComponent.vue'
 import { useCategoriesStore } from '../stores/categoriesStore'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
+import { useTransactionFormComposable } from '@/composables/transactionFormComposable'
 const categoriesStore = useCategoriesStore()
 const route = useRoute()
 
@@ -16,14 +16,17 @@ function showCategoryDialog() {
   isCategoryDialogShown.value = true
 }
 
-const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
+  useTransactionFormComposable()
 
 const category = computed(() => {
   return categoriesStore.categories.find((e) => e.id == (route.params.categoryId as any))
 })
 
 const transactionsInCategory = computed(() => {
-  return categoriesStore.transactions.filter(transaction => transaction.categoryData.name == category.value?.name)
+  return categoriesStore.transactions.filter(
+    (transaction) => transaction.categoryData.name == category.value?.name
+  )
 })
 </script>
 
@@ -31,14 +34,8 @@ const transactionsInCategory = computed(() => {
   <main>
     <h1>Category</h1>
     <template v-if="category">
-      <CategoryComponent
-        :category="category"
-        :showDialog="showCategoryDialog"
-      ></CategoryComponent>
-      <CategoryEditDialog
-        v-model="isCategoryDialogShown"
-        :editedCategory="category"
-      >
+      <CategoryComponent :category="category" :showDialog="showCategoryDialog"></CategoryComponent>
+      <CategoryEditDialog v-model="isCategoryDialogShown" :editedCategory="category">
       </CategoryEditDialog>
       <h2>Transactions</h2>
       <TransactionList
@@ -46,7 +43,7 @@ const transactionsInCategory = computed(() => {
         :showDialog="showTransactionDialog"
       ></TransactionList>
       <TransactionEditDialog
-        v-model=isTransactionDialogShown
+        v-model="isTransactionDialogShown"
         :transaction="dialogTransaction"
       ></TransactionEditDialog>
     </template>

@@ -3,7 +3,7 @@ import { computed, ref, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import CurrencyComponent from '@/components/Currencies/CurrencyComponent.vue'
 import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
-import CurrencyEditDialog from "@/components/Currencies/CurrencyEditDialog.vue"
+import CurrencyEditDialog from '@/components/Currencies/CurrencyEditDialog.vue'
 import type { Currency } from '@/types/types'
 import { useTransactionFormComposable } from '@/composables/transactionFormComposable'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
@@ -14,7 +14,8 @@ const currency = computed(() => {
   return currenciesStore.getCurrencyById(route.params.currencyId as any)
 })
 
-const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
+  useTransactionFormComposable()
 
 const isCurrencyDialogShown = ref(false)
 const dialogCurrency: Ref<Currency | null> = ref(null)
@@ -35,11 +36,11 @@ function showCurrencyDialog(currency: Currency) {
         :showTransactionDialog="showTransactionDialog"
       ></CurrencyComponent>
       <CurrencyEditDialog
-        v-model=isCurrencyDialogShown
+        v-model="isCurrencyDialogShown"
         :editedCurrency="dialogCurrency"
       ></CurrencyEditDialog>
       <TransactionEditDialog
-        v-model=isTransactionDialogShown
+        v-model="isTransactionDialogShown"
         :transaction="dialogTransaction"
       ></TransactionEditDialog>
     </template>

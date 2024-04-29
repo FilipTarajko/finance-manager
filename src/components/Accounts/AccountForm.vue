@@ -25,7 +25,6 @@ const state = reactive({
   currency_id: initialState.currency_id
 })
 
-
 const mustBeUniqueAccountName = (value: string) =>
   !accountsStore.accounts.map((elem) => elem.name).includes(value) ||
   accountsStore.accounts.includes(props?.account)
@@ -104,28 +103,15 @@ function editOrCreateAndAddAccount() {
     >
     </v-select>
 
-    <v-btn
-      class="me-4"
-      color="success"
-      type="submit"
-    >
+    <v-btn class="me-4" color="success" type="submit">
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
-    <v-btn
-      class="me-4"
-      @click="clear"
-      color="error"
-      theme="light"
-    > reset </v-btn>
-    <v-btn
-      v-if="isEditing"
-      @click="hideDialog"
-      color="warning"
-    > cancel & exit </v-btn>
+    <v-btn class="me-4" @click="clear" color="error" theme="light"> reset </v-btn>
+    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
   </form>
   <template v-else>
     There are no
-    <RouterLink :to="{ name: 'currency' }" tabindex="0">currencies</RouterLink>,
-    so account can't be created.
+    <RouterLink :to="{ name: 'currency' }" tabindex="0">currencies</RouterLink>, so account can't be
+    created.
   </template>
 </template>

@@ -20,7 +20,7 @@ const initialState = {
   value_relative_to_base: props?.currency?.value_relative_to_base ?? 0,
   base_currency_id: props?.currency?.base_currency_id ?? currenciesStore.default_currency_id,
   create_account: false,
-  api_name: props?.currency?.api_name ?? ""
+  api_name: props?.currency?.api_name ?? ''
 }
 
 const state = reactive({
@@ -37,7 +37,7 @@ const mustBeUniqueCurrencyName = (value: string) =>
 
 const mustBeSupportedByApiOrEmpty = (value: string) => {
   const value_uppercased = value.toUpperCase()
-  return currenciesStore.currenciesSupportedByApi.includes(value_uppercased) || value === ""
+  return currenciesStore.currenciesSupportedByApi.includes(value_uppercased) || value === ''
 }
 
 const canCreateAccountOfThisName = (value: string) => {
@@ -45,22 +45,31 @@ const canCreateAccountOfThisName = (value: string) => {
 }
 
 const mustBeExistingCurrencyId = (value: number) =>
-  currenciesStore.currencies.filter(currency => currency.id == value).length === 1
+  currenciesStore.currencies.filter((currency) => currency.id == value).length === 1
 
 const rules = {
   name: {
     required,
     maxLength: maxLength(20),
     mustBeUniqueCurrencyName: helpers.withMessage('Must be unique', mustBeUniqueCurrencyName),
-    mustBeUniqueAccountName: helpers.withMessage('There is already an account of this name', canCreateAccountOfThisName)
+    mustBeUniqueAccountName: helpers.withMessage(
+      'There is already an account of this name',
+      canCreateAccountOfThisName
+    )
   },
   base_currency_id: {
     required,
-    mustBeExistingCurrencyId: helpers.withMessage('Base currency must exist', mustBeExistingCurrencyId)
+    mustBeExistingCurrencyId: helpers.withMessage(
+      'Base currency must exist',
+      mustBeExistingCurrencyId
+    )
   },
   value_relative_to_base: { required },
   api_name: {
-    mustBeSupportedByApiOrEmpty: helpers.withMessage("Must be supported by API or empty", mustBeSupportedByApiOrEmpty)
+    mustBeSupportedByApiOrEmpty: helpers.withMessage(
+      'Must be supported by API or empty',
+      mustBeSupportedByApiOrEmpty
+    )
   }
 }
 
@@ -84,7 +93,13 @@ function editOrCreateAndAddCurrency() {
     currenciesStore.editExistingCurrency(props.currency, state)
     props.hideDialog()
   } else {
-    currenciesStore.createAndAddCurrency(state.name, state.base_currency_id, state.value_relative_to_base, state.create_account, state.api_name)
+    currenciesStore.createAndAddCurrency(
+      state.name,
+      state.base_currency_id,
+      state.value_relative_to_base,
+      state.create_account,
+      state.api_name
+    )
   }
 }
 
@@ -100,11 +115,7 @@ const baseCurrencyOptions = computed(() => {
 
 <template>
   <h2>{{ isEditing ? 'edit currency: ' + props.currency.name : 'new currency' }}</h2>
-  <form
-    class="mb-4"
-    style="width: 24rem"
-    @submit.prevent="editOrCreateAndAddCurrency"
-  >
+  <form class="mb-4" style="width: 24rem" @submit.prevent="editOrCreateAndAddCurrency">
     <v-text-field
       v-model="state.name"
       label="Name"
@@ -139,7 +150,11 @@ const baseCurrencyOptions = computed(() => {
     <v-text-field
       v-model.number="state.value_relative_to_base"
       type="number"
-      :label="'Current value (in ' + currenciesStore.currencies.find(e => e.id == state.base_currency_id)!.name + ')'"
+      :label="
+        'Current value (in ' +
+        currenciesStore.currencies.find((e) => e.id == state.base_currency_id)!.name +
+        ')'
+      "
       required
       :disabled="props?.currency?.id == currenciesStore.default_currency_id"
       @input="v$.value_relative_to_base.$touch"
@@ -151,30 +166,17 @@ const baseCurrencyOptions = computed(() => {
 
     <v-switch
       v-if="!isEditing"
-      style="margin-top: -1rem;"
+      style="margin-top: -1rem"
       @change="v$.name.$touch"
       v-model="state.create_account"
       label="Also create account of the same name"
     >
     </v-switch>
 
-    <v-btn
-      class="me-4"
-      type="submit"
-      color="success"
-    >
+    <v-btn class="me-4" type="submit" color="success">
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
-    <v-btn
-      class="me-4"
-      @click="clear"
-      color="error"
-      theme="light"
-    > reset </v-btn>
-    <v-btn
-      v-if="isEditing"
-      @click="hideDialog"
-      color="warning"
-    > cancel & exit </v-btn>
+    <v-btn class="me-4" @click="clear" color="error" theme="light"> reset </v-btn>
+    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
   </form>
 </template>

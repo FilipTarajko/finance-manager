@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { type Ref, ref } from 'vue';
-import { useAccountsStore } from '@/stores/accountsStore';
+import { type Ref, ref } from 'vue'
+import { useAccountsStore } from '@/stores/accountsStore'
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
 const categoriesStore = useCategoriesStore()
@@ -9,8 +9,8 @@ const currenciesStore = useCurrenciesStore()
 
 const isDataBeingProcessed: Ref<boolean | undefined> = defineModel()
 const isExportingToFile: Ref<boolean> = ref(false)
-  
-import { useSnackbarStore } from '@/stores/snackbarStore';
+
+import { useSnackbarStore } from '@/stores/snackbarStore'
 const snackbarStore = useSnackbarStore()
 
 function getLocale() {
@@ -39,7 +39,7 @@ function exportData() {
   element.style.display = 'none'
   document.body.appendChild(element)
   element.click()
-  snackbarStore.showSnackbarMessage('green', "File is being downloaded")
+  snackbarStore.showSnackbarMessage('green', 'File is being downloaded')
   document.body.removeChild(element)
   isDataBeingProcessed.value = false
   isExportingToFile.value = false
@@ -55,6 +55,8 @@ function exportData() {
       :disabled="isDataBeingProcessed"
       :loading="isExportingToFile"
       variant="outlined"
-    > export data </v-btn>
+    >
+      export data
+    </v-btn>
   </v-card>
 </template>

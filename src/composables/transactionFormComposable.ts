@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { ref, type Ref } from 'vue'
 import type { TransactionWithCategoryData } from '@/types/types'
 
 export function useTransactionFormComposable() {

@@ -2,12 +2,12 @@
 import TransactionForm from '@/components/Transactions/TransactionForm.vue'
 import TransactionList from '@/components/Transactions/TransactionList.vue'
 import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
-import { useCategoriesStore } from '@/stores/categoriesStore';
+import { useCategoriesStore } from '@/stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
 
-import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
-const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
-
+import { useTransactionFormComposable } from '@/composables/transactionFormComposable'
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
+  useTransactionFormComposable()
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = u
       :showDialog="showTransactionDialog"
     ></TransactionList>
     <TransactionEditDialog
-      v-model=isTransactionDialogShown
+      v-model="isTransactionDialogShown"
       :transaction="dialogTransaction"
     ></TransactionEditDialog>
   </main>

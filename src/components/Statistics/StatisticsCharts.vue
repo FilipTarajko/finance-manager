@@ -5,27 +5,33 @@ import BarChart from '@/components/Statistics/BarChart.vue'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
 import { useCurrenciesStore } from '@/stores/currenciesStore'
-import type { Currency, TransactionWithoutCategoryData } from '@/types/types';
+import type { Currency, TransactionWithoutCategoryData } from '@/types/types'
 const currenciesStore = useCurrenciesStore()
 
-import { useThemeStore } from "@/stores/themeStore"
+import { useThemeStore } from '@/stores/themeStore'
 const themeStore = useThemeStore()
 
 const props = defineProps<{
-  minTimestamp: number,
-  maxTimestamp: number,
-  filter_currency_id: number | null,
+  minTimestamp: number
+  maxTimestamp: number
+  filter_currency_id: number | null
   display_currency: Currency
-}>();
+}>()
 
 function preparePieGraphInput(array: []) {
   return array.sort((a: any, b: any) => b.value - a.value)
 }
 
-function recalculateTransactionToMatchCurrency(transaction: TransactionWithoutCategoryData, target_currency: Currency) {
+function recalculateTransactionToMatchCurrency(
+  transaction: TransactionWithoutCategoryData,
+  target_currency: Currency
+) {
   return {
     ...transaction,
-    amount: transaction.amount * currenciesStore.getCurrencyByTransaction(transaction)?.value_relative_to_default! / target_currency.value_relative_to_default
+    amount:
+      (transaction.amount *
+        currenciesStore.getCurrencyByTransaction(transaction)?.value_relative_to_default!) /
+      target_currency.value_relative_to_default
   }
 }
 
@@ -33,10 +39,13 @@ const transactionInstancesByCategory = computed(() => {
   const array: any = []
   categoriesStore.categories.forEach((category) => {
     const value = category.transactions
-      .filter(transaction => transaction.timestamp <= props.maxTimestamp)
-      .filter(transaction => transaction.timestamp >= props.minTimestamp)
-      .filter(transaction => props.filter_currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.filter_currency_id)
-      .length
+      .filter((transaction) => transaction.timestamp <= props.maxTimestamp)
+      .filter((transaction) => transaction.timestamp >= props.minTimestamp)
+      .filter(
+        (transaction) =>
+          props.filter_currency_id == null ||
+          currenciesStore.getCurrencyByTransaction(transaction)?.id == props.filter_currency_id
+      ).length
     value && array.push({ name: category.name, value, color: category.color })
   })
   return preparePieGraphInput(array)
@@ -47,12 +56,20 @@ const transactionGainsByCategory = computed(() => {
   categoriesStore.categories.forEach((category) => {
     const value = category.transactions
       .filter((e) => e.amount > 0)
-      .filter(transaction => transaction.timestamp <= props.maxTimestamp)
-      .filter(transaction => transaction.timestamp >= props.minTimestamp)
-      .filter(transaction => props.filter_currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.filter_currency_id)
-      .reduce((sum, elem) => sum + recalculateTransactionToMatchCurrency(elem, props.display_currency).amount, 0)
+      .filter((transaction) => transaction.timestamp <= props.maxTimestamp)
+      .filter((transaction) => transaction.timestamp >= props.minTimestamp)
+      .filter(
+        (transaction) =>
+          props.filter_currency_id == null ||
+          currenciesStore.getCurrencyByTransaction(transaction)?.id == props.filter_currency_id
+      )
+      .reduce(
+        (sum, elem) =>
+          sum + recalculateTransactionToMatchCurrency(elem, props.display_currency).amount,
+        0
+      )
       .toFixed(2)
-    value != "0.00" && array.push({ name: category.name, value, color: category.color })
+    value != '0.00' && array.push({ name: category.name, value, color: category.color })
   })
   return preparePieGraphInput(array)
 })
@@ -62,12 +79,20 @@ const transactionLossesByCategory = computed(() => {
   categoriesStore.categories.forEach((category) => {
     const value = category.transactions
       .filter((e) => e.amount < 0)
-      .filter(transaction => transaction.timestamp <= props.maxTimestamp)
-      .filter(transaction => transaction.timestamp >= props.minTimestamp)
-      .filter(transaction => props.filter_currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.filter_currency_id)
-      .reduce((sum, elem) => sum - recalculateTransactionToMatchCurrency(elem, props.display_currency).amount, 0)
+      .filter((transaction) => transaction.timestamp <= props.maxTimestamp)
+      .filter((transaction) => transaction.timestamp >= props.minTimestamp)
+      .filter(
+        (transaction) =>
+          props.filter_currency_id == null ||
+          currenciesStore.getCurrencyByTransaction(transaction)?.id == props.filter_currency_id
+      )
+      .reduce(
+        (sum, elem) =>
+          sum - recalculateTransactionToMatchCurrency(elem, props.display_currency).amount,
+        0
+      )
       .toFixed(2)
-    value != "0.00" && array.push({ name: category.name, value, color: category.color })
+    value != '0.00' && array.push({ name: category.name, value, color: category.color })
   })
   return preparePieGraphInput(array)
 })
@@ -75,12 +100,15 @@ const transactionLossesByCategory = computed(() => {
 const transactionsChronologicallyForBarChart = computed(() => {
   const array: any = []
   for (let i = 0; i < categoriesStore.transactions.length; i++) {
-    const elem = categoriesStore.transactions[i];
+    const elem = categoriesStore.transactions[i]
     if (elem.timestamp < props.minTimestamp || elem.timestamp > props.maxTimestamp) {
-      continue;
+      continue
     }
-    if (props.filter_currency_id != null && currenciesStore.getCurrencyByTransaction(elem)?.id != props.filter_currency_id) {
-      continue;
+    if (
+      props.filter_currency_id != null &&
+      currenciesStore.getCurrencyByTransaction(elem)?.id != props.filter_currency_id
+    ) {
+      continue
     }
     array.push({
       name: elem.name,
@@ -96,13 +124,9 @@ const transactionsChronologicallyForBarChart = computed(() => {
 })
 </script>
 
-
 <template>
   <h2>charts</h2>
-  <div
-    v-if="categoriesStore.transactions.length"
-    :key="themeStore.darkTheme.toString()"
-  >
+  <div v-if="categoriesStore.transactions.length" :key="themeStore.darkTheme.toString()">
     <PieChart
       class="chart"
       name="transactions by category"
@@ -126,9 +150,9 @@ const transactionsChronologicallyForBarChart = computed(() => {
     />
   </div>
   <template v-else>
-
     There are no
-    <RouterLink :to="{ name: 'transactions' }" tabindex="0">transactions</RouterLink>, so no charts can be shown.
+    <RouterLink :to="{ name: 'transactions' }" tabindex="0">transactions</RouterLink>, so no charts
+    can be shown.
   </template>
 </template>
 

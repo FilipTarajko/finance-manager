@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useCurrenciesStore } from '@/stores/currenciesStore';
-const currenciesStore = useCurrenciesStore();
-import type { Currency } from '@/types/types';
-import { ref, type Ref } from 'vue';
-import TransactionEditDialog from "@/components/Transactions/TransactionEditDialog.vue"
-import CurrencyComponent from "@/components/Currencies/CurrencyComponent.vue"
-import CurrencyEditDialog from "@/components/Currencies/CurrencyEditDialog.vue"
-import CurrencyForm from "@/components/Currencies/CurrencyForm.vue"
-  
+import { useCurrenciesStore } from '@/stores/currenciesStore'
+const currenciesStore = useCurrenciesStore()
+import type { Currency } from '@/types/types'
+import { ref, type Ref } from 'vue'
+import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
+import CurrencyComponent from '@/components/Currencies/CurrencyComponent.vue'
+import CurrencyEditDialog from '@/components/Currencies/CurrencyEditDialog.vue'
+import CurrencyForm from '@/components/Currencies/CurrencyForm.vue'
+
 const isCurrencyDialogShown = ref(false)
 const dialogCurrency: Ref<Currency | null> = ref(null)
 const isRatesApiUpdateInProgress = ref(false)
@@ -23,18 +23,16 @@ async function updateRates() {
   isRatesApiUpdateInProgress.value = false
 }
 
-import { useTransactionFormComposable } from "@/composables/transactionFormComposable";
-const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = useTransactionFormComposable();
+import { useTransactionFormComposable } from '@/composables/transactionFormComposable'
+const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
+  useTransactionFormComposable()
 </script>
 
 <template>
   <main>
     <h1>Currencies</h1>
     <CurrencyForm></CurrencyForm>
-    <div
-      v-for="currency in currenciesStore.currencies"
-      :key="currency.id"
-    >
+    <div v-for="currency in currenciesStore.currencies" :key="currency.id">
       <CurrencyComponent
         :currency="currency"
         :showCurrencyDialog="showCurrencyDialog"
@@ -42,11 +40,11 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = u
       ></CurrencyComponent>
     </div>
     <CurrencyEditDialog
-      v-model=isCurrencyDialogShown
+      v-model="isCurrencyDialogShown"
       :editedCurrency="dialogCurrency"
     ></CurrencyEditDialog>
     <TransactionEditDialog
-      v-model=isTransactionDialogShown
+      v-model="isTransactionDialogShown"
       :transaction="dialogTransaction"
     ></TransactionEditDialog>
 
@@ -55,15 +53,16 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } = u
       :disabled="isRatesApiUpdateInProgress"
       class="mt-16"
       color="info"
-      @click="updateRates">
+      @click="updateRates"
+    >
       update currency values with api
     </v-btn>
 
     <div class="mt-2 border-solid pa-2">
       api supports: {{ currenciesStore.currenciesSupportedByApi }}
-      <hr class="mt-2 mb-2">
+      <hr class="mt-2 mb-2" />
       used api: <a href="https://www.vatcomply.com/" tabindex="0">VATcomply</a>
-      <hr class="mt-2 mb-2">
+      <hr class="mt-2 mb-2" />
       new api data on workdays, 16:00 CET
     </div>
   </main>

@@ -78,18 +78,13 @@ function editOrCreateAndAddCategory() {
     categoriesStore.createAndAddCategory(state.name, state.color, icons[state.iconIndex])
   }
 }
-
 </script>
 
 <template>
   <h2>{{ isEditing ? 'edit category: ' + props.category.name : 'new category' }}</h2>
-  <form
-    class="mb-4"
-    style="width: 24.1rem;"
-    @submit.prevent="editOrCreateAndAddCategory"
-  >
+  <form class="mb-4" style="width: 24.1rem" @submit.prevent="editOrCreateAndAddCategory">
     <v-text-field
-      :id="isEditing ? 'editedCategoryNameTextField' : 'newCategoryNameTextField' "
+      :id="isEditing ? 'editedCategoryNameTextField' : 'newCategoryNameTextField'"
       v-model="state.name"
       label="Name"
       required
@@ -114,13 +109,13 @@ function editOrCreateAndAddCategory() {
     ></v-color-picker>
 
     <v-label>Icon</v-label>
-    <br>
+    <br />
     <v-btn-toggle
       v-model="state.iconIndex"
       class="mb-2"
       shaped
       mandatory
-      style="display: flex; flex-wrap: wrap; justify-content: start; height: auto;"
+      style="display: flex; flex-wrap: wrap; justify-content: start; height: auto"
     >
       <v-btn
         size="35"
@@ -128,30 +123,14 @@ function editOrCreateAndAddCategory() {
         :key="icon"
         :aria-label="'select icon: ' + icon.split('mdi-')[1].replace('-', ' ')"
       >
-        <v-icon
-          size="25"
-          :color="state.color"
-        >{{ icon }}</v-icon>
+        <v-icon size="25" :color="state.color">{{ icon }}</v-icon>
       </v-btn>
     </v-btn-toggle>
     <br />
-    <v-btn
-      class="me-4"
-      type="submit"
-      color="success"
-    >
+    <v-btn class="me-4" type="submit" color="success">
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
-    <v-btn
-      class="me-4"
-      theme="light"
-      @click="clear"
-      color="error"
-    > clear </v-btn>
-    <v-btn
-      v-if="isEditing"
-      @click="hideDialog"
-      color="warning"
-    > cancel & exit </v-btn>
+    <v-btn class="me-4" theme="light" @click="clear" color="error"> clear </v-btn>
+    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
   </form>
 </template>

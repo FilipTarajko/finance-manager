@@ -22,23 +22,12 @@ function showDialog(category: Category) {
     <CategoryForm></CategoryForm>
     <h2>categories list</h2>
     <div v-if="categoriesStore.categories.length > 0">
-      <div
-        v-for="category of categoriesStore.categories"
-        :key="category.id"
-      >
-        <CategoryComponent
-          :category="category"
-          :showDialog="showDialog"
-        ></CategoryComponent>
+      <div v-for="category of categoriesStore.categories" :key="category.id">
+        <CategoryComponent :category="category" :showDialog="showDialog"></CategoryComponent>
       </div>
     </div>
-    <div v-else>
-      There are no categories
-    </div>
-    <CategoryEditDialog
-      v-model="isDialogShown"
-      :editedCategory="editedCategory"
-    >
+    <div v-else>There are no categories</div>
+    <CategoryEditDialog v-model="isDialogShown" :editedCategory="editedCategory">
     </CategoryEditDialog>
   </main>
 </template>

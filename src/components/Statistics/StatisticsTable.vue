@@ -1,50 +1,52 @@
 <script setup lang="ts">
 import { useCategoriesStore } from '@/stores/categoriesStore'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
-import type { Currency } from '@/types/types';
+import type { Currency } from '@/types/types'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
 const currenciesStore = useCurrenciesStore()
 
 const props = defineProps<{
-  minTimestamp: number,
-  maxTimestamp: number,
-  currency_id: number | null,
+  minTimestamp: number
+  maxTimestamp: number
+  currency_id: number | null
   display_currency: Currency
-}>();
+}>()
 
 const commonFilteredTransactions = computed(() => {
   return categoriesStore.transactions
-    .filter(transaction => transaction.timestamp <= props.maxTimestamp)
-    .filter(transaction => transaction.timestamp >= props.minTimestamp)
-    .filter(transaction => props.currency_id == null || currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id)
-    .map(elem => ({
+    .filter((transaction) => transaction.timestamp <= props.maxTimestamp)
+    .filter((transaction) => transaction.timestamp >= props.minTimestamp)
+    .filter(
+      (transaction) =>
+        props.currency_id == null ||
+        currenciesStore.getCurrencyByTransaction(transaction)?.id == props.currency_id
+    )
+    .map((elem) => ({
       ...elem,
-      amount: elem.amount * currenciesStore.getCurrencyByTransaction(elem)?.value_relative_to_default! / props.display_currency.value_relative_to_default
+      amount:
+        (elem.amount * currenciesStore.getCurrencyByTransaction(elem)?.value_relative_to_default!) /
+        props.display_currency.value_relative_to_default
     }))
 })
 
 const positiveTransactionsInstances = computed(() => {
-  return commonFilteredTransactions.value
-    .filter(e => e.amount > 0)
-    .length
+  return commonFilteredTransactions.value.filter((e) => e.amount > 0).length
 })
 
 const positiveTransactionsGains = computed(() => {
   return commonFilteredTransactions.value
-    .filter(e => e.amount > 0)
+    .filter((e) => e.amount > 0)
     .reduce((sum, elem) => sum + elem.amount, 0)
 })
 
 const negativeTransactionsInstances = computed(() => {
-  return commonFilteredTransactions.value
-    .filter(e => e.amount < 0)
-    .length
+  return commonFilteredTransactions.value.filter((e) => e.amount < 0).length
 })
 
 const negativeTransactionsLosses = computed(() => {
   return commonFilteredTransactions.value
-    .filter(e => e.amount < 0)
+    .filter((e) => e.amount < 0)
     .reduce((sum, elem) => sum + elem.amount, 0)
 })
 
@@ -55,7 +57,6 @@ const totalTransactionsInstances = computed(() => {
 const totalTransactionsSum = computed(() => {
   return negativeTransactionsLosses.value + positiveTransactionsGains.value
 })
-
 </script>
 
 <template>

@@ -20,10 +20,10 @@ const props = defineProps({
 
 use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent])
 
-provide(THEME_KEY, themeStore.darkTheme ? "dark" : "light")
+provide(THEME_KEY, themeStore.darkTheme ? 'dark' : 'light')
 const option = computed(() => {
   return {
-    backgroundColor: themeStore.darkTheme ? '#212121' : "#ffffff",
+    backgroundColor: themeStore.darkTheme ? '#212121' : '#ffffff',
     title: {
       text: props.name,
       top: 12,
@@ -64,10 +64,6 @@ const option = computed(() => {
 </script>
 
 <template>
-  <v-chart
-    class="chart"
-    :option="option"
-    autoresize
-  />
+  <v-chart class="chart" :option="option" autoresize />
   <!-- color: {{ props.input.map((elem: { color: any }) => elem.color) }} -->
 </template>

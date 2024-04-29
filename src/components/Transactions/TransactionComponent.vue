@@ -1,29 +1,30 @@
 <script setup lang="ts">
-import { useCategoriesStore } from '@/stores/categoriesStore';
-import { useCurrenciesStore } from '@/stores/currenciesStore';
+import { useCategoriesStore } from '@/stores/categoriesStore'
+import { useCurrenciesStore } from '@/stores/currenciesStore'
 import type { TransactionWithCategoryData } from '@/types/types'
 
 const props = defineProps<{
-  transaction: TransactionWithCategoryData,
+  transaction: TransactionWithCategoryData
   showDialog: Function
 }>()
 
-const categoriesStore = useCategoriesStore();
-const currenciesStore = useCurrenciesStore();
+const categoriesStore = useCategoriesStore()
+const currenciesStore = useCurrenciesStore()
 
-const currency = currenciesStore.getCurrencyByTransaction(props.transaction)!;
-
+const currency = currenciesStore.getCurrencyByTransaction(props.transaction)!
 </script>
 
-
 <template>
-  <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap">
     <div id="name">
-      <RouterLink tabindex="0" :to="{ name: 'transaction', params: { transactionId: transaction.id } }">
+      <RouterLink
+        tabindex="0"
+        :to="{ name: 'transaction', params: { transactionId: transaction.id } }"
+      >
         {{ transaction.name }}
       </RouterLink>
     </div>
-    <div id="amount" style="margin-right: 1ch; text-align: right;">
+    <div id="amount" style="margin-right: 1ch; text-align: right">
       {{ transaction.amount.toFixed(2) }}
     </div>
     <div id="currency">
@@ -32,15 +33,31 @@ const currency = currenciesStore.getCurrencyByTransaction(props.transaction)!;
       </RouterLink>
     </div>
     <div id="category" :style="{ color: transaction.categoryData.color }">
-      <RouterLink tabindex="0" :style="{ color: transaction.categoryData.color }" :to="{ name: 'category', params: {categoryId: transaction.categoryData.id} }">
+      <RouterLink
+        tabindex="0"
+        :style="{ color: transaction.categoryData.color }"
+        :to="{ name: 'category', params: { categoryId: transaction.categoryData.id } }"
+      >
         <v-icon :icon="transaction.categoryData.icon" /> {{ transaction.categoryData.name }}
       </RouterLink>
     </div>
     <div id="icons">
-      <v-icon tabindex="0" @click="showDialog(transaction)" class="edit-button" icon="mdi-pencil" aria-label="edit transaction"
-        style="color: var(--visible-yellow)" />
-      <v-icon tabindex="0" icon="mdi-delete" class="remove-button" style="color: red" aria-label="delete transaction"
-        @click="categoriesStore.deleteTransaction(transaction)"></v-icon>
+      <v-icon
+        tabindex="0"
+        @click="showDialog(transaction)"
+        class="edit-button"
+        icon="mdi-pencil"
+        aria-label="edit transaction"
+        style="color: var(--visible-yellow)"
+      />
+      <v-icon
+        tabindex="0"
+        icon="mdi-delete"
+        class="remove-button"
+        style="color: red"
+        aria-label="delete transaction"
+        @click="categoriesStore.deleteTransaction(transaction)"
+      ></v-icon>
     </div>
   </div>
 </template>

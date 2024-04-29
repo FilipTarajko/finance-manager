@@ -25,10 +25,10 @@ const props = defineProps({
 
 use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer, DataZoomComponent])
 
-provide(THEME_KEY, themeStore.darkTheme ? "dark" : "light")
+provide(THEME_KEY, themeStore.darkTheme ? 'dark' : 'light')
 const option = computed(() => {
   return {
-    backgroundColor: themeStore.darkTheme ? '#212121' : "#ffffff",
+    backgroundColor: themeStore.darkTheme ? '#212121' : '#ffffff',
     title: {
       text: props.name,
       left: 'center',
@@ -91,10 +91,5 @@ const option = computed(() => {
 </script>
 
 <template>
-  <v-chart
-    id="barChart"
-    class="chart"
-    :option="option"
-    autoresize
-  />
+  <v-chart id="barChart" class="chart" :option="option" autoresize />
 </template>
