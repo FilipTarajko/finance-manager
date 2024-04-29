@@ -11,8 +11,11 @@ const accountsStore = useAccountsStore()
 
 const props = defineProps<{
   currency: Currency
-  showCurrencyDialog: Function
   showTransactionDialog: Function
+}>()
+
+const emit = defineEmits<{
+  (e: 'showCurrencyDialog', currency: Currency): void
 }>()
 
 const accountIds = computed(() => {
@@ -57,7 +60,11 @@ const balance = computed(() => {
       </template>
     </div>
     <div style="width: 8%; text-align: right">
-      <button @click="showCurrencyDialog(currency)" class="edit-button" aria-label="edit currency">
+      <button
+        @click="$emit('showCurrencyDialog', currency)"
+        class="edit-button"
+        aria-label="edit currency"
+      >
         <v-icon icon="mdi-pencil" style="color: var(--visible-yellow)" />
       </button>
       <button

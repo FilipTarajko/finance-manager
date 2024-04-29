@@ -23,7 +23,7 @@ function showDialog(category: Category) {
     <h2>categories list</h2>
     <div v-if="categoriesStore.categories.length > 0">
       <div v-for="category of categoriesStore.categories" :key="category.id">
-        <CategoryComponent :category="category" :showDialog="showDialog"></CategoryComponent>
+        <CategoryComponent :category="category" @showDialog="showDialog"></CategoryComponent>
       </div>
     </div>
     <div v-else>There are no categories</div>

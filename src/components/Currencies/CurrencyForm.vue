@@ -12,7 +12,10 @@ const accountsStore = useAccountsStore()
 
 const props = defineProps<{
   currency?: Currency | null
-  hideDialog?: Function
+}>()
+
+const emit = defineEmits<{
+  (e: 'hideDialog'): void
 }>()
 
 const isEditing = computed(() => {
@@ -95,7 +98,7 @@ function editOrCreateAndAddCurrency() {
   }
   if (isEditing.value) {
     currenciesStore.editExistingCurrency(props.currency!, state)
-    props.hideDialog!()
+    emit('hideDialog')
   } else {
     currenciesStore.createAndAddCurrency(
       state.name,
@@ -181,6 +184,6 @@ const baseCurrencyOptions = computed(() => {
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
     <v-btn class="me-4" @click="clear" color="error" theme="light"> reset </v-btn>
-    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
+    <v-btn v-if="isEditing" @click="$emit('hideDialog')" color="warning"> cancel & exit </v-btn>
   </form>
 </template>

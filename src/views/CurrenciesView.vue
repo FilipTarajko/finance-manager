@@ -35,7 +35,7 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
     <div v-for="currency in currenciesStore.currencies" :key="currency.id">
       <CurrencyComponent
         :currency="currency"
-        :showCurrencyDialog="showCurrencyDialog"
+        @showCurrencyDialog="showCurrencyDialog"
         :showTransactionDialog="showTransactionDialog"
       ></CurrencyComponent>
     </div>

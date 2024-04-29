@@ -32,7 +32,7 @@ function showCurrencyDialog(currency: Currency) {
     <template v-if="currency">
       <CurrencyComponent
         :currency="currency"
-        :showCurrencyDialog="showCurrencyDialog"
+        @showCurrencyDialog="showCurrencyDialog"
         :showTransactionDialog="showTransactionDialog"
       ></CurrencyComponent>
       <CurrencyEditDialog

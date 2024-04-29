@@ -9,7 +9,10 @@ const categoriesStore = useCategoriesStore()
 
 const props = defineProps<{
   category?: Category
-  hideDialog?: Function
+}>()
+
+const emit = defineEmits<{
+  (e: 'hideDialog'): void
 }>()
 
 const isEditing = computed(() => {
@@ -77,7 +80,7 @@ function editOrCreateAndAddCategory() {
       color: state.color,
       icon: icons[state.iconIndex]
     })
-    props.hideDialog!()
+    emit('hideDialog')
   } else {
     categoriesStore.createAndAddCategory(state.name, state.color, icons[state.iconIndex])
   }
@@ -135,6 +138,6 @@ function editOrCreateAndAddCategory() {
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
     <v-btn class="me-4" theme="light" @click="clear" color="error"> clear </v-btn>
-    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
+    <v-btn v-if="isEditing" @click="$emit('hideDialog')" color="warning"> cancel & exit </v-btn>
   </form>
 </template>

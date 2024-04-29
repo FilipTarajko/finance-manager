@@ -5,7 +5,10 @@ const categoriesStore = useCategoriesStore()
 
 defineProps<{
   category: Category
-  showDialog: Function
+}>()
+
+defineEmits<{
+  (e: 'showDialog', category: Category): void
 }>()
 </script>
 
@@ -18,7 +21,7 @@ defineProps<{
       </RouterLink>
     </div>
     <div>
-      <button @click="showDialog(category)" class="edit-button" aria-label="edit category">
+      <button @click="$emit('showDialog', category)" class="edit-button" aria-label="edit category">
         <v-icon icon="mdi-pencil" style="color: var(--visible-yellow)" />
       </button>
       <button @click="categoriesStore.deleteCategory(category)" aria-label="delete category">

@@ -34,7 +34,7 @@ const transactionsInCategory = computed(() => {
   <main>
     <h1>Category</h1>
     <template v-if="category">
-      <CategoryComponent :category="category" :showDialog="showCategoryDialog"></CategoryComponent>
+      <CategoryComponent :category="category" @showDialog="showCategoryDialog"></CategoryComponent>
       <CategoryEditDialog v-model="isCategoryDialogShown" :editedCategory="category">
       </CategoryEditDialog>
       <h2>Transactions</h2>

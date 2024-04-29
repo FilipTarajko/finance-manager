@@ -16,7 +16,7 @@ defineProps<{
       <v-card-text>
         <CurrencyForm
           :currency="editedCurrency"
-          :hideDialog="
+          @hideDialog="
             () => {
               isDialogShown = false
             }

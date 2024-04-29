@@ -17,7 +17,7 @@ defineProps<{
         <CategoryForm
           v-if="editedCategory"
           :category="editedCategory"
-          :hideDialog="
+          @hideDialog="
             () => {
               isDialogShown = false
             }
