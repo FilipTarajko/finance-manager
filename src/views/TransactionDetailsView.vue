@@ -41,7 +41,7 @@ const currency = computed(() => {
           />
           <v-icon
             icon="mdi-delete"
-            class="remove-button"
+            class="delete-button"
             style="color: red"
             aria-label="delete transaction"
             @click="categoriesStore.deleteTransaction(transaction!)"

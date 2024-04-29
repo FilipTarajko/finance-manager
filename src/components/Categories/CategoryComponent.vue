@@ -24,7 +24,11 @@ defineEmits<{
       <button @click="$emit('showDialog', category)" class="edit-button" aria-label="edit category">
         <v-icon icon="mdi-pencil" style="color: var(--visible-yellow)" />
       </button>
-      <button @click="categoriesStore.deleteCategory(category)" aria-label="delete category">
+      <button
+        @click="categoriesStore.deleteCategory(category)"
+        class="delete-button"
+        aria-label="delete category"
+      >
         <v-icon icon="mdi-delete" style="color: red" />
       </button>
     </div>

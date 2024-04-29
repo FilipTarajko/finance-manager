@@ -69,6 +69,7 @@ const balance = computed(() => {
       </button>
       <button
         @click="currenciesStore.currencies.length != 1 && currenciesStore.deleteCurrency(currency)"
+        class="delete-button"
         aria-label="delete currency"
         :disabled="currenciesStore.currencies.length == 1"
       >

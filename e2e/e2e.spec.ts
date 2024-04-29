@@ -35,7 +35,7 @@ test('E2E test', async ({ page }) => {
   // // Category - update
 
 
-  await page.locator('div:nth-child(13) > div > div:nth-child(2) > .mdi-pencil').click();
+  await page.locator('div:nth-child(13) > div > div:nth-child(2) > .edit-button').click();
   // await page.locator('li').filter({ hasText: 'qwertyuiop' }).getByLabel('edit category').click();
   await page.locator('#editedCategoryNameTextField').click();
   await page.locator('#editedCategoryNameTextField').fill('editedname');
@@ -46,7 +46,7 @@ test('E2E test', async ({ page }) => {
   // expect(await page.locator('li').filter({ hasText: 'editedname' }).innerHTML()).toContain('mdi-school');
 
   // // Category - delete
-  await page.locator('div:nth-child(13) > div > div:nth-child(2) > .mdi-delete').click();
+  await page.locator('div:nth-child(13) > div > div:nth-child(2) > .delete-button').click();
   await expect(page.getByText('editedname')).toBeHidden();
 
   // await page.locator('li').filter({ hasText: 'editedname' }).getByLabel('delete category').click();

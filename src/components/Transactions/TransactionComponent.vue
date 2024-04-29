@@ -53,7 +53,7 @@ const currency = currenciesStore.getCurrencyByTransaction(props.transaction)!
       <v-icon
         tabindex="0"
         icon="mdi-delete"
-        class="remove-button"
+        class="delete-button"
         style="color: red"
         aria-label="delete transaction"
         @click="categoriesStore.deleteTransaction(transaction)"

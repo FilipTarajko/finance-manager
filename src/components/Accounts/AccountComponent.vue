@@ -51,10 +51,12 @@ const currency = computed(() => {
         class="edit-button"
         @click="$emit('showAccountDialog', account)"
         aria-label="edit account"
+        style="color: var(--visible-yellow)"
       >
-        <v-icon icon="mdi-pencil" style="color: var(--visible-yellow)" />
+        <v-icon icon="mdi-pencil" />
       </button>
       <button
+        class="delete-button"
         @click="accountsStore.accounts.length != 1 && accountsStore.deleteAccount(account)"
         aria-label="delete account"
         :disabled="accountsStore.accounts.length == 1"
