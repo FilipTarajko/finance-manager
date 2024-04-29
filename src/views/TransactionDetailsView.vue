@@ -32,20 +32,22 @@ const currency = computed(() => {
           {{ transaction.name }}
         </h2>
         <div>
-          <v-icon
+          <button
             @click="showTransactionDialog(transaction!)"
             class="edit-button"
-            icon="mdi-pencil"
             aria-label="edit transaction"
             style="color: var(--visible-yellow)"
-          />
-          <v-icon
-            icon="mdi-delete"
+          >
+            <v-icon icon="mdi-pencil" />
+          </button>
+          <button
             class="delete-button"
             style="color: red"
             aria-label="delete transaction"
             @click="categoriesStore.deleteTransaction(transaction!)"
-          ></v-icon>
+          >
+            <v-icon icon="mdi-delete"></v-icon>
+          </button>
         </div>
       </div>
       <div
@@ -62,13 +64,14 @@ const currency = computed(() => {
         </div>
         <div>currency</div>
         <div>
-          <RouterLink :to="{ name: 'currency', params: { currencyId: currency?.id } }">
+          <RouterLink tabindex="0" :to="{ name: 'currency', params: { currencyId: currency?.id } }">
             {{ currency?.name }}
           </RouterLink>
         </div>
         <div>category</div>
         <div>
           <RouterLink
+            tabindex="0"
             :style="{ color: transaction.categoryData.color }"
             :to="{ name: 'category', params: { categoryId: transaction.categoryData.id } }"
           >
@@ -76,7 +79,10 @@ const currency = computed(() => {
           </RouterLink>
         </div>
         <div>account</div>
-        <RouterLink :to="{ name: 'account', params: { accountId: transaction.account_id } }">
+        <RouterLink
+          :to="{ name: 'account', params: { accountId: transaction.account_id } }"
+          tabindex="0"
+        >
           {{ accountsStore.getAccountById(transaction.account_id).name }}
         </RouterLink>
         <div>date</div>

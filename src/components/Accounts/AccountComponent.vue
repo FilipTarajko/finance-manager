@@ -37,12 +37,12 @@ const currency = computed(() => {
     style="font-size: 1.2rem; display: flex; flex-direction: row; justify-content: space-between"
   >
     <div>
-      <RouterLink :to="{ name: 'account', params: { accountId: account.id } }">
+      <RouterLink :to="{ name: 'account', params: { accountId: account.id } }" tabindex="0">
         {{ account.name }}
       </RouterLink>
       - balance:
       {{ balance }}
-      <RouterLink :to="{ name: 'currency', params: { currencyId: currency!.id } }">
+      <RouterLink :to="{ name: 'currency', params: { currencyId: currency!.id } }" tabindex="0">
         {{ currency!.name }}
       </RouterLink>
     </div>
