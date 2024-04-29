@@ -8,15 +8,10 @@ import { provide, computed } from 'vue'
 import { useThemeStore } from '@/stores/themeStore'
 const themeStore = useThemeStore()
 
-const props = defineProps({
-  name: {
-    type: String,
-    required: true
-  },
-  input: {
-    required: true
-  }
-})
+const props = defineProps<{
+  name: string
+  input: { name: string; value: number; color: string }[]
+}>()
 
 use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent])
 
@@ -37,7 +32,6 @@ const option = computed(() => {
       type: 'scroll',
       orient: 'vertical',
       left: 'left',
-      // @ts-ignore
       data: props.input.map((elem) => elem.name)
     },
     series: [
@@ -47,7 +41,6 @@ const option = computed(() => {
         radius: '60%',
         center: ['50%', '55%'],
         data: props.input,
-        // @ts-ignore
         color: props.input.map((elem: { color: any }) => elem.color),
         animationDuration: 0,
         emphasis: {

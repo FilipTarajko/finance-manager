@@ -9,19 +9,11 @@ import { DataZoomComponent } from 'echarts/components'
 import { useThemeStore } from '@/stores/themeStore'
 const themeStore = useThemeStore()
 
-const props = defineProps({
-  name: {
-    type: String,
-    required: true
-  },
-  subtitle: {
-    type: String,
-    required: false
-  },
-  input: {
-    required: true
-  }
-})
+const props = defineProps<{
+  name: string
+  subtitle?: string
+  input: { name: string; value: number }[]
+}>()
 
 use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer, DataZoomComponent])
 
@@ -66,7 +58,6 @@ const option = computed(() => {
       axisLabel: { show: false },
       axisTick: { show: false },
       splitLine: { show: false },
-      // @ts-ignore
       data: props.input.map((e) => e.name)
     },
     series: [

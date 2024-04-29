@@ -10,9 +10,13 @@ import { useAccountsStore } from '@/stores/accountsStore'
 const accountsStore = useAccountsStore()
 
 import { useCurrenciesStore } from '@/stores/currenciesStore'
+import type { TransactionWithCategoryData } from '@/types/types'
 const currenciesStore = useCurrenciesStore()
 
-const props = defineProps(['transaction', 'hideDialog'])
+const props = defineProps<{
+  transaction?: TransactionWithCategoryData | null
+  hideDialog?: Function
+}>()
 
 const isEditing = computed(() => {
   return !!props?.transaction?.name
@@ -21,7 +25,7 @@ const isEditing = computed(() => {
 const initialState = {
   name: props?.transaction?.name ?? '',
   amount: props?.transaction?.amount ?? null,
-  category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name) ?? null,
+  category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name!) ?? null,
   account_id: props?.transaction?.account_id ?? accountsStore.default_account_id
 }
 
@@ -88,12 +92,12 @@ function editOrCreateAndAddTransaction() {
     return
   }
   if (isEditing.value) {
-    categoriesStore.editExistingTransaction(props.transaction, state)
-    props.hideDialog()
+    categoriesStore.editExistingTransaction(props.transaction!, state)
+    props.hideDialog!()
   } else {
     categoriesStore.createAndAddTransaction(
       state.name,
-      state.amount,
+      state.amount!,
       state.category,
       state.account_id
     )
@@ -102,7 +106,7 @@ function editOrCreateAndAddTransaction() {
 </script>
 
 <template>
-  <h2>{{ isEditing ? 'edit transaction: ' + props.transaction.name : 'new transaction' }}</h2>
+  <h2>{{ isEditing ? 'edit transaction: ' + props.transaction!.name : 'new transaction' }}</h2>
   <form
     v-if="categoriesStore.categories.length"
     class="mb-4"

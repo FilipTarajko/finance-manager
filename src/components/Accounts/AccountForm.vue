@@ -2,14 +2,16 @@
 import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, helpers } from '@vuelidate/validators'
-
+import type { Account } from '@/types/types'
+import { useCurrenciesStore } from '@/stores/currenciesStore'
 import { useAccountsStore } from '@/stores/accountsStore'
 const accountsStore = useAccountsStore()
-
-import { useCurrenciesStore } from '@/stores/currenciesStore'
 const currenciesStore = useCurrenciesStore()
 
-const props = defineProps(['account', 'hideDialog'])
+const props = defineProps<{
+  account?: Account
+  hideDialog?: Function
+}>()
 
 const isEditing = computed(() => {
   return !!props?.account?.name
@@ -27,7 +29,7 @@ const state = reactive({
 
 const mustBeUniqueAccountName = (value: string) =>
   !accountsStore.accounts.map((elem) => elem.name).includes(value) ||
-  accountsStore.accounts.includes(props?.account)
+  accountsStore.accounts.includes(props?.account!)
 
 const rules = {
   name: {
@@ -64,8 +66,8 @@ function editOrCreateAndAddAccount() {
     return
   }
   if (isEditing.value) {
-    accountsStore.editExistingAccount(props.account, state)
-    props.hideDialog()
+    accountsStore.editExistingAccount(props.account!, state)
+    props.hideDialog!()
   } else {
     accountsStore.createAndAddAccount(state.name, state.currency_id)
   }
@@ -73,7 +75,7 @@ function editOrCreateAndAddAccount() {
 </script>
 
 <template>
-  <h2>{{ isEditing ? 'edit account: ' + props.account.name : 'new account' }}</h2>
+  <h2>{{ isEditing ? 'edit account: ' + props.account!.name : 'new account' }}</h2>
   <form
     v-if="currenciesStore.currencies.length"
     class="mb-4"

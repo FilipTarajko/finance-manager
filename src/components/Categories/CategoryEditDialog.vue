@@ -15,6 +15,7 @@ defineProps<{
     <v-card>
       <v-card-text>
         <CategoryForm
+          v-if="editedCategory"
           :category="editedCategory"
           :hideDialog="
             () => {

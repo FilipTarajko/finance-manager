@@ -33,7 +33,7 @@ const currency = computed(() => {
         </h2>
         <div>
           <v-icon
-            @click="showTransactionDialog(transaction)"
+            @click="showTransactionDialog(transaction!)"
             class="edit-button"
             icon="mdi-pencil"
             aria-label="edit transaction"
@@ -44,7 +44,7 @@ const currency = computed(() => {
             class="remove-button"
             style="color: red"
             aria-label="delete transaction"
-            @click="categoriesStore.deleteTransaction(transaction)"
+            @click="categoriesStore.deleteTransaction(transaction!)"
           ></v-icon>
         </div>
       </div>

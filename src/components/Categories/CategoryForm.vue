@@ -2,11 +2,15 @@
 import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, helpers } from '@vuelidate/validators'
+import type { Category } from '@/types/types'
 
 import { useCategoriesStore } from '@/stores/categoriesStore'
 const categoriesStore = useCategoriesStore()
 
-const props = defineProps(['category', 'hideDialog'])
+const props = defineProps<{
+  category?: Category
+  hideDialog?: Function
+}>()
 
 const isEditing = computed(() => {
   return !!props?.category?.name
@@ -39,7 +43,7 @@ const state = reactive({
 
 const mustBeUniqueCategoryName = (value: string) =>
   !categoriesStore.categories.map((elem) => elem.name).includes(value) ||
-  categoriesStore.categories.includes(props?.category)
+  categoriesStore.categories.includes(props?.category!)
 
 const rules = {
   name: {
@@ -68,12 +72,12 @@ function editOrCreateAndAddCategory() {
     return
   }
   if (isEditing.value) {
-    categoriesStore.editExistingCategory(props.category, {
+    categoriesStore.editExistingCategory(props.category!, {
       name: state.name,
       color: state.color,
       icon: icons[state.iconIndex]
     })
-    props.hideDialog()
+    props.hideDialog!()
   } else {
     categoriesStore.createAndAddCategory(state.name, state.color, icons[state.iconIndex])
   }
@@ -81,7 +85,7 @@ function editOrCreateAndAddCategory() {
 </script>
 
 <template>
-  <h2>{{ isEditing ? 'edit category: ' + props.category.name : 'new category' }}</h2>
+  <h2>{{ isEditing ? 'edit category: ' + props?.category?.name : 'new category' }}</h2>
   <form class="mb-4" style="width: 24.1rem" @submit.prevent="editOrCreateAndAddCategory">
     <v-text-field
       :id="isEditing ? 'editedCategoryNameTextField' : 'newCategoryNameTextField'"

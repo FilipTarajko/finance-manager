@@ -2,6 +2,7 @@
 import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, helpers } from '@vuelidate/validators'
+import type { Currency } from '@/types/types'
 
 import { useCurrenciesStore } from '@/stores/currenciesStore'
 const currenciesStore = useCurrenciesStore()
@@ -9,7 +10,10 @@ const currenciesStore = useCurrenciesStore()
 import { useAccountsStore } from '@/stores/accountsStore'
 const accountsStore = useAccountsStore()
 
-const props = defineProps(['currency', 'hideDialog'])
+const props = defineProps<{
+  currency?: Currency | null
+  hideDialog?: Function
+}>()
 
 const isEditing = computed(() => {
   return !!props?.currency?.name
@@ -33,7 +37,7 @@ const state = reactive({
 
 const mustBeUniqueCurrencyName = (value: string) =>
   !currenciesStore.currencies.map((elem) => elem.name).includes(value) ||
-  currenciesStore.currencies.includes(props?.currency)
+  currenciesStore.currencies.includes(props.currency!)
 
 const mustBeSupportedByApiOrEmpty = (value: string) => {
   const value_uppercased = value.toUpperCase()
@@ -90,8 +94,8 @@ function editOrCreateAndAddCurrency() {
     return
   }
   if (isEditing.value) {
-    currenciesStore.editExistingCurrency(props.currency, state)
-    props.hideDialog()
+    currenciesStore.editExistingCurrency(props.currency!, state)
+    props.hideDialog!()
   } else {
     currenciesStore.createAndAddCurrency(
       state.name,
@@ -114,7 +118,7 @@ const baseCurrencyOptions = computed(() => {
 </script>
 
 <template>
-  <h2>{{ isEditing ? 'edit currency: ' + props.currency.name : 'new currency' }}</h2>
+  <h2>{{ isEditing ? 'edit currency: ' + props.currency!.name : 'new currency' }}</h2>
   <form class="mb-4" style="width: 24rem" @submit.prevent="editOrCreateAndAddCurrency">
     <v-text-field
       v-model="state.name"
