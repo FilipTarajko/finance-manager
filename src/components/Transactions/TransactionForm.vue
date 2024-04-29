@@ -15,7 +15,10 @@ const currenciesStore = useCurrenciesStore()
 
 const props = defineProps<{
   transaction?: TransactionWithCategoryData | null
-  hideDialog?: Function
+}>()
+
+const emit = defineEmits<{
+  (e: 'hideTransactionDialog'): void
 }>()
 
 const isEditing = computed(() => {
@@ -93,7 +96,7 @@ function editOrCreateAndAddTransaction() {
   }
   if (isEditing.value) {
     categoriesStore.editExistingTransaction(props.transaction!, state)
-    props.hideDialog!()
+    emit('hideTransactionDialog')
   } else {
     categoriesStore.createAndAddTransaction(
       state.name,
@@ -164,7 +167,9 @@ function editOrCreateAndAddTransaction() {
       {{ isEditing ? 'update' : 'add' }}
     </v-btn>
     <v-btn class="me-4" @click="clear" color="error" theme="light"> reset </v-btn>
-    <v-btn v-if="isEditing" @click="hideDialog" color="warning"> cancel & exit </v-btn>
+    <v-btn v-if="isEditing" @click="$emit('hideTransactionDialog')" color="warning">
+      cancel & exit
+    </v-btn>
   </form>
   <template v-else>
     There are no

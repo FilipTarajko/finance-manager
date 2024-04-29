@@ -3,8 +3,11 @@ import TransactionComponent from '@/components/Transactions/TransactionComponent
 import type { TransactionWithCategoryData } from '@/types/types'
 
 defineProps<{
-  showDialog: Function
   transactions: TransactionWithCategoryData[]
+}>()
+
+defineEmits<{
+  (e: 'showTransactionDialog', transaction: TransactionWithCategoryData): void
 }>()
 </script>
 
@@ -13,7 +16,12 @@ defineProps<{
     <v-card style="padding: 0.5rem">
       <v-virtual-scroll :maxHeight="300" :items="transactions">
         <template v-slot:default="{ item }">
-          <TransactionComponent :transaction="item" :showDialog="showDialog"></TransactionComponent>
+          <TransactionComponent
+            :transaction="item"
+            @showTransactionDialog="
+              (t: TransactionWithCategoryData) => $emit('showTransactionDialog', t)
+            "
+          ></TransactionComponent>
         </template>
       </v-virtual-scroll>
     </v-card>

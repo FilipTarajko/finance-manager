@@ -16,7 +16,7 @@ defineProps<{
       <v-card-text>
         <TransactionForm
           :transaction="transaction"
-          :hideDialog="
+          @hideTransactionDialog="
             () => {
               isDialogShown = false
             }

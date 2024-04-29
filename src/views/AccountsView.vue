@@ -28,7 +28,7 @@ function showAccountDialog(account: Account) {
     <div v-for="account in accountsStore.accounts" :key="account.id">
       <AccountComponent
         :account="account"
-        :showTransactionDialog="showTransactionDialog"
+        @showTransactionDialog="showTransactionDialog"
         @showAccountDialog="showAccountDialog"
       ></AccountComponent>
     </div>

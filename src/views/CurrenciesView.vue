@@ -36,7 +36,7 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
       <CurrencyComponent
         :currency="currency"
         @showCurrencyDialog="showCurrencyDialog"
-        :showTransactionDialog="showTransactionDialog"
+        @showTransactionDialog="showTransactionDialog"
       ></CurrencyComponent>
     </div>
     <CurrencyEditDialog

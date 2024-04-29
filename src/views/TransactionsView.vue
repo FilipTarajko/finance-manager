@@ -17,7 +17,7 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
     <h2>transaction history</h2>
     <TransactionList
       :transactions="categoriesStore.transactions"
-      :showDialog="showTransactionDialog"
+      @showTransactionDialog="showTransactionDialog"
     ></TransactionList>
     <TransactionEditDialog
       v-model="isTransactionDialogShown"

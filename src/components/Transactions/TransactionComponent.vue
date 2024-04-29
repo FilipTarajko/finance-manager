@@ -5,7 +5,10 @@ import type { TransactionWithCategoryData } from '@/types/types'
 
 const props = defineProps<{
   transaction: TransactionWithCategoryData
-  showDialog: Function
+}>()
+
+defineEmits<{
+  (e: 'showTransactionDialog', transaction: TransactionWithCategoryData): void,
 }>()
 
 const categoriesStore = useCategoriesStore()
@@ -44,7 +47,7 @@ const currency = currenciesStore.getCurrencyByTransaction(props.transaction)!
     <div id="icons">
       <v-icon
         tabindex="0"
-        @click="showDialog(transaction)"
+        @click="$emit('showTransactionDialog', transaction)"
         class="edit-button"
         icon="mdi-pencil"
         aria-label="edit transaction"

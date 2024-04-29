@@ -32,7 +32,7 @@ function showAccountDialog(account: Account) {
     <template v-if="account">
       <AccountComponent
         :account="account"
-        :showTransactionDialog="showTransactionDialog"
+        @showTransactionDialog="showTransactionDialog"
         @showAccountDialog="showAccountDialog"
       ></AccountComponent>
       <AccountEditDialog

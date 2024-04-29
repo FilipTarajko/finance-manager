@@ -40,7 +40,7 @@ const transactionsInCategory = computed(() => {
       <h2>Transactions</h2>
       <TransactionList
         :transactions="transactionsInCategory"
-        :showDialog="showTransactionDialog"
+        @showTransactionDialog="showTransactionDialog"
       ></TransactionList>
       <TransactionEditDialog
         v-model="isTransactionDialogShown"

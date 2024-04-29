@@ -3,7 +3,7 @@ import { useCategoriesStore } from '@/stores/categoriesStore'
 import { useCurrenciesStore } from '@/stores/currenciesStore'
 import { useAccountsStore } from '@/stores/accountsStore'
 import TransactionList from '@/components/Transactions/TransactionList.vue'
-import type { Account } from '@/types/types'
+import type { Account, TransactionWithCategoryData } from '@/types/types'
 import { computed } from 'vue'
 const categoriesStore = useCategoriesStore()
 const currenciesStore = useCurrenciesStore()
@@ -11,11 +11,11 @@ const accountsStore = useAccountsStore()
 
 const props = defineProps<{
   account: Account
-  showTransactionDialog: Function
 }>()
 
 defineEmits<{
   (e: 'showAccountDialog', account: Account): void
+  (e: 'showTransactionDialog', transaction: TransactionWithCategoryData): void
 }>()
 
 const transactions = computed(() => {
@@ -77,6 +77,9 @@ const currency = computed(() => {
     set as default
   </v-btn>
   <br />
-  <TransactionList :showDialog="showTransactionDialog" :transactions="transactions">
+  <TransactionList
+    @showTransactionDialog="(t: TransactionWithCategoryData) => $emit('showTransactionDialog', t)"
+    :transactions="transactions"
+  >
   </TransactionList>
 </template>

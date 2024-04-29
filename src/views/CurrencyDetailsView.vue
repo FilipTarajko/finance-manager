@@ -33,7 +33,7 @@ function showCurrencyDialog(currency: Currency) {
       <CurrencyComponent
         :currency="currency"
         @showCurrencyDialog="showCurrencyDialog"
-        :showTransactionDialog="showTransactionDialog"
+        @showTransactionDialog="showTransactionDialog"
       ></CurrencyComponent>
       <CurrencyEditDialog
         v-model="isCurrencyDialogShown"
