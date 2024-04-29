@@ -32,8 +32,11 @@ const balance = computed(() => {
 </script>
 
 <template>
-  <div class="mt-12 mb-1" style="font-size: 1.2rem; display: flex; flex-direction: row">
-    <div style="width: 92%">
+  <div
+    class="mt-12 mb-1"
+    style="font-size: 1.2rem; display: flex; flex-direction: row; justify-content: space-between"
+  >
+    <div>
       <RouterLink :to="{ name: 'currency', params: { currencyId: currency.id } }" tabindex="0">
         {{ currency.name }}
       </RouterLink>
@@ -59,7 +62,7 @@ const balance = computed(() => {
         </template>
       </template>
     </div>
-    <div style="width: 8%; text-align: right">
+    <div>
       <button
         @click="$emit('showCurrencyDialog', currency)"
         class="edit-button"
