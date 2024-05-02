@@ -66,16 +66,16 @@ onUnmounted(() => {
           style="flex-direction: row; justify-content: space-between; align-items: baseline"
         >
           <RouterLink
-            class="layoutRouterLink layoutRouterLink--left"
-            :to="{ name: 'categories' }"
-            :tabindex="topBarLinkTabIndex"
-            >Categories</RouterLink
-          >
-          <RouterLink
             class="layoutRouterLink"
             :to="{ name: 'transactions' }"
             :tabindex="topBarLinkTabIndex"
             >Transactions</RouterLink
+          >
+          <RouterLink
+            class="layoutRouterLink"
+            :to="{ name: 'categories' }"
+            :tabindex="topBarLinkTabIndex"
+            >Categories</RouterLink
           >
           <RouterLink
             class="layoutRouterLink"
@@ -125,19 +125,19 @@ onUnmounted(() => {
         <!-- <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item> -->
         <RouterLink
           class="layoutRouterLink"
-          :to="{ name: 'categories' }"
-          :tabindex="drawerLinkTabIndex"
-        >
-          <v-icon color="primary" icon="mdi-shape"></v-icon>
-          Categories
-        </RouterLink>
-        <RouterLink
-          class="layoutRouterLink"
           :to="{ name: 'transactions' }"
           :tabindex="drawerLinkTabIndex"
         >
           <v-icon icon="mdi-dots-grid"></v-icon>
           Transactions
+        </RouterLink>
+        <RouterLink
+          class="layoutRouterLink"
+          :to="{ name: 'categories' }"
+          :tabindex="drawerLinkTabIndex"
+        >
+          <v-icon color="primary" icon="mdi-shape"></v-icon>
+          Categories
         </RouterLink>
         <RouterLink
           class="layoutRouterLink"
@@ -210,7 +210,7 @@ onUnmounted(() => {
   padding: 0.35rem 0.7rem;
   margin-bottom: -0.2rem;
 
-  &--left {
+  &:first-child {
     margin-left: -0.7rem;
   }
 }

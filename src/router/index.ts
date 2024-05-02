@@ -5,14 +5,29 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'categories',
-      alias: '/categories',
-      component: () => import('../views/CategoriesView.vue')
+      name: 'transactions',
+      alias: '/transactions',
+      component: () => import('../views/TransactionsView.vue')
     },
     {
-      path: '/categories/:categoryId',
-      name: 'category',
-      component: () => import('../views/CategoryDetailsView.vue')
+      path: '/transactions/:transactionId',
+      name: 'transaction',
+      component: () => import('../views/TransactionDetailsView.vue')
+    },
+    {
+      path: '/categories',
+      children: [
+        {
+          path: '',
+          name: 'categories',
+          component: () => import('../views/CategoriesView.vue')
+        },
+        {
+          path: ':categoryId',
+          name: 'category',
+          component: () => import('../views/CategoryDetailsView.vue')
+        }
+      ]
     },
     {
       path: '/accounts',
@@ -41,21 +56,6 @@ const router = createRouter({
           path: ':currencyId',
           name: 'currency',
           component: () => import('../views/CurrencyDetailsView.vue')
-        }
-      ]
-    },
-    {
-      path: '/transactions',
-      children: [
-        {
-          path: '',
-          name: 'transactions',
-          component: () => import('../views/TransactionsView.vue')
-        },
-        {
-          path: ':transactionId',
-          name: 'transaction',
-          component: () => import('../views/TransactionDetailsView.vue')
         }
       ]
     },
