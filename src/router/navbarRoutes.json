@@ -1,0 +1,38 @@
+[
+  {
+    "routeName": "transactions",
+    "displayName": "Transactions",
+    "icon": "mdi-dots-grid",
+    "color": ""
+  },
+  {
+    "routeName": "categories",
+    "displayName": "Categories",
+    "icon": "mdi-shape",
+    "color": "orange"
+  },
+  {
+    "routeName": "accounts",
+    "displayName": "Accounts",
+    "icon": "mdi-bank",
+    "color": "var(--visible-yellow)"
+  },
+  {
+    "routeName": "currencies",
+    "displayName": "Currencies",
+    "icon": "mdi-cash-multiple",
+    "color": "green"
+  },
+  {
+    "routeName": "statistics",
+    "displayName": "Statistics",
+    "icon": "mdi-chart-bar",
+    "color": "cyan"
+  },
+  {
+    "routeName": "importexport",
+    "displayName": "Import/Export",
+    "icon": "mdi-import",
+    "color": "purple"
+  }
+]

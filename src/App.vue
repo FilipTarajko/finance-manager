@@ -4,6 +4,7 @@ import { useThemeStore } from '@/stores/themeStore'
 import { useSnackbarStore } from './stores/snackbarStore'
 import { computed, ref, type Ref } from 'vue'
 import { onUnmounted } from 'vue'
+import navbarRoutes from './router/navbarRoutes.json'
 
 const BREAKPOINT_WIDTH = 900
 const themeStore = useThemeStore()
@@ -66,41 +67,13 @@ onUnmounted(() => {
           style="flex-direction: row; justify-content: space-between; align-items: baseline"
         >
           <RouterLink
+            v-for="route in navbarRoutes"
             class="layoutRouterLink"
-            :to="{ name: 'transactions' }"
+            :to="{ name: route.routeName }"
             :tabindex="topBarLinkTabIndex"
-            >Transactions</RouterLink
           >
-          <RouterLink
-            class="layoutRouterLink"
-            :to="{ name: 'categories' }"
-            :tabindex="topBarLinkTabIndex"
-            >Categories</RouterLink
-          >
-          <RouterLink
-            class="layoutRouterLink"
-            :to="{ name: 'accounts' }"
-            :tabindex="topBarLinkTabIndex"
-            >Accounts</RouterLink
-          >
-          <RouterLink
-            class="layoutRouterLink"
-            :to="{ name: 'currencies' }"
-            :tabindex="topBarLinkTabIndex"
-            >Currencies</RouterLink
-          >
-          <RouterLink
-            class="layoutRouterLink"
-            :to="{ name: 'statistics' }"
-            :tabindex="topBarLinkTabIndex"
-            >Statistics</RouterLink
-          >
-          <RouterLink
-            class="layoutRouterLink"
-            :to="{ name: 'importexport' }"
-            :tabindex="topBarLinkTabIndex"
-            >Import/Export</RouterLink
-          >
+            {{ route.displayName }}
+          </RouterLink>
         </nav>
         <v-btn
           variant="outlined"
@@ -124,52 +97,13 @@ onUnmounted(() => {
         </v-btn>
         <!-- <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item> -->
         <RouterLink
+          v-for="route in navbarRoutes"
           class="layoutRouterLink"
-          :to="{ name: 'transactions' }"
+          :to="{ name: route.routeName }"
           :tabindex="drawerLinkTabIndex"
         >
-          <v-icon icon="mdi-dots-grid"></v-icon>
-          Transactions
-        </RouterLink>
-        <RouterLink
-          class="layoutRouterLink"
-          :to="{ name: 'categories' }"
-          :tabindex="drawerLinkTabIndex"
-        >
-          <v-icon color="primary" icon="mdi-shape"></v-icon>
-          Categories
-        </RouterLink>
-        <RouterLink
-          class="layoutRouterLink"
-          :to="{ name: 'accounts' }"
-          :tabindex="drawerLinkTabIndex"
-        >
-          <v-icon color="warning" icon="mdi-credit-card"></v-icon>
-          Accounts
-        </RouterLink>
-        <RouterLink
-          class="layoutRouterLink"
-          :to="{ name: 'currencies' }"
-          :tabindex="drawerLinkTabIndex"
-        >
-          <v-icon color="var(--visible-yellow)" icon="mdi-currency-usd"></v-icon>
-          Currencies
-        </RouterLink>
-        <RouterLink
-          class="layoutRouterLink"
-          :to="{ name: 'statistics' }"
-          :tabindex="drawerLinkTabIndex"
-        >
-          <v-icon color="green" icon="mdi-chart-bar"></v-icon>
-          Statistics
-        </RouterLink>
-        <RouterLink
-          class="layoutRouterLink"
-          :to="{ name: 'importexport' }"
-          :tabindex="drawerLinkTabIndex"
-        >
-          <v-icon color="cyan" icon="mdi-export"></v-icon>
-          Import/Export
+          <v-icon :icon="route.icon" :color="route.color"></v-icon>
+          {{ route.displayName }}
         </RouterLink>
       </v-list>
     </v-navigation-drawer>
