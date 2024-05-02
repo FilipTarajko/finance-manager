@@ -157,6 +157,7 @@ const baseCurrencyOptions = computed(() => {
     <v-text-field
       v-model.number="state.value_relative_to_base"
       type="number"
+      step="any"
       :label="
         'Current value (in ' +
         currenciesStore.currencies.find((e) => e.id == state.base_currency_id)!.name +
