@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Eating out",
+    "color": "#d16900",
+    "icon": "mdi-silverware-variant",
+    "transactions": []
+  },
+  {
+    "id": 2,
+    "name": "Education",
+    "color": "#ffd700",
+    "icon": "mdi-school",
+    "transactions": []
+  },
+  {
+    "id": 3,
+    "name": "Groceries",
+    "color": "#00ff77",
+    "icon": "mdi-shopping",
+    "transactions": []
+  },
+  {
+    "id": 4,
+    "name": "Gifts",
+    "color": "#00aaff",
+    "icon": "mdi-gift",
+    "transactions": []
+  },
+  {
+    "id": 5,
+    "name": "Transportation",
+    "color": "#ff0088",
+    "icon": "mdi-train-car",
+    "transactions": []
+  },
+  {
+    "id": 6,
+    "name": "Entertainment",
+    "color": "#ff3000",
+    "icon": "mdi-movie",
+    "transactions": []
+  }
+]

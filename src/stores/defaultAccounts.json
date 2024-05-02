@@ -13,5 +13,10 @@
     "id": 2,
     "name": "dollars account",
     "currency_id": 1
+  },
+  {
+    "id": 3,
+    "name": "euro account",
+    "currency_id": 3
   }
 ]

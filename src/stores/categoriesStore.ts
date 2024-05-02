@@ -7,7 +7,7 @@ import {
 } from '../types/types'
 import { useStorage } from '@vueuse/core'
 
-import defaultData from './smallData.json'
+import defaultData from './defaultCategories.json'
 
 export const useCategoriesStore = defineStore('categories', () => {
   const categories: Ref<Category[]> = useStorage('categories', defaultData)
