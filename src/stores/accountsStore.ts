@@ -17,7 +17,7 @@ export const useAccountsStore = defineStore('accounts', () => {
   }
 
   function createAndAddAccount(name: string, currency_id: number) {
-    let nextId = 0
+    let nextId = 1
     for (const elem of accounts.value) {
       if (nextId <= elem.id) {
         nextId = elem.id + 1

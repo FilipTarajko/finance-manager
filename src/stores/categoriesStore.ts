@@ -13,7 +13,7 @@ export const useCategoriesStore = defineStore('categories', () => {
   const categories: Ref<Category[]> = useStorage('categories', defaultData)
 
   function createAndAddCategory(name: string, color: string, icon: string) {
-    let nextId = 0
+    let nextId = 1
     for (const elem of categories.value) {
       if (nextId <= elem.id) {
         nextId = elem.id + 1
@@ -71,7 +71,7 @@ export const useCategoriesStore = defineStore('categories', () => {
     category: Category,
     account_id: number
   ) {
-    let nextId = 0
+    let nextId = 1
     for (const elem of transactions.value) {
       if (nextId <= elem.id) {
         nextId = elem.id + 1
