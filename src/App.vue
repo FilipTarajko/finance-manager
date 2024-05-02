@@ -86,7 +86,7 @@ onUnmounted(() => {
     </v-app-bar>
 
     <v-navigation-drawer id="drawer" v-model="drawer" temporary>
-      <v-list density="compact" nav style="display: flex; flex-direction: column">
+      <v-list density="compact" nav style="display: flex; flex-direction: column" tabindex="-1">
         <v-btn
           style="margin: 0.5rem"
           color="primary"
