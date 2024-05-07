@@ -8,7 +8,9 @@ Features:
   - categories of transactions
   - accounts having their currency and transactions
   - currencies that can be easily updated using api
-- charts and graphs representing data of transactions
+- viewing charts and graphs based on transaction statistics
+- exporting to file
+- importing from file or text
 
 ## Used technologies
 
