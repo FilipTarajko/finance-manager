@@ -2,6 +2,14 @@
 
 Project for tracking, managing and visualizing personal finances
 
+Features:
+- managing:
+  - transactions
+  - categories of transactions
+  - accounts having their currency and transactions
+  - currencies that can be easily updated using api
+- charts and graphs representing data of transactions
+
 ## Used technologies
 
 [<img align="left" width="26" height="26" alt="Vue.js" src="https://api.iconify.design/devicon:vuejs.svg" style="padding: 0 20px 16px 0">](https://vuejs.org)
