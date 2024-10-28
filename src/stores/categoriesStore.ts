@@ -69,7 +69,8 @@ export const useCategoriesStore = defineStore('categories', () => {
     name: string,
     amount: number,
     category: Category,
-    account_id: number
+    account_id: number,
+    timestamp: EpochTimeStamp
   ) {
     let nextId = 1
     for (const elem of transactions.value) {
@@ -81,8 +82,8 @@ export const useCategoriesStore = defineStore('categories', () => {
       id: nextId,
       name,
       amount,
-      timestamp: new Date().getTime(),
-      account_id
+      account_id,
+      timestamp,
     })
   }
 
@@ -92,6 +93,7 @@ export const useCategoriesStore = defineStore('categories', () => {
     category.transactions[index].amount = newState.amount
     category.transactions[index].name = newState.name
     category.transactions[index].account_id = newState.account_id
+    category.transactions[index].timestamp = newState.timestamp
     if (newState.category != category) {
       const movedTransaction = category.transactions.splice(index, 1)[0]
       newState.category.transactions.push(movedTransaction)

@@ -29,14 +29,16 @@ const initialState = {
   name: props?.transaction?.name ?? '',
   amount: props?.transaction?.amount ?? null,
   category: categoriesStore.tryGetCategoryByName(props?.transaction?.categoryData?.name!) ?? null,
-  account_id: props?.transaction?.account_id ?? accountsStore.default_account_id
+  account_id: props?.transaction?.account_id ?? accountsStore.default_account_id,
+  timestamp: (props?.transaction?.timestamp ? new Date(props?.transaction?.timestamp) : new Date()).toISOString().slice(0, 10),
 }
 
 const state = reactive({
   name: initialState.name,
   amount: initialState.amount,
   category: initialState.category,
-  account_id: initialState.account_id
+  account_id: initialState.account_id,
+  timestamp: initialState.timestamp,
 })
 
 const mustHaveAtMost2DecimalDigits = (value: number) => {
@@ -57,7 +59,8 @@ const rules = {
     )
   },
   category: { required },
-  account_id: { required }
+  account_id: { required },
+  timestamp: { required },
 }
 
 const categoryOptions = computed(() => {
@@ -94,15 +97,19 @@ function editOrCreateAndAddTransaction() {
   if (v$.value.$error || !state.category) {
     return
   }
+
+  const timestamp = Math.floor(new Date(state.timestamp).getTime() / 86400000) * 86400000;
+
   if (isEditing.value) {
-    categoriesStore.editExistingTransaction(props.transaction!, state)
+    categoriesStore.editExistingTransaction(props.transaction!, { ...state, timestamp })
     emit('hideTransactionDialog')
   } else {
     categoriesStore.createAndAddTransaction(
       state.name,
       state.amount!,
       state.category,
-      state.account_id
+      state.account_id,
+      timestamp,
     )
   }
 }
@@ -162,6 +169,17 @@ function editOrCreateAndAddTransaction() {
       class="mb-2"
     >
     </v-select>
+
+    <v-text-field
+        v-model="state.timestamp"
+        type="date"
+        label="timestamp"
+        @change="v$.timestamp.$touch"
+        @blur="v$.timestamp.$touch"
+        :error-messages="v$.timestamp.$errors.map((e) => e.$message) as string[]"
+        class="mb-2"
+      >
+    </v-text-field>
 
     <v-btn class="me-4" type="submit" color="success">
       {{ isEditing ? 'update' : 'add' }}
