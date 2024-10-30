@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import TransactionForm from '@/components/Transactions/TransactionForm.vue'
-import TransactionList from '@/components/Transactions/TransactionList.vue'
-import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue'
-import { useCategoriesStore } from '@/stores/categoriesStore'
-const categoriesStore = useCategoriesStore()
+import { ref } from 'vue';
+import TransactionForm from '@/components/Transactions/TransactionForm.vue';
+import TransactionList from '@/components/Transactions/TransactionList.vue';
+import TransactionEditDialog from '@/components/Transactions/TransactionEditDialog.vue';
+import { useCategoriesStore } from '@/stores/categoriesStore';
+import { useTransactionFormComposable } from '@/composables/transactionFormComposable';
+import TransactionImportDialog from '@/components/Transactions/TransactionImportDialog.vue';
 
-import { useTransactionFormComposable } from '@/composables/transactionFormComposable'
+const categoriesStore = useCategoriesStore();
+
 const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
-  useTransactionFormComposable()
+  useTransactionFormComposable();
+
+const isTransactionImportDialogShown = ref(false);
+const fileToImportTransactions = ref<any>(null);
 </script>
 
 <template>
@@ -19,9 +25,24 @@ const { isTransactionDialogShown, dialogTransaction, showTransactionDialog } =
       :transactions="categoriesStore.transactions"
       @showTransactionDialog="showTransactionDialog"
     ></TransactionList>
+
+    <div class="mt-12">
+      File to import transactions:
+      <v-file-input
+        v-model="fileToImportTransactions"
+        @change="isTransactionImportDialogShown = true"
+        label="File input"
+        accept=".csv"
+      ></v-file-input>
+    </div>
+
     <TransactionEditDialog
       v-model="isTransactionDialogShown"
       :transaction="dialogTransaction"
     ></TransactionEditDialog>
+    <TransactionImportDialog
+      v-model="isTransactionImportDialogShown"
+      :fileToImportTransactions="fileToImportTransactions"
+    ></TransactionImportDialog>
   </main>
 </template>
