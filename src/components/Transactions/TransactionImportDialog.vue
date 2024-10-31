@@ -64,10 +64,10 @@ const output = computed(() => {
   }
 
   for (let i = 1; i < parsedRows?.value?.length; i++) {
-    const nextItem = {};
+    const nextItem: Partial<Record<FieldNames, any>> = {};
 
     fields.value.forEach((field) => {
-      if (field.type === fieldInputType.readColumn) {
+      if (field.type === FieldInputType.readColumn) {
         if (field.name === 'amount') {
           nextItem[field.name] = Number(parsedRows?.value![i][field.selected]);
         } else if (field.name === 'timestamp') {
@@ -78,11 +78,11 @@ const output = computed(() => {
         } else {
           nextItem[field.name] = parsedRows?.value![i][field.selected];
         }
-      } else if (field.type === fieldInputType.select) {
+      } else if (field.type === FieldInputType.select) {
         if (field.selected != null) {
           nextItem[field.name] = {
             value: field.selected,
-            title: field.options.find((e) => e.value === field.selected).title,
+            title: field.options.find((e: any) => e.value === field.selected).title,
           };
         } else {
           nextItem[field.name] = `please select the ${field.name}`;
@@ -117,15 +117,15 @@ function saveOutput() {
   isDialogShown.value = false;
 }
 
-enum fieldInputType {
+enum FieldInputType {
   readColumn,
   mapFromColumn,
   select,
 }
 
 interface FieldImportSetting {
-  name: string;
-  type: fieldInputType;
+  name: FieldNames;
+  type: FieldInputType;
   selected: any;
   options?: any;
   // includeToValue?: [string, any][], // TODO
@@ -134,7 +134,7 @@ interface FieldImportSetting {
 const usedColumns = computed(() => {
   return fields.value
     .filter((elem: FieldImportSetting) =>
-      [fieldInputType.readColumn, fieldInputType.mapFromColumn].includes(elem.type),
+      [FieldInputType.readColumn, FieldInputType.mapFromColumn].includes(elem.type),
     )
     .map((elem: FieldImportSetting) => elem.selected);
 });
@@ -171,33 +171,41 @@ const accountOptions = computed(() => {
   });
 });
 
+enum FieldNames {
+  name = 'name',
+  amount = 'amount',
+  category = 'category',
+  account = 'account',
+  timestamp = 'timestamp',
+}
+
 const fields = ref<FieldImportSetting[]>([
   {
-    name: 'name',
-    type: fieldInputType.readColumn,
+    name: FieldNames.name,
+    type: FieldInputType.readColumn,
     selected: null,
   },
   {
-    name: 'amount',
-    type: fieldInputType.readColumn,
+    name: FieldNames.amount,
+    type: FieldInputType.readColumn,
     selected: null,
   },
   {
-    name: 'category',
+    name: FieldNames.category,
     // type: fieldInputType.mapFromColumn, // TODO
-    type: fieldInputType.select,
+    type: FieldInputType.select,
     options: categoryOptions,
     selected: null,
   },
   {
-    name: 'account',
-    type: fieldInputType.select,
+    name: FieldNames.account,
+    type: FieldInputType.select,
     options: accountOptions,
     selected: null,
   },
   {
-    name: 'timestamp',
-    type: fieldInputType.readColumn,
+    name: FieldNames.timestamp,
+    type: FieldInputType.readColumn,
     selected: null,
   },
 ]);
@@ -261,7 +269,7 @@ const fields = ref<FieldImportSetting[]>([
                       fields
                         .filter(
                           (e) =>
-                            [fieldInputType.readColumn, fieldInputType.mapFromColumn].includes(
+                            [FieldInputType.readColumn, FieldInputType.mapFromColumn].includes(
                               e.type,
                             ) && e.selected == j,
                         )
