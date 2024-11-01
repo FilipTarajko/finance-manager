@@ -129,17 +129,17 @@ const transactionsChronologicallyForBarChart = computed(() => {
   <div v-if="categoriesStore.transactions.length" :key="themeStore.darkTheme.toString()">
     <PieChart
       class="chart"
-      name="transactions by category"
+      name="number of transactions by category"
       :input="transactionInstancesByCategory"
     />
     <PieChart
       class="chart"
-      :name="'gains by category (in ' + display_currency.name + ')'"
+      :name="'profit by category (in ' + display_currency.name + ')'"
       :input="transactionGainsByCategory"
     />
     <PieChart
       class="chart"
-      :name="'losses by category (in ' + display_currency.name + ')'"
+      :name="'expenses by category (in ' + display_currency.name + ')'"
       :input="transactionLossesByCategory"
     />
     <BarChart
@@ -166,7 +166,7 @@ const transactionsChronologicallyForBarChart = computed(() => {
   }
 
   &--last {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 </style>
