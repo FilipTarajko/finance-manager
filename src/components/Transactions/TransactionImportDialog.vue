@@ -57,39 +57,33 @@ watch(isDialogShown, (isDialogShown) => {
   }
 });
 
+function getValueForField(field: FieldImportSetting, rowNumber: number) {
+  if (field.selected === null) {
+    return `not set`;
+  }
+
+  let rawValue;
+  if (field.type === FieldInputType.readColumn) {
+    rawValue = parsedRows?.value![rowNumber][field.selected];
+  } else if (field.type === FieldInputType.selectValue) {
+    rawValue = field;
+  } else {
+    return 'not implemented'; // TODO
+  }
+  return field.mapper(rawValue);
+}
+
 const output = computed(() => {
   const result: any[] = [];
   if (!parsedRows?.value?.length) {
     return result;
   }
 
-  for (let i = 1; i < parsedRows?.value?.length; i++) {
+  for (let rowNumber = 1; rowNumber < parsedRows?.value?.length; rowNumber++) {
     const nextItem: Partial<Record<FieldNames, any>> = {};
 
     fields.value.forEach((field) => {
-      if (field.type === FieldInputType.readColumn) {
-        if (field.name === 'amount') {
-          nextItem[field.name] = Number(parsedRows?.value![i][field.selected]);
-        } else if (field.name === 'timestamp') {
-          nextItem[field.name] = {
-            value: new Date(parsedRows?.value![i][field.selected]).getTime(),
-            title: parsedRows?.value![i][field.selected],
-          };
-        } else {
-          nextItem[field.name] = parsedRows?.value![i][field.selected];
-        }
-      } else if (field.type === FieldInputType.select) {
-        if (field.selected != null) {
-          nextItem[field.name] = {
-            value: field.selected,
-            title: field.options.find((e: any) => e.value === field.selected).title,
-          };
-        } else {
-          nextItem[field.name] = `please select the ${field.name}`;
-        }
-      } else {
-        nextItem[field.name] = 'TODO';
-      }
+      nextItem[field.name] = getValueForField(field, rowNumber);
     });
 
     result.push(nextItem);
@@ -120,7 +114,7 @@ function saveOutput() {
 enum FieldInputType {
   readColumn,
   mapFromColumn,
-  select,
+  selectValue,
 }
 
 interface FieldImportSetting {
@@ -129,6 +123,7 @@ interface FieldImportSetting {
   selected: any;
   options?: any;
   // includeToValue?: [string, any][], // TODO
+  mapper: (rawValue: any) => any;
 }
 
 const usedColumns = computed(() => {
@@ -171,6 +166,15 @@ const accountOptions = computed(() => {
   });
 });
 
+const basicReadColumnMapper = (rawValue: any) => rawValue;
+
+function selectValueMapper(field: FieldImportSetting) {
+  return {
+    value: field.selected,
+    title: field.options.find((e: any) => e.value === field.selected).title,
+  };
+}
+
 enum FieldNames {
   name = 'name',
   amount = 'amount',
@@ -184,29 +188,37 @@ const fields = ref<FieldImportSetting[]>([
     name: FieldNames.name,
     type: FieldInputType.readColumn,
     selected: null,
+    mapper: basicReadColumnMapper,
   },
   {
     name: FieldNames.amount,
     type: FieldInputType.readColumn,
     selected: null,
+    mapper: (rawValue) => Number(rawValue),
   },
   {
     name: FieldNames.category,
     // type: fieldInputType.mapFromColumn, // TODO
-    type: FieldInputType.select,
+    type: FieldInputType.selectValue,
     options: categoryOptions,
     selected: null,
+    mapper: selectValueMapper,
   },
   {
     name: FieldNames.account,
-    type: FieldInputType.select,
+    type: FieldInputType.selectValue,
     options: accountOptions,
     selected: null,
+    mapper: selectValueMapper,
   },
   {
     name: FieldNames.timestamp,
     type: FieldInputType.readColumn,
     selected: null,
+    mapper: (rawValue) => ({
+      value: new Date(rawValue).getTime(),
+      title: rawValue,
+    }),
   },
 ]);
 </script>
