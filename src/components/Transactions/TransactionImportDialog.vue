@@ -13,6 +13,8 @@ const parsedRows = ref<string[][] | null>(null);
 const importRelativeFontSize = ref(1.0);
 const sourceVisibility = ref(true);
 const outputVisibility = ref(true);
+const fileHasHeader = ref(true);
+
 const columnSeparator = ',';
 
 const props = defineProps<{
@@ -48,11 +50,6 @@ function parseAsCsv(text: string): string[][] {
   for (let i = 0; i < rows.length; i++) {
     rowsParsed.push(rows[i].split(columnSeparator));
   }
-  for (let i = 0; i < rowsParsed[0].length; i++) {
-    if (!rowsParsed[0][i] || rowsParsed[0][i] == '\r') {
-      rowsParsed[0][i] = `column ${i}`;
-    }
-  }
   return rowsParsed;
 }
 
@@ -63,7 +60,7 @@ function getValueForField(field: FieldImportSetting, rowNumber: number) {
 
   let rawValue;
   if (field.type === FieldInputType.readColumn) {
-    rawValue = parsedRows?.value![rowNumber][field.selected];
+    rawValue = contentRows?.value![rowNumber][field.selected];
   } else if (field.type === FieldInputType.selectValue) {
     rawValue = field;
   } else {
@@ -74,11 +71,11 @@ function getValueForField(field: FieldImportSetting, rowNumber: number) {
 
 const output = computed(() => {
   const result: any[] = [];
-  if (!parsedRows?.value?.length) {
+  if (!contentRows?.value?.length) {
     return result;
   }
 
-  for (let rowNumber = 1; rowNumber < parsedRows?.value?.length; rowNumber++) {
+  for (let rowNumber = 0; rowNumber < contentRows?.value?.length; rowNumber++) {
     const nextItem: Partial<Record<FieldNames, any>> = {};
 
     fields.value.forEach((field) => {
@@ -135,12 +132,12 @@ const usedColumns = computed(() => {
 
 const columnSelectOptions = computed(() => {
   const result: { title: string; value: number }[] = [];
-  if (!parsedRows.value) {
+  if (!headerRow.value) {
     return result;
   }
-  for (let i = 0; i < parsedRows.value[0].length; i++) {
+  for (let i = 0; i < headerRow.value.length; i++) {
     result.push({
-      title: parsedRows.value[0][i],
+      title: headerRow.value[i],
       value: i,
     });
   }
@@ -231,6 +228,33 @@ function namesOfFieldsBasedOnColumn(columnIndex: number): string {
     .map((e) => e.name)
     .join(', ');
 }
+
+const headerRowRaw = computed(() => {
+  if (fileHasHeader.value) {
+    return parsedRows.value?.at(0);
+  }
+
+  return new Array(parsedRows.value?.at(0)?.length);
+});
+
+const headerRow = computed(() => {
+  const result = JSON.parse(JSON.stringify(headerRowRaw.value ?? []));
+
+  for (let i = 0; i < result.length; i++) {
+    if (!result[i] || result[i] == '\r') {
+      result[i] = `column ${i}`;
+    }
+  }
+
+  return result;
+});
+
+const contentRows = computed(() => {
+  if (fileHasHeader.value) {
+    return parsedRows.value?.slice(1);
+  }
+  return parsedRows.value;
+});
 </script>
 
 <template>
@@ -246,27 +270,20 @@ function namesOfFieldsBasedOnColumn(columnIndex: number): string {
           :label="field.name"
           class="mb-2"
         ></v-select>
+
         <div class="mb-4">
-          <v-btn color="primary" type="button" @click="importRelativeFontSize -= 0.1">-</v-btn>
-          <v-btn class="mx-2" color="primary" type="button" @click="importRelativeFontSize += 0.1"
-            >+
-          </v-btn>
+          <div>
+            <v-btn color="primary" type="button" @click="importRelativeFontSize -= 0.1"
+              >zoom out</v-btn
+            >
+            <v-btn class="mx-2" color="primary" type="button" @click="importRelativeFontSize += 0.1"
+              >zoom in
+            </v-btn>
+          </div>
+          <v-switch v-model="sourceVisibility" density="compact" :hide-details="true" class="mt-4" label="toggle source visibility"></v-switch>
+          <v-switch v-model="outputVisibility" density="compact" :hide-details="true" label="Toggle output visibility"></v-switch>
+          <v-switch v-model="fileHasHeader" density="compact" :hide-details="true" class="my-4" label="Use 1st row as header"></v-switch>
           <v-btn
-            class="mx-4"
-            color="primary"
-            type="button"
-            @click="sourceVisibility = !sourceVisibility"
-            >toggle source visibility
-          </v-btn>
-          <v-btn
-            class="mx-4"
-            color="primary"
-            type="button"
-            @click="outputVisibility = !outputVisibility"
-            >toggle output visibility
-          </v-btn>
-          <v-btn
-            class="mx-4"
             color="primary"
             type="button"
             @click="saveOutput"
@@ -283,7 +300,7 @@ function namesOfFieldsBasedOnColumn(columnIndex: number): string {
               <thead style="border: 1px solid black">
                 <tr>
                   <th
-                    v-for="(_elem, j) in parsedRows[0]"
+                    v-for="(_elem, j) in headerRow"
                     :key="j"
                     :class="{ used: usedColumns.includes(j) }"
                   >
@@ -292,15 +309,16 @@ function namesOfFieldsBasedOnColumn(columnIndex: number): string {
                 </tr>
                 <tr>
                   <th
-                    v-for="(elem, j) in parsedRows[0]"
+                    v-for="(elem, j) in headerRow"
                     :key="j"
                     :class="{ used: usedColumns.includes(j) }"
+                    style="font-weight: bold"
                   >
                     {{ elem }}
                   </th>
                 </tr>
               </thead>
-              <tr style="border: 1px solid black" v-for="(row, i) in parsedRows.slice(1)" :key="i">
+              <tr style="border: 1px solid black" v-for="(row, i) in contentRows" :key="i">
                 <td v-for="(elem, j) in row" :key="j" :class="{ used: usedColumns.includes(j) }">
                   {{ elem }}
                 </td>
