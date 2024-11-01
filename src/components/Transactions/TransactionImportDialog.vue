@@ -3,6 +3,7 @@ import { computed, ref, type Ref, watch } from 'vue';
 import { useAccountsStore } from '@/stores/accountsStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
 import { useCategoriesStore } from '@/stores/categoriesStore';
+import type { Category } from '@/types/types'
 
 const accountsStore = useAccountsStore();
 const currenciesStore = useCurrenciesStore();
@@ -64,8 +65,8 @@ function getValueForField(field: FieldImportSetting, rowNumber: number) {
     rawValue = contentRows?.value![rowNumber][field.selected];
   } else if (field.type === FieldInputType.selectValue) {
     rawValue = field;
-  } else {
-    return 'not implemented'; // TODO
+  } else if (field.type === FieldInputType.mapFromColumn) {
+    rawValue = [field, contentRows?.value![rowNumber][field.selected]];
   }
 
   if (field.validator) {
@@ -109,7 +110,7 @@ interface FieldImportSetting {
   type: FieldInputType;
   selected: any;
   options?: any;
-  // includeToValue?: [string, any][], // TODO
+  mappings?: [string, Category | null][];
   mapper: (rawValue: any) => any;
   validator?: (rawValue: any) => true | string;
   hasError?: boolean;
@@ -164,6 +165,20 @@ function selectValueMapper(field: FieldImportSetting) {
   };
 }
 
+function mapFromColumnMapper(fieldAndValueFromTableTuple: [FieldImportSetting, string]) {
+  const field = fieldAndValueFromTableTuple[0];
+  const valueFromTable = fieldAndValueFromTableTuple[1];
+  for (let i = 0; i < field.mappings!.length; i++) {
+    const mapping = field.mappings![i];
+    if (mapping[1] && (valueFromTable ?? '').toLowerCase().includes(mapping[0].toLowerCase())) {
+      return {
+        value: mapping[1],
+        title: mapping[1].name,
+      };
+    }
+  }
+}
+
 enum FieldNames {
   name = 'name',
   amount = 'amount',
@@ -192,21 +207,6 @@ const fields = ref<FieldImportSetting[]>([
     },
   },
   {
-    name: FieldNames.category,
-    // type: fieldInputType.mapFromColumn, // TODO
-    type: FieldInputType.selectValue,
-    options: categoryOptions,
-    selected: null,
-    mapper: selectValueMapper,
-  },
-  {
-    name: FieldNames.account,
-    type: FieldInputType.selectValue,
-    options: accountOptions,
-    selected: null,
-    mapper: selectValueMapper,
-  },
-  {
     name: FieldNames.timestamp,
     type: FieldInputType.readColumn,
     selected: null,
@@ -217,6 +217,33 @@ const fields = ref<FieldImportSetting[]>([
     validator: (rawValue) => {
       if (rawValue.length < 10 || isNaN(new Date(rawValue) as any)) {
         return 'not a valid date';
+      }
+      return true;
+    },
+  },
+  {
+    name: FieldNames.account,
+    type: FieldInputType.selectValue,
+    options: accountOptions,
+    selected: null,
+    mapper: selectValueMapper,
+  },
+  {
+    name: FieldNames.category,
+    type: FieldInputType.mapFromColumn,
+    selected: null,
+    mappings: [['', null]],
+    mapper: mapFromColumnMapper,
+    validator: (fieldAndValueFromTableTuple: [FieldImportSetting, string]) => {
+      const field = fieldAndValueFromTableTuple[0];
+
+      for (let i = 0; i < field.mappings!.length; i++) {
+        const isCategoryEmpty = !field.mappings![i][1];
+        const isNeedleEmpty = !field.mappings![i][0];
+        const isFallbackMapping = i === field.mappings!.length - 1;
+        if (isCategoryEmpty || (isNeedleEmpty && !isFallbackMapping)) {
+          return 'Please set all mapping fields or remove unnecessary mappings';
+        }
       }
       return true;
     },
@@ -266,7 +293,7 @@ const contentRows = computed(() => {
 });
 
 watch(
-  () => [fields.value.map(field=>field.selected), contentRows],
+  () => [fields.value.map((field) => [field.selected, field?.mappings]), contentRows],
   () => {
     fields.value.forEach((field) => {
       if (field.selected !== null) {
@@ -293,6 +320,12 @@ watch(
   },
   { deep: true },
 );
+
+function swapOrderOfMappings(field: FieldImportSetting, lowerIndex: number) {
+  const temp = field.mappings![lowerIndex];
+  field.mappings![lowerIndex] = field.mappings![lowerIndex + 1];
+  field.mappings![lowerIndex + 1] = temp;
+}
 </script>
 
 <template>
@@ -300,52 +333,124 @@ watch(
     <v-card class="w-full" style="height: 95vh">
       <v-card-title> Import transactions</v-card-title>
       <v-card-text :style="`overflow: scroll; font-size: ${importRelativeFontSize}rem;`">
-        <v-select
-          v-for="field in fields"
-          :key="field.name"
-          v-model="field.selected"
-          :items="field.options ?? columnSelectOptions"
-          :label="field.name"
-          class="mb-2"
-        ></v-select>
+        <div style="max-width: 50rem">
+          <template v-for="field in fields" :key="field.name">
+            <v-select
+              v-model="field.selected"
+              :items="field.options ?? columnSelectOptions"
+              :label="field.name"
+              class="mb-2"
+            ></v-select>
 
-        <div class="mb-4">
-          <div>
-            <v-btn color="primary" type="button" @click="importRelativeFontSize -= 0.1"
-              >zoom out
-            </v-btn>
-            <v-btn class="mx-2" color="primary" type="button" @click="importRelativeFontSize += 0.1"
-              >zoom in
+            <div class="pl-4" v-for="(mapping, i) in field?.mappings" :key="i">
+              <v-btn
+                v-if="i === field.mappings!.length - 1"
+                @click="field.mappings!.splice(field.mappings!.length - 1, 0, ['', null])"
+                color="primary"
+                class="mb-4"
+                style="width: calc(100% - 9ch)"
+              >
+                add another mapping
+              </v-btn>
+              <div
+                class="mb-4"
+                style="display: grid; grid-template-columns: 1fr 1fr 3ch 3ch; gap: 1ch"
+              >
+                <v-text-field
+                  :disabled="i === field.mappings!.length - 1"
+                  type="text"
+                  :label="
+                    i === field.mappings!.length - 1
+                      ? 'default category (if nothing matched)'
+                      : `text included by ${headerRow[JSON.stringify(field.selected)] ?? 'not-yet-selected'} field`
+                  "
+                  v-model="mapping[0]"
+                  :hide-details="true"
+                ></v-text-field>
+                <v-select
+                  v-model="mapping[1]"
+                  :items="categoryOptions"
+                  label="resulting category"
+                  :hide-details="true"
+                ></v-select>
+                <div
+                  v-if="i !== field.mappings!.length - 1"
+                  style="display: flex; flex-direction: column"
+                >
+                  <button
+                    :disabled="i === 0"
+                    class="delete-button"
+                    @click="swapOrderOfMappings(field, i - 1)"
+                    aria-label="swap mapping order with previous"
+                    :style="`color: ${i === 0 ? 'gray' : 'primary'};`"
+                  >
+                    <v-icon icon="mdi-menu-up" />
+                  </button>
+                  <button
+                    :disabled="i === field.mappings!.length - 2"
+                    class="delete-button"
+                    @click="swapOrderOfMappings(field, i)"
+                    aria-label="swap mapping order with next"
+                    :style="`color: ${i === field.mappings!.length - 2 ? 'gray' : 'primary'};`"
+                  >
+                    <v-icon icon="mdi-menu-down" />
+                  </button>
+                </div>
+                <button
+                  v-if="i !== field.mappings!.length - 1"
+                  class="delete-button"
+                  @click="field.mappings!.splice(i, 1)"
+                  aria-label="delete mapping"
+                  style="color: red"
+                >
+                  <v-icon icon="mdi-delete" />
+                </button>
+              </div>
+            </div>
+          </template>
+
+          <div class="mb-4">
+            <div>
+              <v-btn color="primary" type="button" @click="importRelativeFontSize -= 0.1"
+                >zoom out
+              </v-btn>
+              <v-btn
+                class="mx-2"
+                color="primary"
+                type="button"
+                @click="importRelativeFontSize += 0.1"
+                >zoom in
+              </v-btn>
+            </div>
+            <v-switch
+              v-model="sourceVisibility"
+              density="compact"
+              :hide-details="true"
+              class="mt-4"
+              label="Toggle source visibility"
+            ></v-switch>
+            <v-switch
+              v-model="outputVisibility"
+              density="compact"
+              :hide-details="true"
+              label="Toggle output visibility"
+            ></v-switch>
+            <v-switch
+              v-model="fileHasHeader"
+              density="compact"
+              :hide-details="true"
+              class="my-4"
+              label="Use 1st row as header"
+            ></v-switch>
+            <v-btn
+              color="primary"
+              type="button"
+              @click="saveOutput"
+              :disabled="fields.some((field) => field.selected === null || field?.hasError)"
+            >
+              Import transactions
             </v-btn>
           </div>
-          <v-switch
-            v-model="sourceVisibility"
-            density="compact"
-            :hide-details="true"
-            class="mt-4"
-            label="Toggle source visibility"
-          ></v-switch>
-          <v-switch
-            v-model="outputVisibility"
-            density="compact"
-            :hide-details="true"
-            label="Toggle output visibility"
-          ></v-switch>
-          <v-switch
-            v-model="fileHasHeader"
-            density="compact"
-            :hide-details="true"
-            class="my-4"
-            label="Use 1st row as header"
-          ></v-switch>
-          <v-btn
-            color="primary"
-            type="button"
-            @click="saveOutput"
-            :disabled="fields.some((field) => field.selected === null)"
-          >
-            Import transactions
-          </v-btn>
         </div>
 
         <template v-if="parsedRows && parsedRows.length > 0">
