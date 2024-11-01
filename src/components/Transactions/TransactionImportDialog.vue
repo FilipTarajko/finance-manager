@@ -14,6 +14,7 @@ const importRelativeFontSize = ref(1.0);
 const sourceVisibility = ref(true);
 const outputVisibility = ref(true);
 const fileHasHeader = ref(true);
+const output = ref<Record<FieldNames, any>[]>([]);
 
 const columnSeparator = ',';
 
@@ -66,27 +67,17 @@ function getValueForField(field: FieldImportSetting, rowNumber: number) {
   } else {
     return 'not implemented'; // TODO
   }
+
+  if (field.validator) {
+    const validationResult = field.validator(rawValue);
+    if (validationResult !== true) {
+      field.hasError = true;
+      return { error: validationResult };
+    }
+  }
+
   return field.mapper(rawValue);
 }
-
-const output = computed(() => {
-  const result: any[] = [];
-  if (!contentRows?.value?.length) {
-    return result;
-  }
-
-  for (let rowNumber = 0; rowNumber < contentRows?.value?.length; rowNumber++) {
-    const nextItem: Partial<Record<FieldNames, any>> = {};
-
-    fields.value.forEach((field) => {
-      nextItem[field.name] = getValueForField(field, rowNumber);
-    });
-
-    result.push(nextItem);
-  }
-
-  return result;
-});
 
 function valueOrEntire(x: { value?: any }): any {
   return x?.value ?? x;
@@ -120,6 +111,8 @@ interface FieldImportSetting {
   options?: any;
   // includeToValue?: [string, any][], // TODO
   mapper: (rawValue: any) => any;
+  validator?: (rawValue: any) => true | string;
+  hasError?: boolean;
 }
 
 const usedColumns = computed(() => {
@@ -191,6 +184,12 @@ const fields = ref<FieldImportSetting[]>([
     type: FieldInputType.readColumn,
     selected: null,
     mapper: (rawValue) => Number(rawValue),
+    validator: (rawValue) => {
+      if (!rawValue || isNaN(rawValue)) {
+        return 'not a valid number';
+      }
+      return true;
+    },
   },
   {
     name: FieldNames.category,
@@ -213,8 +212,14 @@ const fields = ref<FieldImportSetting[]>([
     selected: null,
     mapper: (rawValue) => ({
       value: new Date(rawValue).getTime(),
-      title: rawValue,
+      title: new Date(rawValue)?.toISOString()?.slice(0, 10),
     }),
+    validator: (rawValue) => {
+      if (rawValue.length < 10 || isNaN(new Date(rawValue) as any)) {
+        return 'not a valid date';
+      }
+      return true;
+    },
   },
 ]);
 
@@ -230,11 +235,15 @@ function namesOfFieldsBasedOnColumn(columnIndex: number): string {
 }
 
 const headerRowRaw = computed(() => {
-  if (fileHasHeader.value) {
-    return parsedRows.value?.at(0);
+  if (!parsedRows?.value?.length) {
+    return [];
   }
 
-  return new Array(parsedRows.value?.at(0)?.length);
+  if (fileHasHeader.value) {
+    return parsedRows.value[0];
+  }
+
+  return new Array(parsedRows.value[0].length);
 });
 
 const headerRow = computed(() => {
@@ -255,6 +264,35 @@ const contentRows = computed(() => {
   }
   return parsedRows.value;
 });
+
+watch(
+  () => [fields.value.map(field=>field.selected), contentRows],
+  () => {
+    fields.value.forEach((field) => {
+      if (field.selected !== null) {
+        field.hasError = false;
+      }
+    });
+
+    const result: any[] = [];
+    if (!contentRows?.value?.length) {
+      return result;
+    }
+
+    for (let rowNumber = 0; rowNumber < contentRows?.value?.length; rowNumber++) {
+      const nextItem: Partial<Record<FieldNames, any>> = {};
+
+      fields.value.forEach((field) => {
+        nextItem[field.name] = getValueForField(field, rowNumber);
+      });
+
+      result.push(nextItem);
+    }
+
+    output.value = result;
+  },
+  { deep: true },
+);
 </script>
 
 <template>
@@ -274,15 +312,32 @@ const contentRows = computed(() => {
         <div class="mb-4">
           <div>
             <v-btn color="primary" type="button" @click="importRelativeFontSize -= 0.1"
-              >zoom out</v-btn
-            >
+              >zoom out
+            </v-btn>
             <v-btn class="mx-2" color="primary" type="button" @click="importRelativeFontSize += 0.1"
               >zoom in
             </v-btn>
           </div>
-          <v-switch v-model="sourceVisibility" density="compact" :hide-details="true" class="mt-4" label="toggle source visibility"></v-switch>
-          <v-switch v-model="outputVisibility" density="compact" :hide-details="true" label="Toggle output visibility"></v-switch>
-          <v-switch v-model="fileHasHeader" density="compact" :hide-details="true" class="my-4" label="Use 1st row as header"></v-switch>
+          <v-switch
+            v-model="sourceVisibility"
+            density="compact"
+            :hide-details="true"
+            class="mt-4"
+            label="Toggle source visibility"
+          ></v-switch>
+          <v-switch
+            v-model="outputVisibility"
+            density="compact"
+            :hide-details="true"
+            label="Toggle output visibility"
+          ></v-switch>
+          <v-switch
+            v-model="fileHasHeader"
+            density="compact"
+            :hide-details="true"
+            class="my-4"
+            label="Use 1st row as header"
+          ></v-switch>
           <v-btn
             color="primary"
             type="button"
@@ -331,12 +386,18 @@ const contentRows = computed(() => {
             <table>
               <thead style="border: 1px solid black">
                 <tr>
-                  <th v-for="(elem, j) in fields" :key="j">{{ elem.name }}</th>
+                  <th
+                    v-for="(field, j) in fields"
+                    :key="j"
+                    :class="{ invalid: field?.hasError, valid: field?.hasError === false }"
+                  >
+                    {{ field.name }}
+                  </th>
                 </tr>
               </thead>
               <tr style="border: 1px solid black" v-for="(row, i) in output" :key="i">
-                <td v-for="(elem, j) in row" :key="j">
-                  {{ elem?.title ? elem.title : elem }}
+                <td v-for="(elem, j) in row" :key="j" :class="{ invalid: elem?.error }">
+                  {{ elem?.error ?? elem?.title ?? elem }}
                 </td>
               </tr>
             </table>
@@ -364,7 +425,19 @@ th {
   background-color: #adf3;
 }
 
-.used {
-  background-color: #4caf5055;
+th.used {
+  background-color: #0ff5;
+}
+
+td.used {
+  background-color: #0ff3;
+}
+
+.valid {
+  background-color: #0f05;
+}
+
+.invalid {
+  background-color: #f005;
 }
 </style>
