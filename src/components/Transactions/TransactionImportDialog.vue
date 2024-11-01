@@ -13,10 +13,17 @@ const parsedRows = ref<string[][] | null>(null);
 const importRelativeFontSize = ref(1.0);
 const sourceVisibility = ref(true);
 const outputVisibility = ref(true);
+const columnSeparator = ',';
 
 const props = defineProps<{
   fileToImportTransactions: any;
 }>();
+
+watch(isDialogShown, (isDialogShown) => {
+  if (isDialogShown) {
+    tryLoadFile();
+  }
+});
 
 function tryLoadFile() {
   if (!props.fileToImportTransactions.length) {
@@ -34,8 +41,6 @@ function tryLoadFile() {
   reader.readAsText(file);
 }
 
-const columnSeparator = ',';
-
 function parseAsCsv(text: string): string[][] {
   const rows = text.replaceAll('"', '').split('\n');
   rows.pop();
@@ -50,12 +55,6 @@ function parseAsCsv(text: string): string[][] {
   }
   return rowsParsed;
 }
-
-watch(isDialogShown, (isDialogShown) => {
-  if (isDialogShown) {
-    tryLoadFile();
-  }
-});
 
 function getValueForField(field: FieldImportSetting, rowNumber: number) {
   if (field.selected === null) {
@@ -221,6 +220,17 @@ const fields = ref<FieldImportSetting[]>([
     }),
   },
 ]);
+
+function namesOfFieldsBasedOnColumn(columnIndex: number): string {
+  return fields.value
+    .filter(
+      (e) =>
+        [FieldInputType.readColumn, FieldInputType.mapFromColumn].includes(e.type) &&
+        e.selected == columnIndex,
+    )
+    .map((e) => e.name)
+    .join(', ');
+}
 </script>
 
 <template>
@@ -277,17 +287,7 @@ const fields = ref<FieldImportSetting[]>([
                     :key="j"
                     :class="{ used: usedColumns.includes(j) }"
                   >
-                    {{
-                      fields
-                        .filter(
-                          (e) =>
-                            [FieldInputType.readColumn, FieldInputType.mapFromColumn].includes(
-                              e.type,
-                            ) && e.selected == j,
-                        )
-                        .map((e) => e.name)
-                        .join(', ')
-                    }}
+                    {{ namesOfFieldsBasedOnColumn(j) }}
                   </th>
                 </tr>
                 <tr>
