@@ -340,6 +340,7 @@ function swapOrderOfMappings(field: FieldImportSetting, lowerIndex: number) {
               :items="field.options ?? columnSelectOptions"
               :label="field.name"
               class="mb-2"
+              :error-messages="field.hasError ? 'Selected column can\'t be mapped to expected values' : ''"
             ></v-select>
 
             <div class="pl-4" v-for="(mapping, i) in field?.mappings" :key="i">
