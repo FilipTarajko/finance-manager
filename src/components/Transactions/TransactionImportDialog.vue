@@ -3,7 +3,7 @@ import { computed, ref, type Ref, watch } from 'vue';
 import { useAccountsStore } from '@/stores/accountsStore';
 import { useCurrenciesStore } from '@/stores/currenciesStore';
 import { useCategoriesStore } from '@/stores/categoriesStore';
-import type { Category } from '@/types/types'
+import type { Category } from '@/types/types';
 
 const accountsStore = useAccountsStore();
 const currenciesStore = useCurrenciesStore();
@@ -69,15 +69,17 @@ function getValueForField(field: FieldImportSetting, rowNumber: number) {
     rawValue = [field, contentRows?.value![rowNumber][field.selected]];
   }
 
+  const format = field?.formats?.find((format) => format.id == field?.currentFormatId);
+
   if (field.validator) {
-    const validationResult = field.validator(rawValue);
+    const validationResult = field.validator(rawValue, format);
     if (validationResult !== true) {
       field.hasError = true;
       return { error: validationResult };
     }
   }
 
-  return field.mapper(rawValue);
+  return field.mapper(rawValue, format?.parse);
 }
 
 function valueOrEntire(x: { value?: any }): any {
@@ -110,9 +112,11 @@ interface FieldImportSetting {
   type: FieldInputType;
   selected: any;
   options?: any;
+  formats?: { id: number; name: string; parse: (raw: string) => any }[];
+  currentFormatId?: number;
   mappings?: [string, Category | null][];
-  mapper: (rawValue: any) => any;
-  validator?: (rawValue: any) => true | string;
+  mapper: (rawValue: any, parse?: any) => any;
+  validator?: (rawValue: any, format?: { name: string; parse: (raw: any) => any }) => true | string;
   hasError?: boolean;
 }
 
@@ -155,6 +159,15 @@ const accountOptions = computed(() => {
     };
   });
 });
+
+function formatOptions(field: FieldImportSetting) {
+  return field?.formats?.map((format) => {
+    return {
+      title: format.name,
+      value: format.id,
+    };
+  });
+}
 
 const basicReadColumnMapper = (rawValue: any) => rawValue;
 
@@ -210,13 +223,36 @@ const fields = ref<FieldImportSetting[]>([
     name: FieldNames.timestamp,
     type: FieldInputType.readColumn,
     selected: null,
-    mapper: (rawValue) => ({
-      value: new Date(rawValue).getTime(),
-      title: new Date(rawValue)?.toISOString()?.slice(0, 10),
+    formats: [
+      {
+        id: 1,
+        name: 'YYYY-MM-DD',
+        parse: (dateString: string) => {
+          const dateParts = dateString.split('-');
+          return new Date(Date.UTC(+dateParts[0], +dateParts[1] - 1, +dateParts[2]));
+        },
+      },
+      {
+        id: 2,
+        name: 'DD.MM.YYYY',
+        parse: (dateString: string) => {
+          const dateParts = dateString.split('.');
+          return new Date(Date.UTC(+dateParts[2], +dateParts[1] - 1, +dateParts[0]));
+        },
+      },
+    ],
+    currentFormatId: 1,
+    mapper: (rawValue, parse: (raw: string) => Date) => ({
+      value: parse(rawValue).getTime(),
+      title: parse(rawValue)?.toISOString()?.slice(0, 10),
     }),
-    validator: (rawValue) => {
-      if (rawValue.length < 10 || isNaN(new Date(rawValue) as any)) {
-        return 'not a valid date';
+    validator: function (rawValue: any, format?: { name: string; parse: (raw: string) => Date }) {
+      if (
+        !format?.parse ||
+        !format.parse(rawValue) ||
+        isNaN(format.parse(rawValue).getTime())
+      ) {
+        return `not a valid ${format?.name} date`;
       }
       return true;
     },
@@ -293,7 +329,7 @@ const contentRows = computed(() => {
 });
 
 watch(
-  () => [fields.value.map((field) => [field.selected, field?.mappings]), contentRows],
+  () => [fields.value.map((field) => [field.selected, field?.mappings, field?.currentFormatId]), contentRows],
   () => {
     fields.value.forEach((field) => {
       if (field.selected !== null) {
@@ -335,13 +371,30 @@ function swapOrderOfMappings(field: FieldImportSetting, lowerIndex: number) {
       <v-card-text :style="`overflow: scroll; font-size: ${importRelativeFontSize}rem;`">
         <div style="max-width: 50rem">
           <template v-for="field in fields" :key="field.name">
-            <v-select
-              v-model="field.selected"
-              :items="field.options ?? columnSelectOptions"
-              :label="field.name"
-              class="mb-2"
-              :error-messages="field.hasError ? 'Selected column can\'t be mapped to expected values' : ''"
-            ></v-select>
+            <div style="display: flex">
+              <v-select
+                v-model="field.selected"
+                :items="field.options ?? columnSelectOptions"
+                :label="field.name"
+                class="mb-2"
+                style="width: 100%"
+                :error-messages="
+                  field.hasError ? 'Selected column can\'t be mapped to expected values' : ''
+                "
+              ></v-select>
+              <v-select
+                v-if="field.formats"
+                v-model="field.currentFormatId"
+                class="mb-2 ml-2"
+                style="width: 100%"
+                :items="formatOptions(field)"
+                label="format"
+                :error-messages="
+                  field.hasError ? 'Please check the format' : ''
+                "
+              >
+              </v-select>
+            </div>
 
             <div class="pl-4" v-for="(mapping, i) in field?.mappings" :key="i">
               <v-btn
