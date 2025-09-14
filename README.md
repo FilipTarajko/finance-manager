@@ -46,14 +46,14 @@ Statistics page
 ![Statistics page - screenshot 1](src/readme%20screenshots/finance-stats-1.png)
 ![Statistics page - screenshot 2](src/readme%20screenshots/finance-stats-2.png)
 
+Light mode  
+![Light mode](src/readme%20screenshots/finance-light-mode.png)
+
 Mobile navigation  
 ![Mobile navigation](src/readme%20screenshots/finance-mobile-navigation.png)
 
 Desktop navigation  
 ![Desktop navigation](src/readme%20screenshots/finance-desktop-navigation.png)
-
-Light mode  
-![Light mode](src/readme%20screenshots/finance-light-mode.png)
 
 Hidden, tabbable "Skip navigation" button
 ![Screenshot of a hidden, tabbable "Skip navigation" button](src/readme%20screenshots/finance-tabbability-1.png)
