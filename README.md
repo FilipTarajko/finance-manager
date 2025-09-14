@@ -24,3 +24,40 @@ Features:
 [<img align="left" width="26" height="26" alt="Typescript" src="https://api.iconify.design/devicon:typescript.svg" style="padding: 0 20px 16px 0">](https://www.typescriptlang.org "TypeScript")
 [<img align="left" width="26" height="26" alt="Javascript" src="https://api.iconify.design/devicon:javascript.svg" style="padding: 0 20px 16px 0">](https://en.wikipedia.org/wiki/JavaScript "JavaScript")
 [<img width="26" height="26" alt="GitHub Actions" src="https://api.iconify.design/devicon:githubactions.svg" style="padding: 0 20px 16px 0">](https://github.com/features/actions "GitHub Actions")
+
+# Screenshots
+
+Transactions page  
+![Transactions page](src/readme%20screenshots/finance-transactions.png)
+
+Transaction edit form  
+![Transaction edit form](src/readme%20screenshots/finance-transaction-edit.png)
+
+Categories page  
+![Categories page](src/readme%20screenshots/finance-categories.png)
+
+Category edit form  
+![Category edit form](src/readme%20screenshots/finance-category-editing.png)
+
+Accounts page  
+![Accounts page](src/readme%20screenshots/finance-accounts.png)
+
+Statistics page  
+![Statistics page - screenshot 1](src/readme%20screenshots/finance-stats-1.png)
+![Statistics page - screenshot 2](src/readme%20screenshots/finance-stats-2.png)
+
+Mobile navigation  
+![Mobile navigation](src/readme%20screenshots/finance-mobile-navigation.png)
+
+Desktop navigation  
+![Desktop navigation](src/readme%20screenshots/finance-desktop-navigation.png)
+
+Light mode  
+![Light mode](src/readme%20screenshots/finance-light-mode.png)
+
+Hidden, tabbable "Skip navigation" button
+![Screenshot of a hidden, tabbable "Skip navigation" button](src/readme%20screenshots/finance-tabbability-1.png)
+
+All interactible elements are tabbable
+![Tabbability in navigation](src/readme%20screenshots/finance-tabbability-2.png)
+![Tabbability outside of navigation](src/readme%20screenshots/finance-tabbability-3.png)
